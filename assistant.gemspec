@@ -15,7 +15,7 @@ Gem::Specification.new do |spec|
   spec.description = 'Simple, composable services'
   spec.homepage = 'https://github.com/ramongr/assistant'
   spec.license = 'MIT'
-  spec.required_ruby_version = '>= 2.5.0'
+  spec.required_ruby_version = '>= 2.5.8'
 
   # Prevent pushing this gem to RubyGems.org. To allow pushes either set the 'allowed_push_host'
   # to allow pushing to a single host or delete this section to allow pushing to any host.
@@ -39,6 +39,7 @@ Gem::Specification.new do |spec|
   spec.require_paths = ['lib']
 
   spec.add_development_dependency 'brakeman', '~> 5.2'
+  spec.add_development_dependency 'colorize', '~> 0.8.1'
   spec.add_development_dependency 'bundler', '~> 2.3', '>= 2.3.5'
   spec.add_development_dependency 'fasterer', '~> 0.9.0'
   spec.add_development_dependency 'rake', '~> 13.0', '>= 13.0.6'

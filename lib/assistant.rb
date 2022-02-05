@@ -1,6 +1,7 @@
-require "assistant/version"
+# frozen_string_literal: true
+
+require 'assistant/version'
+require 'assistant/service'
 
 module Assistant
-  class Error < StandardError; end
-  # Your code goes here...
 end

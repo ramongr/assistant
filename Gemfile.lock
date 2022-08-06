@@ -77,6 +77,7 @@ DEPENDENCIES
   rake (~> 13.0, >= 13.0.6)
   rspec (~> 3.11)
   rubocop (~> 1.33)
+  rubocop-ast (~> 1.19, >= 1.19.1)
   rubocop-faker (~> 1.1)
   rubocop-performance (~> 1.14, >= 1.14.3)
   rubocop-rspec (~> 2.12, >= 2.12.1)

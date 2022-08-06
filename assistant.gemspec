@@ -15,18 +15,18 @@ Gem::Specification.new do |spec|
   spec.description = 'Simple, composable services'
   spec.homepage = 'https://github.com/ramongr/assistant'
   spec.license = 'MIT'
-  spec.required_ruby_version = '>= 2.5.8'
+  spec.required_ruby_version = '>= 2.7.6'
 
   # Prevent pushing this gem to RubyGems.org. To allow pushes either set the 'allowed_push_host'
   # to allow pushing to a single host or delete this section to allow pushing to any host.
   if spec.respond_to?(:metadata)
     spec.metadata['allowed_push_host'] = 'https://rubygems.org'
     spec.metadata['changelog_uri'] = 'https://github.com/ramongr/assistant/blob/main/CODE_OF_CONDUCT.md'
-    spec.metadata['homepage_uri'] = spec.homepage
+    spec.metadata['homepage_uri'] = 'https://github.com/ramongr/assistant'
+    spec.metadata['rubygems_mfa_required'] = 'true'
     spec.metadata['source_code_uri'] = 'https://github.com/ramongr/assistant'
   else
-    raise 'RubyGems 2.0 or newer is required to protect against ' \
-          'public gem pushes.'
+    raise 'RubyGems 2.0 or newer is required to protect against public gem pushes.'
   end
 
   # Specify which files should be added to the gem when it is released.
@@ -37,14 +37,14 @@ Gem::Specification.new do |spec|
   spec.bindir = 'exe'
   spec.executables = spec.files.grep(%r{^exe/}) { |f| File.basename(f) }
   spec.require_paths = ['lib']
-  spec.add_development_dependency 'brakeman', '~> 5.2'
+  spec.add_development_dependency 'brakeman', '~> 5.2', '>= 5.2.3'
+  spec.add_development_dependency 'bundler', '~> 2.3', '>= 2.3.19'
   spec.add_development_dependency 'colorize', '~> 0.8.1'
-  spec.add_development_dependency 'bundler', '~> 2.3', '>= 2.3.5'
-  spec.add_development_dependency 'fasterer', '~> 0.9.0'
+  spec.add_development_dependency 'fasterer', '~> 0.10.0'
   spec.add_development_dependency 'rake', '~> 13.0', '>= 13.0.6'
-  spec.add_development_dependency 'rspec', '~> 3.10'
-  spec.add_development_dependency 'rubocop', '~> 1.24', '>= 1.24.1'
+  spec.add_development_dependency 'rspec', '~> 3.11'
+  spec.add_development_dependency 'rubocop', '~> 1.33'
   spec.add_development_dependency 'rubocop-faker', '~> 1.1'
-  spec.add_development_dependency 'rubocop-performance', '~> 1.13', '>= 1.13.2'
-  spec.add_development_dependency 'rubocop-rspec', '~> 2.7'
+  spec.add_development_dependency 'rubocop-performance', '~> 1.14', '>= 1.14.3'
+  spec.add_development_dependency 'rubocop-rspec', '~> 2.12', '>= 2.12.1'
 end

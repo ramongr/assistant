@@ -20,10 +20,6 @@ jobs:
   test:
 
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        ruby-version: ['2.7.6', '3.0.4', '3.1.2']
-
     steps:
       - uses: actions/checkout@v3
       - name: Set up Ruby
@@ -32,7 +28,7 @@ jobs:
       # uses: ruby/setup-ruby@v1
         uses: ruby/setup-ruby@v1
         with:
-          ruby-version: ${{ matrix.ruby-version }}
+          ruby-version: '2.7.6'
           bundler-cache: true # runs 'bundle install' and caches installed gems automatically
       - name: Run tests
         run: bundle exec rspec

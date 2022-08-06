@@ -1,7 +1,6 @@
 require "rubygems"
 require "bundler"
 require "rake"
-require "yard"
 require "rspec/core/rake_task"
 require "standard/rake"
 

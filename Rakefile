@@ -3,7 +3,7 @@ require "bundler"
 require "rake"
 require "rspec/core/rake_task"
 
-Bundler::GemHelper.install_tasks(name: "factory_bot")
+Bundler::GemHelper.install_tasks(name: "assistant")
 
 desc "Default: run all specs and standard"
 task default: %w[all_specs standard]

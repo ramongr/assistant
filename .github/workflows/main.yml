@@ -32,7 +32,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - name: RuboCop Linter Action
+      - name: Github Rubocop Action
         # You may pin to the exact commit or the version.
-        # uses: andrewmcodes-archive/rubocop-linter-action@c9de2ff0e58217d3aa9167324b9dabdd2c6eefbe
-        uses: andrewmcodes-archive/rubocop-linter-action@v3.3.0
+        # uses: luizfonseca/github-actions-rubocop@fe9662d3f5c954bf6ee3ab2b7f69715d48ba46c4
+        uses: luizfonseca/github-actions-rubocop@1.5.6

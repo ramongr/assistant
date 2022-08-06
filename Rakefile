@@ -2,7 +2,6 @@ require "rubygems"
 require "bundler"
 require "rake"
 require "rspec/core/rake_task"
-require "standard/rake"
 
 Bundler::GemHelper.install_tasks(name: "factory_bot")
 

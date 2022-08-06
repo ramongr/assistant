@@ -28,17 +28,6 @@ jobs:
         run: bundle install
       - name: Run test
         run: bundle exec rake all_specs
-
-  codeclimate:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Codeclimate
-        # You may pin to the exact commit or the version.
-        # uses: billyan2018/codeclimate-changed@4aeb764a7db2480dcb6749b3d5e12aa97790ff5f
-        uses: billyan2018/codeclimate-changed@2.7
-        with:
-          # github token
-          token: 8790924bf110d9e87727efdd32959a3cd0546c58
   rubocop:
     runs-on: ubuntu-latest
     steps:

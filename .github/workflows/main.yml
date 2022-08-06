@@ -17,15 +17,17 @@ permissions:
   contents: read
 
 jobs:
-  test:
-
+  specs:
     runs-on: ubuntu-latest
     steps:
-      - name: GitHub Script for Ruby
-        uses: k1LoW/github-script-ruby@v2.1.0
+      - uses: actions/checkout@v3
+      - uses: ruby/setup-ruby@v1
         with:
-          command: bundle exec rspec
-          ruby-version: 2.7.6
+          ruby-version: '2.7.6'
+      - name: Setup project
+        run: bundle install
+      - name: Run test
+        run: bundle exec rake all_specs
 
   codeclimate:
     runs-on: ubuntu-latest

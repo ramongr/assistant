@@ -24,8 +24,6 @@ jobs:
     executor: ruby-executor
     steps:
       - install_ruby_deps
-      - install_node_deps
-      - rails_build
       - run:
           name: Run Unit Tests
           command: bundle exec rspec

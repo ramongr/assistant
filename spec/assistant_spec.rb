@@ -2,6 +2,6 @@
 
 RSpec.describe Assistant, type: :module do
   it 'has a version number' do
-    expect(Assistant::VERSION).not_to be nil
+    expect(Assistant::VERSION.nil?).to be(false)
   end
 end

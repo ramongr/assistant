@@ -2,6 +2,8 @@
 
 require 'bundler/setup'
 require 'assistant'
+require 'factory_bot'
+require 'rspec/collection_matchers'
 
 RSpec.configure do |config|
   # Enable flags like --only-failures and --next-failure
@@ -9,6 +11,11 @@ RSpec.configure do |config|
 
   # Disable RSpec exposing methods globally on `Module` and `main`
   config.disable_monkey_patching!
+
+  config.include FactoryBot::Syntax::Methods
+  config.before(:suite) do
+    FactoryBot.find_definitions
+  end
 
   config.expect_with :rspec do |c|
     c.syntax = :expect

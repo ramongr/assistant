@@ -1,0 +1,14 @@
+version: 2.1
+orbs:
+  gem-tool: appfolio/gem-tool@volatile
+workflows:
+  build_and_test:
+    jobs:
+      - gem-tool/rake_test:
+          name: test_ruby-<< matrix.ruby_version >>
+          executor_tag: ruby
+          matrix:
+            parameters:
+              ruby_version:
+                - 3.1.1
+                - 2.7.6

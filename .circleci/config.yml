@@ -6,7 +6,6 @@ workflows:
     jobs:
       - gem-tool/rake_test:
           name: test_ruby-<< matrix.ruby_version >>
-          context: appfolio_test_context
           executor_tag: ruby
           matrix:
             parameters:

@@ -14,5 +14,3 @@ workflows:
                 - 3.1.1
                 - 2.7.5
                 - 2.6.9
-          after-appraisal-install-steps:
-            - gem-tool/wait_mysql

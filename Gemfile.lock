@@ -6,6 +6,10 @@ PATH
 GEM
   remote: https://rubygems.org/
   specs:
+    appraisal (2.4.1)
+      bundler
+      rake
+      thor (>= 0.14.0)
     ast (2.4.2)
     brakeman (5.2.3)
     colorize (0.8.1)
@@ -63,12 +67,15 @@ GEM
     ruby_parser (3.19.1)
       sexp_processor (~> 4.16)
     sexp_processor (4.16.1)
+    thor (1.2.1)
     unicode-display_width (2.2.0)
 
 PLATFORMS
   x86_64-darwin-21
+  x86_64-linux
 
 DEPENDENCIES
+  appraisal
   assistant!
   brakeman (~> 5.2, >= 5.2.3)
   bundler (~> 2.3, >= 2.3.19)

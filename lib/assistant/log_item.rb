@@ -24,6 +24,7 @@ module Assistant
     end
 
     VALID_LEVELS.each do |valid_level|
+      # info? warning? error?
       define_method("#{valid_level}?") do
         level == valid_level
       end

@@ -1,14 +1,39 @@
-version: 2.1
+---
+version: 2.1 # Use 2.1 to enable using orbs and other features.
+
+commands:
+  install_ruby_deps:
+    steps:
+      - checkout
+      - ruby/install-deps:
+            key: gems-v1
+
 orbs:
-  gem-tool: appfolio/gem-tool@volatile
+  ruby: circleci/ruby@1.8.0
+executors:
+  ruby-executor:
+    working_directory: ~/assistant
+    docker:
+      - image: cimg/ruby:2.7.6-node
+jobs:
+  build-ruby:
+    executor: ruby-executor
+    steps:
+      - install_ruby_deps
+  ruby-unit-test:
+    executor: ruby-executor
+    steps:
+      - install_ruby_deps
+      - install_node_deps
+      - rails_build
+      - run:
+          name: Run Unit Tests
+          command: bundle exec rspec
+
 workflows:
-  build_and_test:
+  build_check_and_test:
     jobs:
-      - gem-tool/rake_test:
-          name: test_ruby-<< matrix.ruby_version >>
-          executor_tag: ruby
-          matrix:
-            parameters:
-              ruby_version:
-                - 3.1.1
-                - 2.7.6
+      - build-ruby
+      - ruby-unit-test:
+          requires:
+            - build-ruby

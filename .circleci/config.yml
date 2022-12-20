@@ -27,11 +27,19 @@ jobs:
       - run:
           name: Run Unit Tests
           command: bundle exec rspec
+  rubocop-check:
+    executor: ruby-executor
+    steps:
+      - install_ruby_deps
+      - ruby/rubocop-check
 
 workflows:
   build_check_and_test:
     jobs:
       - build-ruby
       - ruby-unit-test:
+          requires:
+            - build-ruby
+      - rubocop-check:
           requires:
             - build-ruby

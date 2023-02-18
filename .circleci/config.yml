@@ -6,15 +6,16 @@ commands:
     steps:
       - checkout
       - ruby/install-deps:
-            key: gems-v1
+            key: gems-v2
 
 orbs:
   ruby: circleci/ruby@2.0.0
 executors:
   ruby-executor:
     working_directory: ~/assistant
+    resource_class: medium
     docker:
-      - image: cimg/base:stable
+      - image: cimg/ruby:2.7.6
 jobs:
   build-ruby:
     executor: ruby-executor

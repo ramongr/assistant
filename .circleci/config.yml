@@ -9,16 +9,18 @@ commands:
             key: gems-v1
 
 orbs:
-  ruby: circleci/ruby@1.8.0
+  ruby: circleci/ruby@2.0.0
 executors:
   ruby-executor:
     working_directory: ~/assistant
     docker:
-      - image: cimg/ruby:2.7.6-node
+      - image: cimg/base:stable
 jobs:
   build-ruby:
     executor: ruby-executor
     steps:
+      - ruby/install:
+          version: 2.7.6
       - install_ruby_deps
   ruby-unit-test:
     executor: ruby-executor
@@ -30,8 +32,11 @@ jobs:
   rubocop-check:
     executor: ruby-executor
     steps:
+      - ruby/install:
+          version: 2.7.6
       - install_ruby_deps
-      - ruby/rubocop-check
+      - ruby/rubocop-check:
+          parallel: true 
 
 workflows:
   build_check_and_test:

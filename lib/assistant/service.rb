@@ -12,11 +12,11 @@ module Assistant
 
     def run
       validate
-      { result: execute, status: define_status, warnings: warnings } if errors.size.zero?
+      { result: execute, status: define_status, warnings: warnings } if errors.empty?
     end
 
     def define_status
-      warnings.size.zero? ? :ok : :with_warnings
+      warnings.empty? ? :ok : :with_warnings
     end
 
     protected

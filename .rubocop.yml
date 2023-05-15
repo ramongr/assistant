@@ -18,6 +18,9 @@ AllCops:
   TargetRubyVersion: 2.7
   SuggestExtensions: false
 
+Gemspec/DevelopmentDependencies:
+    EnforcedStyle: gemspec
+
 Naming/PredicateName:
   # Method define macros for dynamically generated method.
   MethodDefinitionMacros:

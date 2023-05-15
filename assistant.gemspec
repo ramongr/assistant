@@ -13,7 +13,7 @@ Gem::Specification.new do |spec|
   spec.authors = ['Ramon Rodrigues']
   spec.email = ['cerberus.ramon@gmail.com']
 
-  spec.summary = 'Simple, composable services'
+  spec.summary = 'Simple, soft fail enabled, composable services'
   spec.description = 'Simple, composable services'
   spec.homepage = 'https://github.com/ramongr/assistant'
   spec.license = 'MIT'
@@ -30,22 +30,22 @@ Gem::Specification.new do |spec|
   spec.files = Dir.chdir(File.expand_path(__dir__)) do
     `git ls-files -z`.split("\x0").reject { |f| f.match(%r{^(test|spec|features)/}) }
   end
-  spec.bindir = 'exe'
-  spec.executables = spec.files.grep(%r{^exe/}) { |f| File.basename(f) }
-  spec.require_paths = ['lib']
+
+  spec.require_paths = 'lib'
+
   spec.add_development_dependency 'brakeman', '~> 5.2', '>= 5.2.3'
   spec.add_development_dependency 'bundler', '~> 2.3', '>= 2.3.19'
   spec.add_development_dependency 'byebug', '~> 11.1', '>= 11.1.3'
   spec.add_development_dependency 'colorize', '~> 0.8.1'
   spec.add_development_dependency 'factory_bot', '~> 6.2', '>= 6.2.1'
-  spec.add_development_dependency 'fasterer', '~> 0.10.0'
+  spec.add_development_dependency 'fasterer', '~> 0.10.1'
   spec.add_development_dependency 'rake', '~> 13.0', '>= 13.0.6'
   spec.add_development_dependency 'rspec', '~> 3.12'
   spec.add_development_dependency 'rspec-collection_matchers', '~> 1.2'
   spec.add_development_dependency 'rspec_junit_formatter', '~> 0.6.0'
-  spec.add_development_dependency 'rubocop', '~> 1.33'
+  spec.add_development_dependency 'rubocop', '~> 1.51'
   spec.add_development_dependency 'rubocop-faker', '~> 1.1'
-  spec.add_development_dependency 'rubocop-performance', '~> 1.14', '>= 1.14.3'
+  spec.add_development_dependency 'rubocop-performance', '~> 1.17', '>= 1.17.1'
   spec.add_development_dependency 'rubocop-rake', '~> 0.6.0'
-  spec.add_development_dependency 'rubocop-rspec', '~> 2.12', '>= 2.12.1'
+  spec.add_development_dependency 'rubocop-rspec', '~> 2.22'
 end

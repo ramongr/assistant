@@ -5,6 +5,12 @@ module Assistant
   class Service
     include ::Assistant::LogList
 
+    class << self
+      def run(*args)
+        new(*args).run
+      end
+    end
+
     def initialize(*args)
       @inputs = args
       @logs = []
@@ -12,10 +18,10 @@ module Assistant
 
     def run
       validate
-      { result: execute, status: define_status, warnings: warnings } if errors.empty?
+      { result: execute, status: status, warnings: warnings } if errors.empty?
     end
 
-    def define_status
+    def status
       warnings.empty? ? :ok : :with_warnings
     end
 

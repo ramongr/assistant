@@ -27,9 +27,9 @@ private
 
 def help_message
   puts "\t\t\t\t\tVERSION BUMP OPTIONS\t\t\t\t\t"
-  puts "--bump-patch-version --patch\t\tBumps the patch version\t\t\t\t\t"
-  puts "--bump-minor-version --minor\t\tBumps the minor version and sets the patch version to 0 "
-  puts "--bump-major-version --version\t\tBumps the major version sets all other values to 0\t"
+  puts "--patch-version --patch\t\tBumps the patch version\t\t\t\t\t"
+  puts "--minor-version --minor\t\tBumps the minor version and sets the patch version to 0 "
+  puts "--major-version --version\t\tBumps the major version sets all other values to 0\t"
 end
 
 def write_file(text)

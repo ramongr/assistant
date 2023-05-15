@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-require 'bundler/setup'
 require 'assistant'
+require 'bundler/setup'
 require 'factory_bot'
 require 'rspec/collection_matchers'
 

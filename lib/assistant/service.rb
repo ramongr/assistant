@@ -1,13 +1,20 @@
 # frozen_string_literal: true
 
+require_relative '../utilities/input_access'
+require_relative '../utilities/log_list'
+
 module Assistant
   # Base class for the Assistant gem
   class Service
-    include ::Assistant::LogList
+    include Utilities::LogList
 
     class << self
-      def run(*args)
-        new(*args).run
+      include Utilities::InputAccess
+
+      def run(**args)
+        create_reader_methods(args)
+        create_presence_methods(args)
+        new(args).run
       end
     end
 

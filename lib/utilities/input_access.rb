@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require 'byebug'
-
 module Assistant
   module Utilities
     # Transforms input attributes into simple getter and presence check methods

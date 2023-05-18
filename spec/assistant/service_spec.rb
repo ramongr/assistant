@@ -1,12 +1,19 @@
 # frozen_string_literal: true
 
-require './spec/assistant/examples/log_list'
+require_relative '../utilities/input_accesses'
+require_relative '../utilities/log_lists'
 
 RSpec.describe Assistant::Service, type: :class do
   describe '#log_list_module' do
     subject(:klass) { described_class.new }
 
-    it_behaves_like 'Assistant::LogList'
+    it_behaves_like 'Assistant::Utilities::LogList'
+  end
+
+  describe '#input_access_module' do
+    subject(:klass) { described_class }
+
+    it_behaves_like 'Assistant::Utilities::InputAccess'
   end
 
   describe 'Base class has no arguments' do

@@ -15,7 +15,7 @@ AllCops:
     - 'tmp/**/*'
     - '.git/**/*'
     - 'bin/*'
-  TargetRubyVersion: 2.7
+  TargetRubyVersion: 3.2
   SuggestExtensions: false
 
 Gemspec/DevelopmentDependencies:

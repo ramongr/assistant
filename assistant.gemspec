@@ -17,7 +17,7 @@ Gem::Specification.new do |spec|
   spec.description = 'Simple, composable services'
   spec.homepage = 'https://github.com/ramongr/assistant'
   spec.license = 'MIT'
-  spec.required_ruby_version = '>= 2.7.6'
+  spec.required_ruby_version = '>= 3.2.2'
 
   spec.metadata['allowed_push_host'] = 'https://rubygems.org'
   spec.metadata['changelog_uri'] = 'https://github.com/ramongr/assistant/blob/main/CODE_OF_CONDUCT.md'
@@ -33,8 +33,8 @@ Gem::Specification.new do |spec|
 
   spec.require_paths = 'lib'
 
-  spec.add_development_dependency 'brakeman', '~> 5.2', '>= 5.2.3'
-  spec.add_development_dependency 'bundler', '~> 2.3', '>= 2.3.19'
+  spec.add_development_dependency 'brakeman', '~> 5.4', '>= 5.4.1'
+  spec.add_development_dependency 'bundler', '~> 2.4', '>= 2.4.13'
   spec.add_development_dependency 'byebug', '~> 11.1', '>= 11.1.3'
   spec.add_development_dependency 'colorize', '~> 0.8.1'
   spec.add_development_dependency 'factory_bot', '~> 6.2', '>= 6.2.1'
@@ -43,9 +43,9 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'rspec', '~> 3.12'
   spec.add_development_dependency 'rspec-collection_matchers', '~> 1.2'
   spec.add_development_dependency 'rspec_junit_formatter', '~> 0.6.0'
-  spec.add_development_dependency 'rubocop', '~> 1.51'
+  spec.add_development_dependency 'rubocop', '~> 1.56.2'
   spec.add_development_dependency 'rubocop-faker', '~> 1.1'
-  spec.add_development_dependency 'rubocop-performance', '~> 1.17', '>= 1.17.1'
+  spec.add_development_dependency 'rubocop-performance', '~> 1.19'
   spec.add_development_dependency 'rubocop-rake', '~> 0.6.0'
-  spec.add_development_dependency 'rubocop-rspec', '~> 2.22'
+  spec.add_development_dependency 'rubocop-rspec', '~> 2.23.2'
 end

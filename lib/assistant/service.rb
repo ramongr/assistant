@@ -1,38 +1,47 @@
 # frozen_string_literal: true
 
-require_relative '../utilities/input_access'
+require_relative './input_validation'
 require_relative '../utilities/log_list'
+
+require 'byebug'
 
 module Assistant
   # Base class for the Assistant gem
   class Service
-    include Utilities::LogList
+    include ::Utilities::LogList
 
     class << self
-      include Utilities::InputAccess
+      include Assistant::InputSetter
 
       def run(**args)
-        create_reader_methods(args)
-        create_presence_methods(args)
-        new(args).run
+        new(**args).run
       end
     end
 
-    def initialize(*args)
+    def initialize(**args)
       @inputs = args
       @logs = []
     end
 
     def run
+      validate_inputs
       validate
-      { result: execute, status: status, warnings: warnings } if errors.empty?
+      if errors.empty?
+        { result: execute, status:, warnings: }
+      else
+        { result: execute, status: :with_errors, errors: @logs }
+      end
     end
 
     def status
       warnings.empty? ? :ok : :with_warnings
     end
 
+    def validate_inputs = @inputs.each { |input, _| send("valid_#{input}?") }
+
     protected
+
+    attr_reader :inputs
 
     def execute; end
 

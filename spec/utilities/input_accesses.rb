@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.shared_examples 'Assistant::Utilities::InputAccess' do
+RSpec.shared_examples 'Utilities::InputAccess' do
   before do
     klass.run(params)
   end

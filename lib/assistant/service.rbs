@@ -1,0 +1,5 @@
+# frozen_string_literal: true
+
+class Assistant::Service
+
+end

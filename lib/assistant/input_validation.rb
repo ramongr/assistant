@@ -42,8 +42,8 @@ module Assistant
       define_method("valid_#{attr_name}?") do
         result = true
         # Validation for required inputs
-        if options[:required] == true && send("#{attr_name}?") == false
-          LogItem.new(
+        if (options[:required] == true || options[:required_if].present?) && send("#{attr_name}?") == false
+          @logs << LogItem.new(
             detail: attr_name,
             level: :error,
             message: "Service is missing argument with name #{attr_name}",
@@ -52,8 +52,8 @@ module Assistant
           result = false
         end
 
-        if options[:required_if] == true && !options[:required_if].call(send(attr_name))
-          LogItem.new(
+        if options[:required_if].present? && send("#{attr_name}?") == true && !options[:required_if].call(send(attr_name))
+          @logs << LogItem.new(
             detail: attr_name,
             level: :error,
             message: "Service argument conditional requirement not met properly for #{attr_name}",

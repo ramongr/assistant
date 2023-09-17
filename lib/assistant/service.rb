@@ -11,7 +11,7 @@ module Assistant
     include ::Utilities::LogList
 
     class << self
-      include Assistant::InputSetter
+      include InputValidation
 
       def run(**args)
         new(**args).run
@@ -21,6 +21,7 @@ module Assistant
     def initialize(**args)
       @inputs = args
       @logs = []
+      @keys = []
     end
 
     def run
@@ -37,7 +38,7 @@ module Assistant
       warnings.empty? ? :ok : :with_warnings
     end
 
-    def validate_inputs = @inputs.each { |input, _| send("valid_#{input}?") }
+    def validate_inputs = methods.grep(/valid_[\w]+\?$/).each { |input, _| send(input) }
 
     protected
 

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module Utilities
+module Assistant
   # Service level list of logs
   module LogList
     def add_log(level:, source:, detail:, message:, trace: nil)

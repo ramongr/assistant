@@ -1,20 +1,18 @@
 # frozen_string_literal: true
 
-require_relative './input_validation'
-require_relative '../utilities/log_list'
-
-require 'byebug'
+require_relative 'input_builder'
+require_relative 'log_list'
 
 module Assistant
   # Base class for the Assistant gem
   class Service
-    include ::Utilities::LogList
+    include LogList
 
     class << self
-      include InputValidation
+      include InputBuilder
 
-      def run(**args)
-        new(**args).run
+      def run(**)
+        new(**).run
       end
     end
 
@@ -27,6 +25,7 @@ module Assistant
     def run
       validate_inputs
       validate
+
       if errors.empty?
         { result: execute, status:, warnings: }
       else
@@ -34,11 +33,24 @@ module Assistant
       end
     end
 
+    def success?
+      errors.empty?
+    end
+
+    def failure?
+      errors.any?
+
+    end
+
     def status
       warnings.empty? ? :ok : :with_warnings
     end
 
-    def validate_inputs = methods.grep(/valid_[\w]+\?$/).each { |input, _| send(input) }
+    def validate_inputs
+      methods.grep(/valid_(require|type|require_conditional)_[\w]+\?$/).each do |validation_method|
+        send(validation_method)
+      end
+    end
 
     protected
 
@@ -49,3 +61,10 @@ module Assistant
     def validate; end
   end
 end
+# class Test < Assistant::Service
+#   inputs %i[one two three], type: Integer, required: true, if: ->(elem) { elem > 10 }
+
+#   def execute
+#     puts inputs
+#   end
+# end

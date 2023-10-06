@@ -1,12 +1,19 @@
 # frozen_string_literal: true
 
-require_relative '../utilities/log_lists'
+require_relative 'shared/input_builder/base_methods'
+require_relative 'shared/input_builder/type_methods'
+require_relative 'shared/log_list/error_logging'
 
 RSpec.describe Assistant::Service, type: :class do
   describe '#log_list_module' do
     subject(:klass) { described_class.new }
 
-    it_behaves_like 'Utilities::LogList'
+    it_behaves_like 'Assistant::LogList'
+  end
+
+  describe '#input builder module' do
+    include_examples 'when building base methods'
+    include_examples 'when building type checking'
   end
 
   describe 'Base class has no arguments' do

@@ -73,7 +73,7 @@ end
 
 RSpec.shared_examples 'conditional_requirement_methods' do
   it 'has one attribute-generated requirement method per argument' do
-    conditional_methods =%i[
+    conditional_methods = %i[
       valid_require_conditional_one? valid_require_conditional_two? valid_require_conditional_three?
     ]
     expect(foo_class.instance_methods & conditional_methods).to match_array(conditional_methods)

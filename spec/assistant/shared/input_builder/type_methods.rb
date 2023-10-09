@@ -41,4 +41,3 @@ RSpec.shared_examples 'type_checker_methods' do
     ).to match_array(%i[valid_type_one? valid_type_two? valid_type_three?])
   end
 end
-

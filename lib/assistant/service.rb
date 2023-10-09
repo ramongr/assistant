@@ -39,7 +39,6 @@ module Assistant
 
     def failure?
       errors.any?
-
     end
 
     def status

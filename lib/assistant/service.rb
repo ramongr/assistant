@@ -61,10 +61,3 @@ module Assistant
     def validate; end
   end
 end
-# class Test < Assistant::Service
-#   inputs %i[one two three], type: Integer, required: true, if: ->(elem) { elem > 10 }
-
-#   def execute
-#     puts inputs
-#   end
-# end

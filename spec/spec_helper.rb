@@ -2,7 +2,9 @@
 
 require 'assistant'
 require 'bundler/setup'
+require 'byebug'
 require 'factory_bot'
+require 'faker'
 require 'rspec/collection_matchers'
 
 RSpec.configure do |config|

@@ -20,7 +20,7 @@ module Assistant
     end
 
     def item
-      { level: level, source: source, detail: detail, message: message, trace: trace }
+      { level:, source:, detail:, message:, trace: }
     end
 
     VALID_LEVELS.each do |valid_level|

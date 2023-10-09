@@ -9,12 +9,12 @@ commands:
             key: gems-v1
 
 orbs:
-  ruby: circleci/ruby@2.0.0
+  ruby: circleci/ruby@2.1.0
 executors:
   ruby-executor:
     working_directory: ~/assistant
     docker:
-      - image: cimg/ruby:2.7.6
+      - image: cimg/ruby:3.2.2
 jobs:
   build-ruby:
     executor: ruby-executor

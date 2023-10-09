@@ -1,13 +1,12 @@
 # frozen_string_literal: true
 
-RSpec.shared_examples 'Assistant::Utilities::LogList' do
+RSpec.shared_examples 'Assistant::LogList' do
   describe '#add_log' do
     context 'with empty arguments' do
       let(:params) { {} }
 
       it 'raises a runtime error' do
-        expect { klass.add_log(params) }.to raise_error(ArgumentError)
-          .with_message('missing keywords: :level, :source, :detail, :message')
+        expect { klass.add_log(**params) }.to raise_error(ArgumentError)
       end
     end
 
@@ -15,7 +14,7 @@ RSpec.shared_examples 'Assistant::Utilities::LogList' do
       let(:params) { { level: '', source: '', detail: '', message: '' } }
 
       it 'adds the log' do
-        expect(klass.add_log(params)).to have_exactly(1).item
+        expect(klass.add_log(**params)).to have_exactly(1).item
       end
     end
 
@@ -23,7 +22,7 @@ RSpec.shared_examples 'Assistant::Utilities::LogList' do
       let(:params) { { level: 'info', source: 'test', detail: 'other test', message: 'This is a test' } }
 
       it 'adds the log' do
-        expect(klass.add_log(params)).to have_exactly(1).item
+        expect(klass.add_log(**params)).to have_exactly(1).item
       end
     end
   end

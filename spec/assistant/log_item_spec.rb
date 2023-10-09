@@ -1,10 +1,8 @@
 # frozen_string_literal: true
 
 RSpec.describe Assistant::LogItem, type: :class do
-  subject { described_class.new(params) }
-
   describe 'invalid' do
-    let(:params) { { level: '', source: '', detail: '', message: '' } }
+    subject { build(:invalid_log_item) }
 
     it { is_expected.not_to be_valid }
 
@@ -16,7 +14,7 @@ RSpec.describe Assistant::LogItem, type: :class do
 
   describe '#valid?' do
     context 'when LogItem is info' do
-      let(:params) { { level: 'info', source: 'test', detail: 'other test', message: 'This is a test' } }
+      subject { build(:log_item_info) }
 
       it { is_expected.to be_valid }
       it { is_expected.to be_valid_level }
@@ -26,7 +24,7 @@ RSpec.describe Assistant::LogItem, type: :class do
     end
 
     context 'when LogItem is warning' do
-      let(:params) { { level: 'warning', source: 'test', detail: 'other test', message: 'This is a test' } }
+      subject { build(:log_item_warning) }
 
       it { is_expected.to be_valid }
       it { is_expected.to be_valid_level }
@@ -36,7 +34,7 @@ RSpec.describe Assistant::LogItem, type: :class do
     end
 
     context 'when LogItem is error' do
-      let(:params) { { level: 'error', source: 'test', detail: 'other test', message: 'This is a test' } }
+      subject { build(:log_item_error) }
 
       it { is_expected.to be_valid }
       it { is_expected.to be_valid_level }

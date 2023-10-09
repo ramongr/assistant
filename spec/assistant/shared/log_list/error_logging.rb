@@ -6,7 +6,7 @@ RSpec.shared_examples 'Assistant::LogList' do
       let(:params) { {} }
 
       it 'raises a runtime error' do
-        expect { klass.add_log(*params) }.to raise_error(ArgumentError)
+        expect { klass.add_log(**params) }.to raise_error(ArgumentError)
       end
     end
 
@@ -14,7 +14,7 @@ RSpec.shared_examples 'Assistant::LogList' do
       let(:params) { { level: '', source: '', detail: '', message: '' } }
 
       it 'adds the log' do
-        expect(klass.add_log(*params)).to have_exactly(1).item
+        expect(klass.add_log(**params)).to have_exactly(1).item
       end
     end
 

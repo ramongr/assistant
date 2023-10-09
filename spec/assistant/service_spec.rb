@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require_relative 'shared/input_builder/base_methods'
+require_relative 'shared/input_builder/requirement_methods'
 require_relative 'shared/input_builder/type_methods'
 require_relative 'shared/log_list/error_logging'
 
@@ -12,8 +13,9 @@ RSpec.describe Assistant::Service, type: :class do
   end
 
   describe '#input builder module' do
-    include_examples 'when building base methods'
-    include_examples 'when building type checking'
+    include_context 'when building base methods'
+    include_context 'when building type checking'
+    include_context 'when building requirement methods'
   end
 
   describe 'Base class has no arguments' do

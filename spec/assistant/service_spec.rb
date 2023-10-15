@@ -3,13 +3,20 @@
 require_relative 'shared/input_builder/base_methods'
 require_relative 'shared/input_builder/requirement_methods'
 require_relative 'shared/input_builder/type_methods'
+require_relative 'shared/log_list/argument_requirement_logging'
+require_relative 'shared/log_list/argument_type_logging'
 require_relative 'shared/log_list/error_logging'
 
 RSpec.describe Assistant::Service, type: :class do
   describe '#log_list_module' do
     subject(:klass) { described_class.new }
 
-    it_behaves_like 'Assistant::LogList'
+    it_behaves_like 'error logging operations'
+  end
+
+  describe '#argument logging module' do
+    include_context 'with proper type logging for arguments'
+    include_context 'with proper requirement logging for arguments'
   end
 
   describe '#input builder module' do

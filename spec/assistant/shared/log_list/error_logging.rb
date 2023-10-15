@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.shared_examples 'Assistant::LogList' do
+RSpec.shared_examples 'error logging operations' do
   describe '#add_log' do
     context 'with empty arguments' do
       let(:params) { {} }

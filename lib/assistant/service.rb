@@ -29,7 +29,7 @@ module Assistant
       if errors.empty?
         { result: execute, status:, warnings: }
       else
-        { result: execute, status: :with_errors, errors: @logs }
+        { errors:, result: nil, status: :with_errors }
       end
     end
 

@@ -68,10 +68,11 @@ module Assistant
       define_method("valid_type_#{attr_name}?") do
         return true if @inputs[attr_name].is_a?(type)
 
-        send(
-          :log_item_error_initialize,
-          attr_name:, message: "Service argument with name #{attr_name} is not a #{type} but #{send(attr_name).class}"
-        )
+        send("#{attr_name}?") &&
+          send(
+            :log_item_error_initialize,
+            attr_name:, message: "Service argument with name #{attr_name} is not a #{type} but #{send(attr_name).class}"
+          )
         false
       end
     end

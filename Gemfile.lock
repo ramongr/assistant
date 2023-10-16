@@ -19,7 +19,7 @@ GEM
     ast (2.4.2)
     base64 (0.1.1)
     bigdecimal (3.1.4)
-    brakeman (5.4.1)
+    brakeman (6.0.1)
     byebug (11.1.3)
     colorize (0.8.1)
     concurrent-ruby (1.2.2)
@@ -113,7 +113,7 @@ PLATFORMS
 
 DEPENDENCIES
   assistant!
-  brakeman (~> 5.4, >= 5.4.1)
+  brakeman (~> 6.0, >= 5.4.1)
   bundler (~> 2.4, >= 2.4.13)
   byebug (~> 11.1, >= 11.1.3)
   colorize (~> 0.8.1)

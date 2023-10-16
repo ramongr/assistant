@@ -33,7 +33,7 @@ Gem::Specification.new do |spec|
 
   spec.require_paths = 'lib'
 
-  spec.add_development_dependency 'brakeman', '~> 5.4', '>= 5.4.1'
+  spec.add_development_dependency 'brakeman', '>= 5.4.1', '~> 6.0'
   spec.add_development_dependency 'bundler', '~> 2.4', '>= 2.4.13'
   spec.add_development_dependency 'byebug', '~> 11.1', '>= 11.1.3'
   spec.add_development_dependency 'colorize', '~> 0.8.1'

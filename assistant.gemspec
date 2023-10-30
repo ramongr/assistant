@@ -43,7 +43,7 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'rspec', '~> 3.12'
   spec.add_development_dependency 'rspec-collection_matchers', '~> 1.2'
   spec.add_development_dependency 'rspec_junit_formatter', '~> 0.6.0'
-  spec.add_development_dependency 'rubocop', '~> 1.56.2'
+  spec.add_development_dependency 'rubocop', '~> 1.57.2'
   spec.add_development_dependency 'rubocop-faker', '~> 1.1'
   spec.add_development_dependency 'rubocop-performance', '~> 1.19'
   spec.add_development_dependency 'rubocop-rake', '~> 0.6.0'

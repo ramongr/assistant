@@ -27,10 +27,14 @@ module Assistant
       validate
 
       if errors.empty?
-        { result: execute, status:, warnings: }
+        { result:, status:, warnings: }
       else
         { errors:, result: nil, status: :with_errors }
       end
+    end
+
+    def result
+      @result ||= execute
     end
 
     def success?
@@ -45,13 +49,13 @@ module Assistant
       warnings.empty? ? :ok : :with_warnings
     end
 
+    private
+
     def validate_inputs
       methods.grep(/valid_(require|type|require_conditional)_[\w]+\?$/).each do |validation_method|
         send(validation_method)
       end
     end
-
-    protected
 
     attr_reader :inputs
 

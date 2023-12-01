@@ -6,8 +6,7 @@ commands:
     steps:
       - checkout
       - ruby/install-deps:
-            key: gems-v1
-
+            key: gems-v2
 orbs:
   ruby: circleci/ruby@2.1.0
 executors:

@@ -14,11 +14,16 @@ executors:
   ruby-executor:
     working_directory: ~/assistant
     docker:
-      - image: cimg/ruby:3.2.2
+      - image: cimg/base:stable
 jobs:
   build-ruby:
     executor: ruby-executor
+    parameters:
+        ruby-version:
+            type: string
     steps:
+      - ruby/install:
+          version: << parameters.ruby-version >>
       - install_ruby_deps
   ruby-unit-test:
     executor: ruby-executor
@@ -34,9 +39,30 @@ jobs:
       - ruby/rubocop-check
 
 workflows:
-  build_check_and_test:
+  build-ruby-3-0:
     jobs:
-      - build-ruby
+      - build-ruby:
+          ruby-version: 3.0.6
+      - ruby-unit-test:
+          requires:
+            - build-ruby
+      - rubocop-check:
+          requires:
+            - build-ruby
+  build-ruby-3-1:
+    jobs:
+      - build-ruby:
+          ruby-version: 3.1.4
+      - ruby-unit-test:
+          requires:
+            - build-ruby
+      - rubocop-check:
+          requires:
+            - build-ruby
+  build-ruby-3-2:
+    jobs:
+      - build-ruby:
+          ruby-version: 3.2.2
       - ruby-unit-test:
           requires:
             - build-ruby

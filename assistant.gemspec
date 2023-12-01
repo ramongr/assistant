@@ -17,7 +17,7 @@ Gem::Specification.new do |spec|
   spec.description = 'Simple, composable services'
   spec.homepage = 'https://github.com/ramongr/assistant'
   spec.license = 'MIT'
-  spec.required_ruby_version = '>= 3.2.2'
+  spec.required_ruby_version = '>= 3.0.6'
 
   spec.metadata['allowed_push_host'] = 'https://rubygems.org'
   spec.metadata['changelog_uri'] = 'https://github.com/ramongr/assistant/blob/main/CODE_OF_CONDUCT.md'

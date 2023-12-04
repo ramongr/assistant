@@ -6,6 +6,7 @@ commands:
     steps:
       - checkout
       - ruby/install-deps:
+            bundler-version: 2.4.22
             key: gems-v2
 orbs:
   ruby: circleci/ruby@2.1.0
@@ -45,17 +46,11 @@ workflows:
       - ruby-unit-test:
           requires:
             - build-ruby
-      - rubocop-check:
-          requires:
-            - build-ruby
   build-ruby-3-1:
     jobs:
       - build-ruby:
           ruby-version: 3.1.4
       - ruby-unit-test:
-          requires:
-            - build-ruby
-      - rubocop-check:
           requires:
             - build-ruby
   build-ruby-3-2:

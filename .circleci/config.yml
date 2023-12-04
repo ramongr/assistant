@@ -28,7 +28,11 @@ jobs:
       - run:
           name: Run Unit Tests
           command: bundle exec rspec
-      - ruby/rubocop-check
+      - when:
+          condition:
+            equal: [3.2.2, << parameters.ruby-version >>]
+          steps:
+              - ruby/rubocop-check
 
 workflows:
   build-ruby-3-0:

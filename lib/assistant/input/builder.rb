@@ -29,6 +29,7 @@ module Assistant
         log_builder_meth
         # Base Methods
         build_getter(attr_name)
+        set_attribute(attr_name)
         build_check(attr_name)
 
         default_value_meth(attr_name, type:, **options) if options[:default].to_s.present?

@@ -53,10 +53,13 @@ module Assistant
     private
 
     def defaults
-      method_names = @inputs.keys.map { |key| :"set_attributes_#{key}" }
-      byebug
-      (method_names & methods).each do |set_attribute_method|
-        send(set_attribute_method)
+      default_method_names = methods.grep(/valid_default_/)
+      excludable_methods = @inputs.keys.map { |key| :"valid_default_#{key}?" }
+
+      fetch_arg_name = ->(method) { method.to_s.split('valid_default_').last.split('?').first }
+
+      (default_method_names - excludable_methods).map(&fetch_arg_name).each do |input_key|
+        send(input_key)
       end
     end
 

@@ -9,24 +9,19 @@ module Assistant
     module GetSetCheck
       # Lists all inputs that have the same type and options.
       def build_getter(attr_name)
-        define_method(attr_name) do
-          if @inputs.key?(attr_name)
-            @inputs[attr_name]
-          else
-            @inputs.merge!(attr_name.to_sym => nil)
-          end
+        define_method(attr_name)
+          @inputs[attr_name]
         end
       end
 
-      def set_attribute(attr_name, attr_value)
-        define_method("set_attribute_#{attr_name}") do
-          @inputs[attr_name] = attr_value
-          send(attr_name)
+      def set_attribute(attr_name)
+        define_method("set_attribute_#{attr_name}") do |attr_value = nil|
+          @inputs.merge!(attr_name.to_sym => attr_value)
         end
       end
 
       def build_check(attr_name)
-        define_method("#{attr_name}?") do
+        define_method("#{attr_name}?")
           @inputs[attr_name].to_s.present?
         end
       end

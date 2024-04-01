@@ -36,7 +36,7 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'brakeman', '~> 6.0', '>= 6.0.1'
   spec.add_development_dependency 'bundler', '~> 2.4', '>= 2.4.22'
   spec.add_development_dependency 'byebug', '~> 11.1', '>= 11.1.3'
-  spec.add_development_dependency 'colorize', '~> 0.8.1'
+  spec.add_development_dependency 'colorize', '~> 1.1.0'
   spec.add_development_dependency 'factory_bot', '~> 6.3'
   spec.add_development_dependency 'fasterer', '~> 0.11.0'
   spec.add_development_dependency 'rake', '~> 13.1'

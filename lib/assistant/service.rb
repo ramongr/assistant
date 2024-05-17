@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require_relative 'input_builder'
+require_relative 'input/builder'
 require_relative 'log_list'
 
 module Assistant
@@ -9,7 +9,7 @@ module Assistant
     include LogList
 
     class << self
-      include InputBuilder
+      include Assistant::Input::Builder
 
       def run(**)
         new(**).run
@@ -23,6 +23,7 @@ module Assistant
     end
 
     def run
+      defaults
       validate_inputs
       validate
 
@@ -51,8 +52,19 @@ module Assistant
 
     private
 
+    def defaults
+      default_method_names = methods.grep(/valid_default_/)
+      excludable_methods = @inputs.keys.map { |key| :"valid_default_#{key}?" }
+
+      fetch_arg_name = ->(method) { method.to_s.split('valid_default_').last.split('?').first }
+
+      (default_method_names - excludable_methods).map(&fetch_arg_name).each do |input_key|
+        send(input_key)
+      end
+    end
+
     def validate_inputs
-      methods.grep(/valid_(require|type|require_conditional)_[\w]+\?$/).each do |validation_method|
+      methods.grep(/valid_(default|require|type|require_conditional)_[\w_]+\?$/).each do |validation_method|
         send(validation_method)
       end
     end

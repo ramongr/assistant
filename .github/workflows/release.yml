@@ -30,7 +30,7 @@ jobs:
         run: bundle exec rake test
 
       - name: Configure trusted publishing
-        uses: rubygems/configure-rubygems-credentials@v1.0.0
+        uses: rubygems/configure-rubygems-credentials@v2.0.0
 
       - name: Build gem
         run: gem build assistant.gemspec

@@ -15,10 +15,11 @@ jobs:
   test:
     name: Minitest (Ruby ${{ matrix.ruby }})
     runs-on: ubuntu-latest
+    continue-on-error: ${{ matrix.ruby == 'head' }}
     strategy:
       fail-fast: false
       matrix:
-        ruby: ['3.4', '4.0']
+        ruby: ['3.4', '4.0', 'head']
     steps:
       - uses: actions/checkout@v4
       - uses: ruby/setup-ruby@v1

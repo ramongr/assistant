@@ -1,8 +1,5 @@
 # frozen_string_literal: true
 
-require 'active_support'
-require 'active_support/core_ext/object'
-
 module Assistant
   # This module has the building blocks for the input validation.
   # The building blocks of listing inputs with the #input and #inputs methods
@@ -17,7 +14,6 @@ module Assistant
 
     # Individual input with a specific type or options
     def input(attr_name, type:, **options)
-      log_builder_meth
       # Base Methods
       input_getter_meth(attr_name)
       input_checker_meth(attr_name)
@@ -25,7 +21,7 @@ module Assistant
       # Input type validation method, simple and conditional requirement validation methods
       input_type_validator_meth(attr_name, type)
       input_require_validator_meth(attr_name, **options) if options[:required] == true
-      input_require_conditional_meth(attr_name, **options) if options[:required] == true && options[:if].present?
+      input_require_conditional_meth(attr_name, **options) if options[:required] == true && options[:if]
     end
 
     def input_getter_meth(attr_name)
@@ -36,7 +32,8 @@ module Assistant
 
     def input_checker_meth(attr_name)
       define_method("#{attr_name}?") do
-        @inputs[attr_name].present?
+        val = @inputs[attr_name]
+        !val.nil? && val != false && !(val.respond_to?(:empty?) && val.empty?)
       end
     end
 
@@ -74,12 +71,6 @@ module Assistant
             attr_name:, message: "Service argument with name #{attr_name} is not a #{type} but #{send(attr_name).class}"
           )
         false
-      end
-    end
-
-    def log_builder_meth
-      define_method(:log_item_error_initialize) do |attr_name:, message:|
-        @logs << LogItem.new(detail: attr_name, level: :error, message:, source: :initialize)
       end
     end
   end

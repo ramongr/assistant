@@ -19,7 +19,6 @@ module Assistant
     def initialize(**args)
       @inputs = args
       @logs = []
-      @keys = []
     end
 
     def run
@@ -52,7 +51,7 @@ module Assistant
     private
 
     def validate_inputs
-      methods.grep(/valid_(require|type|require_conditional)_[\w]+\?$/).each do |validation_method|
+      methods.grep(/valid_(require|type|require_conditional)_\w+\?$/).each do |validation_method|
         send(validation_method)
       end
     end

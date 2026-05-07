@@ -34,7 +34,7 @@ Gem::Specification.new do |spec|
   spec.require_paths = 'lib'
 
   spec.add_development_dependency 'brakeman', '~> 8.0'
-  spec.add_development_dependency 'bundler', '~> 2.6'
+  spec.add_development_dependency 'bundler', '~> 4.0'
   spec.add_development_dependency 'byebug', '~> 13.0'
   spec.add_development_dependency 'colorize', '~> 1.1'
   spec.add_development_dependency 'fasterer', '~> 0.11.0'

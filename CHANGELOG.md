@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [0.1.0] - 2026-05-07
 
 ### Added
+
 - `LogList#log_item_error_initialize` helper, used by `InputBuilder`-generated
   validators (previously redefined on every `input` declaration).
 - GitHub Actions CI workflow (`.github/workflows/ci.yml`) running Minitest and
@@ -22,6 +23,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   `LogItem#trace`/`#item`.
 
 ### Changed
+
 - Standardized on Ruby 3.4 (`.ruby-version`, gemspec `required_ruby_version`,
   RuboCop `TargetRubyVersion`).
 - `InputBuilder` no longer requires `active_support`; the previous use of
@@ -35,6 +37,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   replaced with `rubocop-minitest`.
 
 ### Removed
+
 - CircleCI configuration (`.circleci/`); replaced by GitHub Actions.
 - Dead `@keys = []` instance variable in `Assistant::Service#initialize`.
 - `active_support` and `active_support/core_ext/object` requires from

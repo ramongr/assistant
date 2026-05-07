@@ -7,6 +7,10 @@ on:
   pull_request:
     branches: [main]
 
+# Default to least privilege; jobs may opt into more.
+permissions:
+  contents: read
+
 jobs:
   test:
     name: Minitest (Ruby ${{ matrix.ruby }})
@@ -14,7 +18,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        ruby: ['3.4']
+        ruby: ['3.4', '4.0']
     steps:
       - uses: actions/checkout@v4
       - uses: ruby/setup-ruby@v1

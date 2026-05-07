@@ -62,6 +62,19 @@ module Assistant
       assert_equal 1, outcome[:errors].size
     end
 
+    def test_service_with_required_string_input_treats_whitespace_as_missing
+      klass = Class.new(Assistant::Service) do
+        input :name, type: String, required: true
+        def execute = true
+      end
+
+      outcome = klass.run(name: "   \t\n")
+
+      assert_nil outcome[:result]
+      assert_equal :with_errors, outcome[:status]
+      assert_equal 1, outcome[:errors].size
+    end
+
     # ---- Custom validate hook ----
 
     def test_custom_validate_with_error_log_fails
@@ -141,23 +154,15 @@ module Assistant
     # ---- #result memoization ----
 
     def test_result_memoizes_execute_call
-      counter = Class.new do
-        attr_accessor :n
-
-        def initialize = @n = 0
-      end.new
-
+      calls = 0
       klass = Class.new(Assistant::Service)
-      klass.define_method(:execute) do
-        counter.n += 1
-        counter.n
-      end
+      klass.define_method(:execute) { calls += 1 }
 
       service = klass.new
 
       assert_equal 1, service.result
       assert_equal 1, service.result
-      assert_equal 1, counter.n
+      assert_equal 1, calls
     end
   end
 end

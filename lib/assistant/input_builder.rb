@@ -1,10 +1,14 @@
 # frozen_string_literal: true
 
+require 'assistant/refinements/string_blankness'
+
 module Assistant
   # This module has the building blocks for the input validation.
   # The building blocks of listing inputs with the #input and #inputs methods
   # and the building blocks of validating inputs with the methods that are called within those methods.
   module InputBuilder
+    using Assistant::Refinements::StringBlankness
+
     # Lists all inputs that have the same type and options.
     def inputs(attr_names, type:, **)
       attr_names.each do |attr_name|
@@ -33,7 +37,10 @@ module Assistant
     def input_checker_meth(attr_name)
       define_method("#{attr_name}?") do
         val = @inputs[attr_name]
-        !val.nil? && val != false && !(val.respond_to?(:empty?) && val.empty?)
+        return false if val.nil? || val == false
+        return !val.whitespace? if val.is_a?(String)
+
+        val.respond_to?(:empty?) ? !val.empty? : true
       end
     end
 

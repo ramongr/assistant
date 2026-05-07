@@ -28,7 +28,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Standardized on Ruby 3.4 (`.ruby-version`, gemspec `required_ruby_version`,
   RuboCop `TargetRubyVersion`).
 - `InputBuilder` no longer requires `active_support`; the previous use of
-  `Object#present?` is replaced with plain Ruby checks.
+  `Object#present?` is replaced with plain Ruby checks. Whitespace-only
+  strings continue to be treated as missing via a scoped
+  `Assistant::Refinements::StringBlankness` refinement that adds
+  `String#whitespace?` and is activated inside `InputBuilder`. The method is
+  intentionally named to avoid colliding with ActiveSupport's `String#blank?`.
 - `assistant.gemspec` `changelog_uri` now points at `CHANGELOG.md` instead of
   `CODE_OF_CONDUCT.md`.
 - Migrated the test suite from RSpec to Minitest (`test/**/*_test.rb`),

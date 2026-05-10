@@ -38,7 +38,7 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'byebug', '~> 13.0'
   spec.add_development_dependency 'colorize', '~> 1.1'
   spec.add_development_dependency 'fasterer', '~> 0.11.0'
-  spec.add_development_dependency 'minitest', '~> 5.25'
+  spec.add_development_dependency 'minitest', '~> 6.0'
   spec.add_development_dependency 'rake', '~> 13.4'
   spec.add_development_dependency 'rubocop', '~> 1.86'
   spec.add_development_dependency 'rubocop-minitest', '~> 0.39'

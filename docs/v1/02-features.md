@@ -459,6 +459,118 @@ documented to avoid surprise.
 - **Owner**: _TBD_.
 - **Status**: `[ ]`.
 
+### M12. Keyword arguments for every public and internal method
+
+- **Rationale**: 0.1.0 is inconsistent about its calling convention. The
+  headline DSL (`Service.input`, `Service.inputs`) takes the attribute
+  name as a positional argument while every option after it is a
+  keyword. Internal helpers in `InputBuilder` follow the same mixed
+  pattern, and `LogList#merge_logs(other_logs)` is purely positional.
+  Mixed conventions make signatures harder to read, harder to type with
+  RBS (positional + keyword splats produce noisier sigs than pure
+  keyword ones), and harder to evolve — every new option that wants to
+  sit next to `attr_name` has to be a keyword anyway, so the positional
+  slot is a permanent wart. 1.0.0 is the only chance to land this
+  without a deprecation cycle (per Q-decision: 0.x EOL on 1.0.0 release
+  date), so it becomes a Must.
+- **API sketch**:
+  ```ruby
+  # Before (0.1.0)
+  class CreateUser < Assistant::Service
+    input  :role,        type: String, default: 'member'
+    inputs %i[a b c],    type: Integer, required: true
+  end
+
+  # After (1.0.0)
+  class CreateUser < Assistant::Service
+    input  name:  :role,        type: String, default: 'member'
+    inputs names: %i[a b c],    type: Integer, required: true
+  end
+  ```
+  Signature changes:
+  - `Service.input(attr_name, type:, **)` →
+    `Service.input(name:, type:, **)`.
+  - `Service.inputs(attr_names, type:, **)` →
+    `Service.inputs(names:, type:, **)`.
+  - `LogList#merge_logs(other_logs)` →
+    `LogList#merge_logs(logs:)`.
+  - All `InputBuilder` helpers
+    (`input_getter_meth(attr_name)`,
+    `input_checker_meth(attr_name)`,
+    `input_type_validator_meth(attr_name, type, **options)`,
+    `input_require_validator_meth(attr_name, **options)`,
+    `input_require_conditional_meth(attr_name, **options)`,
+    `type_validator_body(attr_name, types, allow_nil, message_builder)`,
+    `type_mismatch_message_builder(attr_name, types)`) become
+    fully keyword: `(name:)`, `(name:, type:, **options)`,
+    `(name:, types:, allow_nil:, message_builder:)`, etc.
+  - `LogItem#initialize`, `LogList#add_log`,
+    `LogList#log_item_error_initialize`, `LogList#log_item_*` shorthands
+    (added in M5), `Service.run`, and `Service#initialize` are already
+    keyword-only and do not change.
+- **Migration**: hard break. The 0.x → 1.0 migration guide
+  ([`06-migration-0x-to-1.md`](./06-migration-0x-to-1.md)) gets a
+  dedicated section with a `sed`-style recipe:
+  ```sh
+  # In a service file, rewrite every:
+  #   input :foo, ...
+  # to:
+  #   input name: :foo, ...
+  # and every:
+  #   inputs %i[a b c], ...
+  # to:
+  #   inputs names: %i[a b c], ...
+  ```
+  No runtime shim accepting the old positional form will be shipped —
+  this is the same hard-break policy used for M9 (`valid_require_*?`
+  removed in 2.0 after a deprecation cycle that we cannot run for M12
+  since the change is purely shape, not behaviour). The migration guide
+  notes that the change is `git grep`-able and trivially scriptable.
+- **Ordering**: lands **last** among the Must-list mechanical changes,
+  after M1–M11 and the four promoted Should items (M-S1..M-S4).
+  Reasons:
+  - It touches every test file in the suite (every `Class.new(Assistant::Service)`
+    fixture uses `input :foo, type: …`), so rebasing it on top of all
+    other input-related work avoids merge churn during M1/M2/M3/M7.
+  - It must come before M11 (RBS generator) so the generator emits sigs
+    against the final method shapes; otherwise the generator template
+    would need a rewrite.
+  - It must come before the Phase 4 docs sweep so the updated examples
+    use the new form throughout.
+- **Test plan**:
+  - Every existing test in `test/assistant/{service,input_builder,log_list,log_item}_test.rb`
+    is rewritten in the same PR to use the new keyword form; this is the
+    test that the change actually compiles and runs. Suite must remain
+    green with the same assertion count (no behaviour drift).
+  - New regression test in `test/assistant/input_builder_test.rb`:
+    calling `Service.input(:foo, type: String)` (old positional form)
+    raises `ArgumentError: missing keyword: :name`, asserting that no
+    accidental shim slipped in.
+  - New regression test for `LogList#merge_logs(other_logs)` raising
+    `ArgumentError: missing keyword: :logs`.
+- **Risk**: low semantically (no behaviour change), high mechanically
+  (every user file breaks). Mitigated by:
+  - Single, well-scoped PR that does only the rename — no behaviour
+    edits, no opportunistic refactors. Reviewers can read it as a pure
+    signature change.
+  - The migration guide entry shipping in the same PR.
+  - The 0.x EOL policy ([`04-release-checklist.md`](./04-release-checklist.md))
+    being clear that 1.0.0 is a breaking release and no 0.x patches
+    will follow.
+- **Docs touchpoint**:
+  - [`01-api-surface.md`](./01-api-surface.md) — update every signature in
+    the API surface table; add a "Changes vs. 0.1.0" entry: _"All
+    methods are keyword-only. `Service.input`/`Service.inputs` now take
+    `name:`/`names:` as a keyword."_
+  - [`06-migration-0x-to-1.md`](./06-migration-0x-to-1.md) — new
+    "Keyword-only method signatures" section with the sed recipe and an
+    explicit list of every renamed signature.
+  - [`03-documentation.md`](./03-documentation.md) — D2 (`guides/inputs.md`)
+    and the README quickstart examples updated to the new form during
+    Phase 4.
+- **Owner**: _TBD_.
+- **Status**: `[ ]`.
+
 ---
 
 ## Should (promoted to Must for 1.0)

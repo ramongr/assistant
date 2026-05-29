@@ -10,6 +10,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- `Assistant::Service.input` now accepts a `default:` option. The provider
+  may be a literal value or a zero-arity `Proc`/`Lambda`; anything else
+  that responds to `#call` (e.g. a `Method` object) is rejected with
+  `ArgumentError` at class-definition time. Procs are invoked once per
+  `Service` instance, with no arguments. A default fires when the input
+  key is absent, or when the value is an explicit `nil` and the input is
+  not declared `allow_nil: true` — with `allow_nil: true`, an explicit
+  `nil` from the caller is honoured and the default is skipped. Defaulted values
+  are subject to the same type, `required:`, and `if:` validation as
+  caller-supplied values. Mutable literal defaults (unfrozen `Array` /
+  `Hash`) emit a `Kernel.warn` at class-definition time, since they are
+  shared across every instance of the `Service` subclass. (M1, v1 plan)
+- `Assistant::Service.input_definitions` — per-subclass hash exposing the
+  original `input` declaration options (including `:default`) for
+  introspection. Experimental; subject to change before 1.0.0.
 - `Assistant::Service.input` now accepts `allow_nil: true`. When set,
   any supplied value for that key short-circuits both `valid_type_<name>?`
   and `valid_require_<name>?` — i.e. `nil` is accepted, and type-checking

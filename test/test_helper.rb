@@ -5,6 +5,7 @@ $LOAD_PATH.unshift File.expand_path('../lib', __dir__)
 require 'assistant'
 require 'minitest/autorun'
 require 'minitest/pride'
+require 'stringio'
 
 module TestHelpers
   module LogItems

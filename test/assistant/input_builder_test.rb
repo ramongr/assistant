@@ -176,7 +176,10 @@ module Assistant
       assert_includes outcome[:errors].map(&:message), 'Service is missing argument with name note'
     end
 
-    def test_allow_nil_true_still_rejects_non_nil_wrong_type
+    def test_allow_nil_true_short_circuits_type_check_for_any_supplied_value
+      # M2: allow_nil: true means "if the key was supplied, accept it" —
+      # this turns off type-checking for that input, mirroring the
+      # behaviour of the require validator.
       klass = Class.new(Assistant::Service) do
         input :note, type: String, allow_nil: true
         def execute = note
@@ -184,8 +187,9 @@ module Assistant
 
       outcome = klass.run(note: 42)
 
-      assert_equal :with_errors, outcome[:status]
-      assert_equal('Service argument with name note is not a String but Integer', outcome[:errors].first.message)
+      assert_equal :ok, outcome[:status]
+      assert_equal 42, outcome[:result]
+      assert_nil outcome[:errors]
     end
 
     # ---- Multi-type (M3) ----

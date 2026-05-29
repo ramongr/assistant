@@ -73,7 +73,7 @@ module Assistant
     end
 
     def input_type_validator_meth(attr_name, type, **options)
-      allow_nil = options[:allow_nil] == true
+      allow_nil = options.fetch(:allow_nil, false) == true
       types = Array(type)
       message_builder = type_mismatch_message_builder(attr_name, types)
       body = type_validator_body(attr_name, types, allow_nil, message_builder)
@@ -86,8 +86,9 @@ module Assistant
     def type_validator_body(attr_name, types, allow_nil, message_builder)
       lambda do
         value = @inputs[attr_name]
-        # M2: explicit nil is accepted iff allow_nil: true is set.
-        next true if allow_nil && value.nil? && @inputs.key?(attr_name)
+        # M2: when allow_nil: true is set, any supplied key short-circuits
+        # the type check (mirrors the require validator's behaviour).
+        next true if allow_nil && @inputs.key?(attr_name)
         next true if types.any? { |klass| value.is_a?(klass) }
 
         send("#{attr_name}?") &&

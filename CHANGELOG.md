@@ -13,6 +13,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `Assistant::Service#logs` public reader exposing the full log timeline
   (info + warning + error) in insertion order. Callers no longer need to
   reach into `@logs` via `instance_variable_get`. (M4, v1 plan)
+- `Assistant::LogList#log_item_info`, `#log_item_warning`, and
+  `#log_item_error` shorthands. These wrap `add_log(level: ..., …)` so
+  service authors stop hand-rolling the level keyword on every call.
+  (M5, v1 plan)
 
 ### Changed
 

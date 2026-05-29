@@ -259,6 +259,19 @@ documented to avoid surprise.
 - **Owner**: _TBD_.
 - **Status**: `[ ]`.
 
+#### Open follow-ups (out of scope for M5, tracked for 1.x)
+
+- **Rename `log_item_error_initialize`** to avoid visual collision with the
+  new generated `log_item_error`. The existing helper
+  (`lib/assistant/log_list.rb:16`) is not `log_item_error` + an `initialize`
+  suffix in behaviour: it hard-codes `source: :initialize` and takes
+  `attr_name:` instead of `source:/detail:/trace:`. After M5 ships,
+  `log_item_error` and `log_item_error_initialize` live side by side with
+  different signatures, which is easy to confuse at a call site. Candidate
+  new name: `log_initialize_error`. Treat as an additive 1.x change (add
+  the new name, alias the old, deprecate via `Kernel.warn`, remove in 2.0)
+  to stay consistent with the M9 deprecation pattern.
+
 ### M6. Lazy load of `LogItem` from `lib/assistant.rb`
 
 - **Rationale**: `lib/assistant.rb:3` eagerly requires `log_item`,

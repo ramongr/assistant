@@ -120,5 +120,72 @@ module Assistant
       assert_equal 'sk-ok', outcome[:result]
       assert_equal :ok, outcome[:status]
     end
+
+    # ---- allow_nil: (M2) ----
+
+    def test_allow_nil_false_without_required_silently_accepts_nil_back_compat
+      # Pre-M2 behaviour: an explicit nil on an optional input produces no error.
+      klass = Class.new(Assistant::Service) do
+        input :note, type: String
+        def execute = :ok
+      end
+
+      outcome = klass.run(note: nil)
+
+      assert_equal :ok, outcome[:result]
+      assert_equal :ok, outcome[:status]
+      assert_nil outcome[:errors]
+    end
+
+    def test_allow_nil_true_explicitly_accepts_nil_on_type_check
+      klass = Class.new(Assistant::Service) do
+        input :note, type: String, allow_nil: true
+        def execute = note
+      end
+
+      outcome = klass.run(note: nil)
+
+      assert_equal :ok, outcome[:status]
+      assert_nil outcome[:result]
+      service = klass.new(note: nil)
+
+      assert service.send(:valid_type_note?)
+    end
+
+    def test_allow_nil_true_with_required_accepts_nil_without_error
+      klass = Class.new(Assistant::Service) do
+        input :note, type: String, required: true, allow_nil: true
+        def execute = note
+      end
+
+      outcome = klass.run(note: nil)
+
+      assert_equal :ok, outcome[:status]
+      assert_nil outcome[:errors]
+    end
+
+    def test_allow_nil_false_with_required_treats_nil_as_missing
+      klass = Class.new(Assistant::Service) do
+        input :note, type: String, required: true
+        def execute = note
+      end
+
+      outcome = klass.run(note: nil)
+
+      assert_equal :with_errors, outcome[:status]
+      assert_includes outcome[:errors].map(&:message), 'Service is missing argument with name note'
+    end
+
+    def test_allow_nil_true_still_rejects_non_nil_wrong_type
+      klass = Class.new(Assistant::Service) do
+        input :note, type: String, allow_nil: true
+        def execute = note
+      end
+
+      outcome = klass.run(note: 42)
+
+      assert_equal :with_errors, outcome[:status]
+      assert_equal('Service argument with name note is not a String but Integer', outcome[:errors].first.message)
+    end
   end
 end

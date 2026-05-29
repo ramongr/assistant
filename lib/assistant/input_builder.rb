@@ -23,7 +23,7 @@ module Assistant
       input_checker_meth(attr_name)
 
       # Input type validation method, simple and conditional requirement validation methods
-      input_type_validator_meth(attr_name, type)
+      input_type_validator_meth(attr_name, type, **options)
       input_require_validator_meth(attr_name, **options) if options[:required] == true
       input_require_conditional_meth(attr_name, **options) if options[:required] == true && options[:if]
     end
@@ -45,7 +45,11 @@ module Assistant
     end
 
     def input_require_validator_meth(attr_name, **options)
+      allow_nil = options[:allow_nil] == true
+
       define_method("valid_require_#{attr_name}?") do |log = true|
+        # M2: explicit nil counts as "supplied" when allow_nil: true is set.
+        return true if allow_nil && @inputs.key?(attr_name) && @inputs[attr_name].nil?
         return true if options[:required] == true && send("#{attr_name}?") == true
 
         log && send(
@@ -68,15 +72,17 @@ module Assistant
       end
     end
 
-    def input_type_validator_meth(attr_name, type)
+    def input_type_validator_meth(attr_name, type, **options)
+      allow_nil = options[:allow_nil] == true
+      mismatch_message = ->(actual) { "Service argument with name #{attr_name} is not a #{type} but #{actual}" }
+
       define_method("valid_type_#{attr_name}?") do
+        # M2: explicit nil is accepted iff allow_nil: true is set.
+        return true if allow_nil && @inputs.key?(attr_name) && @inputs[attr_name].nil?
         return true if @inputs[attr_name].is_a?(type)
 
         send("#{attr_name}?") &&
-          send(
-            :log_item_error_initialize,
-            attr_name:, message: "Service argument with name #{attr_name} is not a #{type} but #{send(attr_name).class}"
-          )
+          send(:log_item_error_initialize, attr_name:, message: mismatch_message.call(send(attr_name).class))
         false
       end
     end

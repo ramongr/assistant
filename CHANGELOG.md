@@ -8,6 +8,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- `Assistant::Service.input` now accepts `allow_nil: true`. When set,
+  explicit `nil` is treated as a valid value: `valid_type_<name>?` and
+  `valid_require_<name>?` both pass without logging an error. When
+  `allow_nil:` is omitted (default), behaviour is unchanged from 0.1.0
+  — an absent or `nil` value silently passes type checks, and a `nil`
+  on a `required:` input is still treated as missing. (M2, v1 plan)
+
 ## [0.1.0] - 2026-05-07
 
 ### Added

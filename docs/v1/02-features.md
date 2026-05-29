@@ -333,7 +333,7 @@ documented to avoid surprise.
   [`01-api-surface.md`](./01-api-surface.md) "Changes vs. 0.1.0" table as
   an additive change.
 - **Owner**: _TBD_.
-- **Status**: `[ ]`.
+- **Status**: `[x]` — landed in `feature/m7-input-optional`.
 
 ### M8. Empty `service.rbs` populated
 

@@ -45,6 +45,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   `#log_item_error` shorthands. These wrap `add_log(level: ..., …)` so
   service authors stop hand-rolling the level keyword on every call.
   (M5, v1 plan)
+- `Assistant::Service.input` now accepts an `optional:` flag. `optional: true`
+  is explicit sugar for the default behaviour (no `required:` validator is
+  generated); `optional: false` is equivalent to `required: true`. Declaring
+  `required: true` and `optional: true` together raises `ArgumentError` at
+  class-definition time, as does a non-boolean `optional:` value. The flag is
+  retained in `Service.input_definitions` for introspection and composes with
+  `default:` (M1) and `allow_nil:` (M2) without surprises. (M7, v1 plan)
 
 ### Changed
 

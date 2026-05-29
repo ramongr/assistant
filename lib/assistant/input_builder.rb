@@ -26,6 +26,7 @@ module Assistant
     # Individual input with a specific type or options
     def input(attr_name, type:, **options)
       process_default_option(attr_name, options[:default]) if options.key?(:default)
+      options = normalize_optional_option(attr_name, options) if options.key?(:optional)
       register_input_definition(attr_name, type, options)
 
       # Base Methods
@@ -36,6 +37,27 @@ module Assistant
       input_type_validator_meth(attr_name, type, **options)
       input_require_validator_meth(attr_name, **options) if options[:required] == true
       input_require_conditional_meth(attr_name, **options) if options[:required] == true && options[:if]
+    end
+
+    # M7: `optional:` is explicit sugar over the existing required-flag flow.
+    # - `optional: true`  -> equivalent to omitting `required:` (back-compat).
+    # - `optional: false` -> equivalent to `required: true`.
+    # - `optional: true` together with `required: true` is a contradiction and
+    #   raises ArgumentError immediately at class-definition time, before any
+    #   method is generated.
+    # The original `:optional` key is retained in the per-input definitions
+    # registry so callers can introspect intent; downstream validator helpers
+    # only ever read `:required`.
+    def normalize_optional_option(attr_name, options)
+      optional = options[:optional]
+      unless [true, false].include?(optional)
+        raise ArgumentError, "optional: for input :#{attr_name} must be true or false, got #{optional.inspect}"
+      end
+      if optional == true && options[:required] == true
+        raise ArgumentError, "input :#{attr_name} cannot be both required: true and optional: true"
+      end
+
+      optional == false ? options.merge(required: true) : options
     end
 
     def register_input_definition(attr_name, type, options)

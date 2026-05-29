@@ -416,6 +416,96 @@ module Assistant
       assert_equal('Service argument with name one is not a String but Integer', outcome[:errors].first.message)
     end
 
+    # ---- optional: (M7) ----
+
+    def test_optional_true_runs_cleanly_when_key_absent
+      klass = Class.new(Assistant::Service) do
+        input :nickname, type: String, optional: true
+        def execute = nickname || :missing
+      end
+
+      outcome = klass.run
+
+      assert_equal :missing, outcome[:result]
+      assert_equal :ok, outcome[:status]
+      assert_nil outcome[:errors]
+    end
+
+    def test_optional_true_alone_does_not_generate_require_validator
+      klass = Class.new(Assistant::Service) do
+        input :nickname, type: String, optional: true
+      end
+
+      refute_includes klass.instance_methods, :valid_require_nickname?
+    end
+
+    def test_optional_false_is_equivalent_to_required_true
+      klass = Class.new(Assistant::Service) do
+        input :email, type: String, optional: false
+        def execute = email
+      end
+
+      assert_includes klass.instance_methods, :valid_require_email?
+
+      outcome = klass.run
+
+      assert_equal :with_errors, outcome[:status]
+      assert_includes outcome[:errors].map(&:message), 'Service is missing argument with name email'
+    end
+
+    def test_required_true_and_optional_true_together_raise_at_class_definition
+      error = assert_raises(ArgumentError) do
+        Class.new(Assistant::Service) do
+          input :foo, type: String, required: true, optional: true
+        end
+      end
+
+      assert_match(/input :foo cannot be both required: true and optional: true/, error.message)
+    end
+
+    def test_non_boolean_optional_raises_at_class_definition
+      error = assert_raises(ArgumentError) do
+        Class.new(Assistant::Service) do
+          input :foo, type: String, optional: :sometimes
+        end
+      end
+
+      assert_match(/optional: for input :foo must be true or false/, error.message)
+    end
+
+    def test_optional_true_with_default_applies_default_when_key_absent
+      klass = Class.new(Assistant::Service) do
+        input :limit, type: Integer, optional: true, default: 25
+        def execute = limit
+      end
+
+      outcome = klass.run
+
+      assert_equal 25, outcome[:result]
+      assert_equal :ok, outcome[:status]
+    end
+
+    def test_optional_true_with_allow_nil_accepts_explicit_nil
+      klass = Class.new(Assistant::Service) do
+        input :note, type: String, optional: true, allow_nil: true
+        def execute = note
+      end
+
+      outcome = klass.run(note: nil)
+
+      assert_equal :ok, outcome[:status]
+      assert_nil outcome[:result]
+      assert_nil outcome[:errors]
+    end
+
+    def test_optional_flag_is_retained_in_input_definitions
+      klass = Class.new(Assistant::Service) do
+        input :nickname, type: String, optional: true
+      end
+
+      assert(klass.input_definitions[:nickname][:optional])
+    end
+
     private
 
     def capture_io_warn

@@ -63,16 +63,18 @@ module Assistant
     # are subject to the same type / required / if validation as
     # caller-supplied values.
     def apply_input_defaults
-      defaulted_input_definitions.each do |attr_name, options|
-        next if input_supplied?(attr_name, options)
-
+      input_definitions_needing_default.each do |attr_name, options|
         provider = options[:default]
         @inputs[attr_name] = provider.is_a?(Proc) ? provider.call : provider
       end
     end
 
-    def defaulted_input_definitions
-      self.class.input_definitions.select { |_, options| options.key?(:default) }
+    # Input definitions that declare a `:default` and whose key was not
+    # already supplied by the caller (with `allow_nil:` honoured).
+    def input_definitions_needing_default
+      self.class.input_definitions.select do |attr_name, options|
+        options.key?(:default) && !input_supplied?(attr_name, options)
+      end
     end
 
     # An explicit nil counts as "not supplied" so the default fires,

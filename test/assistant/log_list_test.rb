@@ -104,6 +104,13 @@ module Assistant
       assert_equal 'down', log.message
     end
 
+    def test_log_item_shorthand_returns_logs_array
+      result = @host.log_item_info(source: :s, detail: :d, message: 'm')
+
+      assert_same @host.instance_variable_get(:@logs), result
+      assert_equal 1, result.size
+    end
+
     def test_log_item_shorthand_accepts_trace
       trace = caller
       @host.log_item_error(source: :execute, detail: :boom, message: 'x', trace: trace)

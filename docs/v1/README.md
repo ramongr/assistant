@@ -50,6 +50,11 @@ recommendations:
 - **M11**: new bundled `bin/assistant-rbs` CLI generates per-class RBS
   signatures for user `Assistant::Service` subclasses; ships
   **Experimental** in 1.0 and **blocks** 1.0.0.
+- **M12**: every public and internal method becomes **keyword-only**
+  (breaking). `Service.input :foo, type: X` becomes
+  `Service.input name: :foo, type: X`; `LogList#merge_logs(other)`
+  becomes `#merge_logs(logs: other)`. Mechanical, `git grep`-able; no
+  runtime shim.
 - **Coverage**: target raised to ≥98% line / ≥95% branch but enforced as
   a **soft gate** (report only).
 - **PR granularity**: one PR per concern (~20 PRs total).

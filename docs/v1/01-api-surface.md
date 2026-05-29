@@ -35,8 +35,8 @@ Defined in `lib/assistant/service.rb:8`.
 | Signature                                          | Stability | Source                              |
 |----------------------------------------------------|-----------|-------------------------------------|
 | `Service.run(**inputs) -> Hash`                    | Frozen    | `lib/assistant/service.rb:14`       |
-| `Service.input(name, type:, required: false, if: nil, default: nil, allow_nil: false)` | Frozen | `lib/assistant/input_builder.rb:20` |
-| `Service.inputs(names, type:, **options)`          | Frozen    | `lib/assistant/input_builder.rb:13` |
+| `Service.input(name:, type:, required: false, if: nil, default: nil, allow_nil: false)` | Frozen | `lib/assistant/input_builder.rb:20` |
+| `Service.inputs(names:, type:, **options)`         | Frozen    | `lib/assistant/input_builder.rb:13` |
 
 > The `default:` and `allow_nil:` keys are **new in 1.0** — see
 > [`02-features.md`](./02-features.md).
@@ -122,7 +122,7 @@ Defined in `lib/assistant/log_list.rb:5`. Mixed into `Assistant::Service`.
 | Signature                                              | Stability | Source                              |
 |--------------------------------------------------------|-----------|-------------------------------------|
 | `#add_log(level:, source:, detail:, message:, trace: nil)` | Frozen | `lib/assistant/log_list.rb:6`       |
-| `#merge_logs(other_logs)`                              | Frozen    | `lib/assistant/log_list.rb:10`      |
+| `#merge_logs(logs:)`                                   | Frozen    | `lib/assistant/log_list.rb:10`      |
 | `#log_item_error_initialize(attr_name:, message:)`     | Frozen    | `lib/assistant/log_list.rb:16`      |
 | `#log_item_info(source:, detail:, message:, trace: nil)`    | Frozen *(new in 1.0)* | M5 in [`02-features.md`](./02-features.md) |
 | `#log_item_warning(source:, detail:, message:, trace: nil)` | Frozen *(new in 1.0)* | M5 in [`02-features.md`](./02-features.md) |
@@ -234,4 +234,5 @@ Labelled **Experimental** in 1.0 because the output format may evolve in
 | Result hash shape                                                                   | Frozen as-is     | No change; a `Result` value object is deferred to 2.x (Q1).                            |
 | `valid_required_*?` canonical name + `valid_require_*?` deprecation                 | **Breaking-soft** | M9 (Q2 decision). Old name still works in 1.x with `Kernel.warn`; removed in 2.0.      |
 | `LogItem.new` raises on invalid attrs                                               | **Breaking**     | M10 (Q8 decision). See [`06-migration-0x-to-1.md`](./06-migration-0x-to-1.md).         |
+| All methods keyword-only (`input name:`, `inputs names:`, `merge_logs logs:`)       | **Breaking**     | M12. See [`06-migration-0x-to-1.md`](./06-migration-0x-to-1.md).                       |
 | RBS canonical; Steep required day one                                               | Tooling          | Q6 decision.                                                                           |

@@ -10,6 +10,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- `Assistant::Service.input` now accepts `allow_nil: true`. When set,
+  any supplied value for that key short-circuits both `valid_type_<name>?`
+  and `valid_require_<name>?` — i.e. `nil` is accepted, and type-checking
+  is effectively disabled for the input. When `allow_nil:` is omitted
+  (default), behaviour is unchanged from 0.1.0 — an absent or `nil` value
+  silently passes type checks, and a `nil` on a `required:` input is
+  still treated as missing. (M2, v1 plan)
 - `Assistant::Service.input` now accepts an array for `type:`, e.g.
   `input :amount, type: [Integer, Float]`. The generated
   `valid_type_<name>?` validator passes when the input matches **any** of

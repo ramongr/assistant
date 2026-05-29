@@ -8,6 +8,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
+- `lib/assistant.rb` now requires every core building block explicitly in
+  dependency order (`version`, `log_item`, `log_list`,
+  `refinements/string_blankness`, `input_builder`, `service`). After a bare
+  `require "assistant"`, `Assistant::LogList`, `Assistant::InputBuilder`, and
+  `Assistant::Refinements::StringBlankness` are reachable without first
+  loading `Assistant::Service`. (M6, v1 plan)
+
 ## [0.1.0] - 2026-05-07
 
 ### Added

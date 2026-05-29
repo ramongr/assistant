@@ -19,10 +19,39 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   are subject to the same type, `required:`, and `if:` validation as
   caller-supplied values. Mutable literal defaults (unfrozen `Array` /
   `Hash`) emit a `Kernel.warn` at class-definition time, since they are
-  shared across every instance of the `Service` subclass.
+  shared across every instance of the `Service` subclass. (M1, v1 plan)
 - `Assistant::Service.input_definitions` — per-subclass hash exposing the
   original `input` declaration options (including `:default`) for
   introspection. Experimental; subject to change before 1.0.0.
+- `Assistant::Service.input` now accepts `allow_nil: true`. When set,
+  any supplied value for that key short-circuits both `valid_type_<name>?`
+  and `valid_require_<name>?` — i.e. `nil` is accepted, and type-checking
+  is effectively disabled for the input. When `allow_nil:` is omitted
+  (default), behaviour is unchanged from 0.1.0 — an absent or `nil` value
+  silently passes type checks, and a `nil` on a `required:` input is
+  still treated as missing. (M2, v1 plan)
+- `Assistant::Service.input` now accepts an array for `type:`, e.g.
+  `input :amount, type: [Integer, Float]`. The generated
+  `valid_type_<name>?` validator passes when the input matches **any** of
+  the listed types. Single-type declarations keep the original
+  `"… is not a X but Y"` error message; multi-type produces
+  `"… is not one of [A, B] but Y"`. (M3, v1 plan)
+- `Assistant::Service#logs` public reader exposing the full log timeline
+  (info + warning + error) in insertion order. Callers no longer need to
+  reach into `@logs` via `instance_variable_get`. (M4, v1 plan)
+- `Assistant::LogList#log_item_info`, `#log_item_warning`, and
+  `#log_item_error` shorthands. These wrap `add_log(level: ..., …)` so
+  service authors stop hand-rolling the level keyword on every call.
+  (M5, v1 plan)
+
+### Changed
+
+- `lib/assistant.rb` now requires every core building block explicitly in
+  dependency order (`version`, `log_item`, `log_list`,
+  `refinements/string_blankness`, `input_builder`, `service`). After a bare
+  `require "assistant"`, `Assistant::LogList`, `Assistant::InputBuilder`, and
+  `Assistant::Refinements::StringBlankness` are reachable without first
+  loading `Assistant::Service`. (M6, v1 plan)
 
 ## [0.1.0] - 2026-05-07
 

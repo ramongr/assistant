@@ -16,6 +16,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   the listed types. Single-type declarations keep the original
   `"… is not a X but Y"` error message; multi-type produces
   `"… is not one of [A, B] but Y"`. (M3, v1 plan)
+- `Assistant::Service#logs` public reader exposing the full log timeline
+  (info + warning + error) in insertion order. Callers no longer need to
+  reach into `@logs` via `instance_variable_get`. (M4, v1 plan)
+- `Assistant::LogList#log_item_info`, `#log_item_warning`, and
+  `#log_item_error` shorthands. These wrap `add_log(level: ..., …)` so
+  service authors stop hand-rolling the level keyword on every call.
+  (M5, v1 plan)
+
+### Changed
+
+- `lib/assistant.rb` now requires every core building block explicitly in
+  dependency order (`version`, `log_item`, `log_list`,
+  `refinements/string_blankness`, `input_builder`, `service`). After a bare
+  `require "assistant"`, `Assistant::LogList`, `Assistant::InputBuilder`, and
+  `Assistant::Refinements::StringBlankness` are reachable without first
+  loading `Assistant::Service`. (M6, v1 plan)
 
 ## [0.1.0] - 2026-05-07
 

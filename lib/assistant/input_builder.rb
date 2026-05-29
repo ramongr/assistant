@@ -45,11 +45,11 @@ module Assistant
     end
 
     def input_require_validator_meth(attr_name, **options)
-      allow_nil = options[:allow_nil] == true
+      allow_nil = options.fetch(:allow_nil, false) == true
 
       define_method("valid_require_#{attr_name}?") do |log = true|
         # M2: explicit nil counts as "supplied" when allow_nil: true is set.
-        return true if allow_nil && @inputs.key?(attr_name) && @inputs[attr_name].nil?
+        return true if allow_nil && @inputs.key?(attr_name)
         return true if options[:required] == true && send("#{attr_name}?") == true
 
         log && send(

@@ -8,6 +8,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- `Assistant::Service#logs` public reader exposing the full log timeline
+  (info + warning + error) in insertion order. Callers no longer need to
+  reach into `@logs` via `instance_variable_get`. (M4, v1 plan)
+
 ## [0.1.0] - 2026-05-07
 
 ### Added

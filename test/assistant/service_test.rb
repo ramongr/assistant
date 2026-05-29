@@ -164,5 +164,46 @@ module Assistant
       assert_equal 1, service.result
       assert_equal 1, calls
     end
+
+    # ---- #logs reader (M4) ----
+
+    def test_logs_reader_returns_empty_array_on_fresh_service
+      assert_equal [], Assistant::Service.new.logs
+    end
+
+    def test_logs_reader_returns_all_levels_in_insertion_order
+      klass = Class.new(Assistant::Service) do
+        def validate
+          add_log(level: :info,    source: :validate, detail: :step1, message: 'ok')
+          add_log(level: :warning, source: :validate, detail: :step2, message: 'heads up')
+          add_log(level: :error,   source: :validate, detail: :step3, message: 'boom')
+        end
+
+        def execute = :ok
+      end
+
+      service = klass.new
+      service.run
+
+      assert_equal 3, service.logs.size
+      assert_equal %i[info warning error], service.logs.map(&:level)
+    end
+
+    def test_logs_reader_is_union_of_infos_warnings_errors
+      klass = Class.new(Assistant::Service) do
+        def validate
+          add_log(level: :info,    source: :validate, detail: :step1, message: 'ok')
+          add_log(level: :warning, source: :validate, detail: :step2, message: 'heads up')
+        end
+
+        def execute = :ok
+      end
+
+      service = klass.new
+      service.run
+
+      assert_equal((service.infos + service.warnings + service.errors).sort_by(&:object_id),
+                   service.logs.sort_by(&:object_id))
+    end
   end
 end

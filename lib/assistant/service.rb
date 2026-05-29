@@ -18,6 +18,7 @@ module Assistant
 
     def initialize(**args)
       @inputs = args
+      apply_input_defaults
       @logs = []
     end
 
@@ -49,6 +50,22 @@ module Assistant
     end
 
     private
+
+    # M1: apply input defaults declared via `input :name, default: ...`.
+    # Walks input_definitions in declaration order. A default fires when the
+    # key is absent OR the value is an explicit nil. Procs are invoked with
+    # no arguments (zero-arity enforced at class-definition time); literals
+    # are used as-is. Defaulted values are subject to the same type / required
+    # / if validation as caller-supplied values.
+    def apply_input_defaults
+      self.class.input_definitions.each do |attr_name, defn|
+        next unless defn.key?(:default)
+        next if @inputs.key?(attr_name) && !@inputs[attr_name].nil?
+
+        provider = defn[:default]
+        @inputs[attr_name] = provider.is_a?(Proc) ? provider.call : provider
+      end
+    end
 
     def validate_inputs
       methods.grep(/valid_(require|type|require_conditional)_\w+\?$/).each do |validation_method|

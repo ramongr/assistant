@@ -120,5 +120,152 @@ module Assistant
       assert_equal 'sk-ok', outcome[:result]
       assert_equal :ok, outcome[:status]
     end
+
+    # ---- default: (M1) ----
+
+    def test_default_literal_applies_when_key_absent
+      klass = Class.new(Assistant::Service) do
+        input :limit, type: Integer, default: 10
+        def execute = limit
+      end
+
+      assert_equal 10, klass.run[:result]
+    end
+
+    def test_default_does_not_override_caller_supplied_value
+      klass = Class.new(Assistant::Service) do
+        input :limit, type: Integer, default: 10
+        def execute = limit
+      end
+
+      assert_equal 25, klass.run(limit: 25)[:result]
+    end
+
+    def test_default_applies_when_caller_passes_explicit_nil
+      klass = Class.new(Assistant::Service) do
+        input :limit, type: Integer, default: 10
+        def execute = limit
+      end
+
+      assert_equal 10, klass.run(limit: nil)[:result]
+    end
+
+    def test_default_proc_is_called_per_instance
+      counter = 0
+      provider = -> { counter += 1 }
+      klass = Class.new(Assistant::Service) do
+        input :seq, type: Integer, default: provider
+        def execute = seq
+      end
+
+      assert_equal 1, klass.run[:result]
+      assert_equal 2, klass.run[:result]
+    end
+
+    def test_default_satisfies_required
+      klass = Class.new(Assistant::Service) do
+        input :name, type: String, required: true, default: 'anon'
+        def execute = name
+      end
+
+      outcome = klass.run
+
+      assert_equal 'anon', outcome[:result]
+      assert_equal :ok, outcome[:status]
+    end
+
+    def test_default_is_type_validated
+      klass = Class.new(Assistant::Service) do
+        input :limit, type: Integer, default: 'oops'
+        def execute = limit
+      end
+
+      outcome = klass.run
+
+      assert_equal :with_errors, outcome[:status]
+      assert_includes(outcome[:errors].map(&:message), 'Service argument with name limit is not a Integer but String')
+    end
+
+    def test_default_value_is_visible_to_if_predicate
+      klass = Class.new(Assistant::Service) do
+        input :token, type: String, required: true, default: 'sk-default', if: ->(val) { val.start_with?('sk-') }
+        def execute = token
+      end
+
+      outcome = klass.run
+
+      assert_equal 'sk-default', outcome[:result]
+      assert_equal :ok, outcome[:status]
+    end
+
+    def test_default_proc_with_arity_greater_than_zero_raises_at_class_definition
+      error = assert_raises(ArgumentError) do
+        Class.new(Assistant::Service) do
+          input :limit, type: Integer, default: ->(x) { x + 1 }
+        end
+      end
+
+      assert_match(/default: for input :limit must be a zero-arity Proc/, error.message)
+    end
+
+    def test_default_method_object_raises_at_class_definition
+      error = assert_raises(ArgumentError) do
+        Class.new(Assistant::Service) do
+          input :name, type: String, default: 'hi'.method(:upcase)
+        end
+      end
+
+      assert_match(/default: for input :name must be a literal or a zero-arity Proc/, error.message)
+    end
+
+    def test_mutable_array_default_warns_at_class_definition
+      output = capture_io_warn do
+        Class.new(Assistant::Service) do
+          input :items, type: Array, default: []
+        end
+      end
+
+      assert_match(/input :items has a mutable Array default/, output)
+    end
+
+    def test_frozen_array_default_does_not_warn
+      output = capture_io_warn do
+        Class.new(Assistant::Service) do
+          input :items, type: Array, default: [].freeze
+        end
+      end
+
+      assert_empty output
+    end
+
+    def test_proc_default_returning_mutable_array_does_not_warn
+      output = capture_io_warn do
+        Class.new(Assistant::Service) do
+          input :items, type: Array, default: -> { [] }
+        end
+      end
+
+      assert_empty output
+    end
+
+    def test_input_definitions_exposes_default_provider
+      provider = -> { 42 }
+      klass = Class.new(Assistant::Service) do
+        input :limit, type: Integer, default: provider
+      end
+
+      assert_same provider, klass.input_definitions[:limit][:default]
+    end
+
+    private
+
+    def capture_io_warn
+      original = $stderr
+      $stderr = StringIO.new
+      yield
+      $stderr.string
+    ensure
+      $stderr = original
+    end
   end
 end

@@ -9,6 +9,13 @@ module Assistant
   module InputBuilder
     using Assistant::Refinements::StringBlankness
 
+    # Per-class registry of input definitions. Each Service subclass gets its own
+    # hash, keyed by attribute name, with the original keyword options frozen for
+    # introspection (used by Service#initialize for defaulting, M1).
+    def input_definitions
+      @input_definitions ||= {}
+    end
+
     # Lists all inputs that have the same type and options.
     def inputs(attr_names, type:, **)
       attr_names.each do |attr_name|
@@ -18,6 +25,8 @@ module Assistant
 
     # Individual input with a specific type or options
     def input(attr_name, type:, **options)
+      register_input_definition(attr_name, type, options)
+
       # Base Methods
       input_getter_meth(attr_name)
       input_checker_meth(attr_name)
@@ -26,6 +35,45 @@ module Assistant
       input_type_validator_meth(attr_name, type)
       input_require_validator_meth(attr_name, **options) if options[:required] == true
       input_require_conditional_meth(attr_name, **options) if options[:required] == true && options[:if]
+    end
+
+    def register_input_definition(attr_name, type, options)
+      if options.key?(:default)
+        validate_default!(attr_name, options)
+        warn_on_mutable_default(attr_name, options[:default])
+      end
+      input_definitions[attr_name] = { type:, **options }.freeze
+    end
+
+    # M1: a default: provider must be either a literal value or a zero-arity
+    # Proc/Lambda. Anything else that responds to #call (a Method object, a
+    # custom callable) is rejected at class-definition time.
+    def validate_default!(attr_name, options)
+      default = options[:default]
+      if default.is_a?(Proc)
+        return if default.arity.zero? || default.arity == -1
+
+        raise ArgumentError, "default: for input :#{attr_name} must be a zero-arity Proc, got arity #{default.arity}"
+      elsif default.respond_to?(:call)
+        raise ArgumentError,
+              "default: for input :#{attr_name} must be a literal or a zero-arity Proc, " \
+              "not a #{default.class}"
+      end
+    end
+
+    # M1: warn when a mutable literal default (unfrozen Array/Hash) is used —
+    # such a default is shared across every instance of the Service subclass
+    # and almost never what the author wants. Frozen literals and Procs are
+    # safe and pass silently.
+    def warn_on_mutable_default(attr_name, default)
+      return if default.is_a?(Proc)
+      return unless default.is_a?(Array) || default.is_a?(Hash)
+      return if default.frozen?
+
+      Kernel.warn(
+        "assistant: input :#{attr_name} has a mutable #{default.class} default; " \
+        'use `default: -> { ... }` to avoid sharing state across instances'
+      )
     end
 
     def input_getter_meth(attr_name)

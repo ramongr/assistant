@@ -8,6 +8,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- `Assistant::LogList#log_item_info`, `#log_item_warning`, and
+  `#log_item_error` shorthands. These wrap `add_log(level: ..., …)` so
+  service authors stop hand-rolling the level keyword on every call.
+  (M5, v1 plan)
+
 ## [0.1.0] - 2026-05-07
 
 ### Added

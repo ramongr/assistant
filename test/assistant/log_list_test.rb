@@ -71,5 +71,44 @@ module Assistant
       assert_equal :foo, log.detail
       assert_equal 'bad', log.message
     end
+
+    # ---- M5 shorthands: log_item_info / _warning / _error ----
+
+    def test_log_item_info_appends_info_log
+      @host.log_item_info(source: :execute, detail: :cache_hit, message: 'ok')
+      log = @host.infos.first
+
+      assert_equal :info, log.level
+      assert_equal :execute, log.source
+      assert_equal :cache_hit, log.detail
+      assert_equal 'ok', log.message
+    end
+
+    def test_log_item_warning_appends_warning_log
+      @host.log_item_warning(source: :execute, detail: :rate_limited, message: 'slow down')
+      log = @host.warnings.first
+
+      assert_equal :warning, log.level
+      assert_equal :execute, log.source
+      assert_equal :rate_limited, log.detail
+      assert_equal 'slow down', log.message
+    end
+
+    def test_log_item_error_appends_error_log
+      @host.log_item_error(source: :execute, detail: :db_unreachable, message: 'down')
+      log = @host.errors.first
+
+      assert_equal :error, log.level
+      assert_equal :execute, log.source
+      assert_equal :db_unreachable, log.detail
+      assert_equal 'down', log.message
+    end
+
+    def test_log_item_shorthand_accepts_trace
+      trace = caller
+      @host.log_item_error(source: :execute, detail: :boom, message: 'x', trace: trace)
+
+      assert_equal trace, @host.errors.first.trace
+    end
   end
 end

@@ -56,19 +56,33 @@ module Assistant
     private
 
     # M1: apply input defaults declared via `input :name, default: ...`.
-    # Walks input_definitions in declaration order. A default fires when the
-    # key is absent OR the value is an explicit nil. Procs are invoked with
-    # no arguments (zero-arity enforced at class-definition time); literals
-    # are used as-is. Defaulted values are subject to the same type / required
-    # / if validation as caller-supplied values.
+    # A default fires when the key is absent, or when the value is an
+    # explicit `nil` and the input is not `allow_nil: true` (M2). Procs
+    # are invoked with no arguments (zero-arity enforced at
+    # class-definition time); literals are used as-is. Defaulted values
+    # are subject to the same type / required / if validation as
+    # caller-supplied values.
     def apply_input_defaults
-      self.class.input_definitions.each do |attr_name, defn|
-        next unless defn.key?(:default)
-        next if @inputs.key?(attr_name) && !@inputs[attr_name].nil?
+      defaulted_input_definitions.each do |attr_name, options|
+        next if input_supplied?(attr_name, options)
 
-        provider = defn[:default]
+        provider = options[:default]
         @inputs[attr_name] = provider.is_a?(Proc) ? provider.call : provider
       end
+    end
+
+    def defaulted_input_definitions
+      self.class.input_definitions.select { |_, options| options.key?(:default) }
+    end
+
+    # An explicit nil counts as "not supplied" so the default fires,
+    # unless the input opted into `allow_nil: true` — in which case the
+    # caller's nil is honoured and the default is skipped.
+    def input_supplied?(attr_name, options)
+      return false unless @inputs.key?(attr_name)
+      return true if options[:allow_nil] == true
+
+      !@inputs[attr_name].nil?
     end
 
     def validate_inputs

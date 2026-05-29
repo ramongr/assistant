@@ -25,10 +25,7 @@ module Assistant
 
     # Individual input with a specific type or options
     def input(attr_name, type:, **options)
-      if options.key?(:default)
-        validate_default!(attr_name, options[:default])
-        warn_on_mutable_default(attr_name, options[:default])
-      end
+      process_default_option(attr_name, options[:default]) if options.key?(:default)
       register_input_definition(attr_name, type, options)
 
       # Base Methods
@@ -43,6 +40,14 @@ module Assistant
 
     def register_input_definition(attr_name, type, options)
       input_definitions[attr_name] = { type:, **options }.freeze
+    end
+
+    # M1: class-time gate for the `default:` option — fail fast on illegal
+    # providers, warn on shared mutable literals. Pure side-effects, no
+    # interaction with the per-class definitions registry.
+    def process_default_option(attr_name, default)
+      validate_default!(attr_name, default)
+      warn_on_mutable_default(attr_name, default)
     end
 
     # M1: a default: provider must be either a literal value or a zero-arity

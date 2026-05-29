@@ -15,7 +15,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   that responds to `#call` (e.g. a `Method` object) is rejected with
   `ArgumentError` at class-definition time. Procs are invoked once per
   `Service` instance, with no arguments. A default fires when the input
-  key is absent OR the caller passes an explicit `nil`. Defaulted values
+  key is absent, or when the value is an explicit `nil` and the input is
+  not declared `allow_nil: true` — with `allow_nil: true`, an explicit
+  `nil` from the caller is honoured and the default is skipped. Defaulted values
   are subject to the same type, `required:`, and `if:` validation as
   caller-supplied values. Mutable literal defaults (unfrozen `Array` /
   `Hash`) emit a `Kernel.warn` at class-definition time, since they are

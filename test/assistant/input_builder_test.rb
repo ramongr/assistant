@@ -150,6 +150,29 @@ module Assistant
       assert_equal 10, klass.run(limit: nil)[:result]
     end
 
+    def test_default_does_not_fire_when_allow_nil_input_is_explicitly_nil
+      # M1 + M2 interaction: allow_nil: true means the caller's nil is a
+      # legitimate value, so the default must NOT clobber it.
+      klass = Class.new(Assistant::Service) do
+        input :note, type: String, default: 'fallback', allow_nil: true
+        def execute = note
+      end
+
+      outcome = klass.run(note: nil)
+
+      assert_equal :ok, outcome[:status]
+      assert_nil outcome[:result]
+    end
+
+    def test_default_still_fires_for_allow_nil_input_when_key_absent
+      klass = Class.new(Assistant::Service) do
+        input :note, type: String, default: 'fallback', allow_nil: true
+        def execute = note
+      end
+
+      assert_equal 'fallback', klass.run[:result]
+    end
+
     def test_default_proc_is_called_per_instance
       counter = 0
       provider = -> { counter += 1 }

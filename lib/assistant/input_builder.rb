@@ -73,7 +73,7 @@ module Assistant
       message_builder = type_mismatch_message_builder(attr_name, types)
 
       define_method("valid_type_#{attr_name}?") do
-        return true if types.any? { |t| @inputs[attr_name].is_a?(t) }
+        return true if types.any? { |klass| @inputs[attr_name].is_a?(klass) }
 
         send("#{attr_name}?") &&
           send(:log_item_error_initialize, attr_name:, message: message_builder.call(send(attr_name).class))

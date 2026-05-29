@@ -79,10 +79,7 @@ module Assistant
     # unless the input opted into `allow_nil: true` — in which case the
     # caller's nil is honoured and the default is skipped.
     def input_supplied?(attr_name, options)
-      return false unless @inputs.key?(attr_name)
-      return true if options[:allow_nil] == true
-
-      !@inputs[attr_name].nil?
+      @inputs.key?(attr_name) && (options[:allow_nil] == true || !@inputs[attr_name].nil?)
     end
 
     def validate_inputs

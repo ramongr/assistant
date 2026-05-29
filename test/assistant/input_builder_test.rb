@@ -120,5 +120,70 @@ module Assistant
       assert_equal 'sk-ok', outcome[:result]
       assert_equal :ok, outcome[:status]
     end
+
+    # ---- Multi-type (M3) ----
+
+    def test_multi_type_accepts_first_member_type
+      klass = Class.new(Assistant::Service) do
+        input :amount, type: [Integer, Float]
+        def execute = amount
+      end
+
+      outcome = klass.run(amount: 1)
+
+      assert_equal 1, outcome[:result]
+      assert_equal :ok, outcome[:status]
+    end
+
+    def test_multi_type_accepts_second_member_type
+      klass = Class.new(Assistant::Service) do
+        input :amount, type: [Integer, Float]
+        def execute = amount
+      end
+
+      outcome = klass.run(amount: 1.5)
+
+      assert_in_delta 1.5, outcome[:result]
+      assert_equal :ok, outcome[:status]
+    end
+
+    def test_multi_type_logs_error_with_union_message_on_non_member
+      klass = Class.new(Assistant::Service) do
+        input :amount, type: [Integer, Float]
+        def execute = amount
+      end
+
+      outcome = klass.run(amount: 'three')
+
+      assert_equal :with_errors, outcome[:status]
+      assert_equal(
+        'Service argument with name amount is not one of [Integer, Float] but String',
+        outcome[:errors].first.message
+      )
+    end
+
+    def test_multi_type_passes_when_input_absent_and_optional
+      klass = Class.new(Assistant::Service) do
+        input :amount, type: [Integer, Float]
+        def execute = :ok
+      end
+
+      outcome = klass.run
+
+      assert_equal :ok, outcome[:result]
+      assert_nil outcome[:errors]
+    end
+
+    def test_single_type_error_message_format_is_unchanged
+      # Back-compat: single-type stays "is not a X but Y" (no brackets).
+      klass = Class.new(Assistant::Service) do
+        input :one, type: String
+        def execute = one
+      end
+
+      outcome = klass.run(one: 1)
+
+      assert_equal('Service argument with name one is not a String but Integer', outcome[:errors].first.message)
+    end
   end
 end

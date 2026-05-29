@@ -10,6 +10,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- `Assistant::Service.input` now accepts an array for `type:`, e.g.
+  `input :amount, type: [Integer, Float]`. The generated
+  `valid_type_<name>?` validator passes when the input matches **any** of
+  the listed types. Single-type declarations keep the original
+  `"… is not a X but Y"` error message; multi-type produces
+  `"… is not one of [A, B] but Y"`. (M3, v1 plan)
 - `Assistant::Service#logs` public reader exposing the full log timeline
   (info + warning + error) in insertion order. Callers no longer need to
   reach into `@logs` via `instance_variable_get`. (M4, v1 plan)

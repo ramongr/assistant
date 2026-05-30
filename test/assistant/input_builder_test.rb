@@ -506,6 +506,62 @@ module Assistant
       assert(klass.input_definitions[:nickname][:optional])
     end
 
+    # ---- optional: helpers in isolation (M7 SRP split) ----
+
+    def test_validate_optional_bang_raises_on_non_boolean
+      builder = Class.new { extend Assistant::InputBuilder }
+
+      error = assert_raises(ArgumentError) do
+        builder.validate_optional!(:foo, { optional: :sometimes })
+      end
+
+      assert_match(/optional: for input :foo must be true or false/, error.message)
+    end
+
+    def test_validate_optional_bang_raises_on_required_optional_contradiction
+      builder = Class.new { extend Assistant::InputBuilder }
+
+      error = assert_raises(ArgumentError) do
+        builder.validate_optional!(:foo, { optional: true, required: true })
+      end
+
+      assert_match(/cannot be both required: true and optional: true/, error.message)
+    end
+
+    def test_validate_optional_bang_returns_nil_on_valid_options
+      builder = Class.new { extend Assistant::InputBuilder }
+
+      assert_nil builder.validate_optional!(:foo, { optional: true })
+      assert_nil builder.validate_optional!(:foo, { optional: false })
+    end
+
+    def test_apply_optional_option_translates_false_to_required_true
+      builder = Class.new { extend Assistant::InputBuilder }
+      result = builder.apply_optional_option({ optional: false, type: String })
+
+      assert(result[:required])
+      refute(result[:optional])
+    end
+
+    def test_apply_optional_option_leaves_true_untouched
+      builder = Class.new { extend Assistant::InputBuilder }
+      input  = { optional: true, type: String }
+      result = builder.apply_optional_option(input)
+
+      refute result.key?(:required)
+      assert_equal input, result
+    end
+
+    def test_apply_optional_option_is_non_mutating
+      builder = Class.new { extend Assistant::InputBuilder }
+      input  = { optional: false, type: String }
+      before = input.dup
+
+      builder.apply_optional_option(input)
+
+      assert_equal before, input
+    end
+
     private
 
     def capture_io_warn

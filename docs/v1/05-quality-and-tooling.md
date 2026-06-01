@@ -42,6 +42,19 @@ Configuration lives in `.rubocop.yml` and `.rubocop_todo.yml`.
       every offense; aim for an empty TODO at 1.0.0.
 - [ ] Keep the existing `rubocop-minitest`, `rubocop-performance`,
       `rubocop-rake` extensions (per `Gemfile.lock`).
+- [x] Adopt `rubocop-style-compact_nesting` (added with M13). Enforces
+      a hybrid nesting style across `lib/` and `test/`: namespace chains
+      collapse to a single `module A::B::C` line; when the innermost
+      definition is a class, that class is nested separately inside the
+      compact module wrapper. The plugin disables
+      `Style/ClassAndModuleChildren` automatically. Namespace shells for
+      `Assistant::InputBuilder` and `Assistant::Refinements` are
+      predeclared in `lib/assistant.rb` so multi-segment files load
+      without ordering hazards.
+- [ ] Drop the temporary `Metrics/ModuleLength: Max: 150` override
+      (added for M7) once M13 ships and `lib/assistant/input_builder.rb`
+      is split into per-concern submodules. See
+      [`02-features.md`](./02-features.md) M13.
 
 ## Brakeman + Fasterer
 

@@ -1,9 +1,10 @@
 # frozen_string_literal: true
 
-require_relative '../test_helper'
-
 module Assistant
   class ServiceTest < Minitest::Test
+    # frozen_string_literal: true
+
+    require_relative '../test_helper'
     # ---- Base class without arguments ----
 
     def test_inputs_default_to_empty_hash

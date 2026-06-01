@@ -4,6 +4,7 @@ plugins:
   - rubocop-performance
   - rubocop-minitest
   - rubocop-rake
+  - rubocop-style-compact_nesting
 
 AllCops:
   NewCops: enable
@@ -56,6 +57,12 @@ Layout/LineLength:
 Style/RequireOrder:
   Enabled: true
 
+# Project convention: hybrid compact nesting enforced by
+# rubocop-style-compact_nesting's Style/CompactModuleNesting. Namespace
+# chains collapse to a single `module A::B::C` line; when the innermost
+# definition is a class, it's nested separately inside the compact wrapper.
+# That plugin disables Style/ClassAndModuleChildren by default.
+
 # Test files use anonymous Class.new(...) blocks and dynamic define_method,
 # which inflates length/metrics counts that don't reflect real complexity.
 Metrics/BlockLength:
@@ -68,13 +75,6 @@ Metrics/BlockLength:
 Metrics/ClassLength:
   Exclude:
     - 'test/**/*.rb'
-
-# InputBuilder hosts the entire input DSL (registration, validators,
-# default/optional/allow_nil normalisation). Each helper is small but the
-# module aggregates many of them by design; raising the threshold beats
-# splintering related metaprogramming across files.
-Metrics/ModuleLength:
-  Max: 150
 
 Metrics/MethodLength:
   Exclude:

@@ -55,6 +55,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+- `Assistant::InputBuilder` split into per-concern submodules under
+  `lib/assistant/input_builder/` (`Registry`, `DefaultOption`,
+  `OptionalOption`, `Accessors`, `RequireValidator`, `TypeValidator`,
+  `Dsl`). The umbrella `Assistant::InputBuilder` `include`s each
+  submodule; the public surface (`Service` extends `Assistant::InputBuilder`)
+  is unchanged. The `using Assistant::Refinements::StringBlankness`
+  refinement now activates only inside the `Accessors` submodule.
+  Tests mirror the lib layout under `test/assistant/input_builder/`.
+  Removes the temporary `Metrics/ModuleLength: Max: 150` override from
+  `.rubocop.yml`. (M13, v1 plan)
 - `lib/assistant.rb` now requires every core building block explicitly in
   dependency order (`version`, `log_item`, `log_list`,
   `refinements/string_blankness`, `input_builder`, `service`). After a bare

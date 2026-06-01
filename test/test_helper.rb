@@ -17,4 +17,18 @@ module TestHelpers
       Array.new(count) { build_log_item(**) }
     end
   end
+
+  # Captures everything written to $stderr inside the given block and
+  # returns it as a String. Used by InputBuilder tests that assert on
+  # `Kernel.warn` output (M1 mutable-default warning, etc.).
+  module IoCapture
+    def capture_io_warn
+      original = $stderr
+      $stderr = StringIO.new
+      yield
+      $stderr.string
+    ensure
+      $stderr = original
+    end
+  end
 end

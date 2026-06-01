@@ -2,9 +2,9 @@
 
 require_relative '../test_helper'
 
+# Structural smoke tests for the InputBuilder umbrella. Per-concern
+# behaviour lives under test/assistant/input_builder/. (M13)
 module Assistant
-  # Structural smoke tests for the InputBuilder umbrella. Per-concern
-  # behaviour lives under test/assistant/input_builder/. (M13)
   class InputBuilderTest < Minitest::Test
     SUBMODULES = %i[Registry DefaultOption OptionalOption Accessors RequireValidator TypeValidator Dsl].freeze
 

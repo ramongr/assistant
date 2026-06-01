@@ -6,14 +6,14 @@ require_relative 'log_list'
 module Assistant
   # Base class for the Assistant gem
   class Service
-    include LogList
+    include Assistant::LogList
 
     # Public reader for the full log timeline (info + warning + error), in
     # insertion order. See docs/v1/02-features.md M4.
     attr_reader :logs
 
     class << self
-      include InputBuilder
+      include Assistant::InputBuilder
 
       def run(**)
         new(**).run

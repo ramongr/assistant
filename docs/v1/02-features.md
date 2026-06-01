@@ -388,9 +388,10 @@ documented to avoid surprise.
   `lib/assistant/service.rb:54` migrate to the new name to avoid the
   warning.
 - **Docs touchpoint**: seed `docs/deprecations.md` with the first entry,
-  per D2 in [`03-documentation.md`](./03-documentation.md).
+  per D2 in [`03-documentation.md`](./03-documentation.md). Shipped with
+  M9: [`docs/deprecations.md`](../deprecations.md).
 - **Owner**: _TBD_.
-- **Status**: `[ ]`.
+- **Status**: `[x]` — shipped on `feature/m9-required-deprecation`.
 
 ### M10. `LogItem.new` raises on invalid construction
 

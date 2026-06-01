@@ -65,12 +65,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   Tests mirror the lib layout under `test/assistant/input_builder/`.
   Removes the temporary `Metrics/ModuleLength: Max: 150` override from
   `.rubocop.yml`. (M13, v1 plan)
+- For each `input :name, required: true` declaration, `Service` subclasses
+  now generate `#valid_required_<name>?` as the canonical requirement
+  validator (and `#valid_required_conditional_<name>?` when `if:` is also
+  given). The pre-existing `#valid_require_<name>?` / `#valid_require_conditional_<name>?`
+  predicates remain as deprecated aliases — they delegate to the
+  canonical method and emit a `Kernel.warn` once per textual call site
+  pointing at the canonical replacement. `Service#validate_inputs`
+  invokes only the canonical names, so internal framework code never
+  triggers the deprecation warning. See
+  [`docs/deprecations.md`](docs/deprecations.md). (M9, v1 plan)
 - `lib/assistant.rb` now requires every core building block explicitly in
   dependency order (`version`, `log_item`, `log_list`,
   `refinements/string_blankness`, `input_builder`, `service`). After a bare
   `require "assistant"`, `Assistant::LogList`, `Assistant::InputBuilder`, and
   `Assistant::Refinements::StringBlankness` are reachable without first
   loading `Assistant::Service`. (M6, v1 plan)
+
+### Deprecated
+
+- `Assistant::Service#valid_require_<name>?` (use
+  `#valid_required_<name>?` instead). Scheduled for removal in
+  `assistant 2.0`. (M9, v1 plan)
+- `Assistant::Service#valid_require_conditional_<name>?` (use
+  `#valid_required_conditional_<name>?` instead). Scheduled for removal
+  in `assistant 2.0`. (M9, v1 plan)
 
 ## [0.1.0] - 2026-05-07
 

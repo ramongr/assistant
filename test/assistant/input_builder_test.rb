@@ -416,6 +416,152 @@ module Assistant
       assert_equal('Service argument with name one is not a String but Integer', outcome[:errors].first.message)
     end
 
+    # ---- optional: (M7) ----
+
+    def test_optional_true_runs_cleanly_when_key_absent
+      klass = Class.new(Assistant::Service) do
+        input :nickname, type: String, optional: true
+        def execute = nickname || :missing
+      end
+
+      outcome = klass.run
+
+      assert_equal :missing, outcome[:result]
+      assert_equal :ok, outcome[:status]
+      assert_nil outcome[:errors]
+    end
+
+    def test_optional_true_alone_does_not_generate_require_validator
+      klass = Class.new(Assistant::Service) do
+        input :nickname, type: String, optional: true
+      end
+
+      refute_includes klass.instance_methods, :valid_require_nickname?
+    end
+
+    def test_optional_false_is_equivalent_to_required_true
+      klass = Class.new(Assistant::Service) do
+        input :email, type: String, optional: false
+        def execute = email
+      end
+
+      assert_includes klass.instance_methods, :valid_require_email?
+
+      outcome = klass.run
+
+      assert_equal :with_errors, outcome[:status]
+      assert_includes outcome[:errors].map(&:message), 'Service is missing argument with name email'
+    end
+
+    def test_required_true_and_optional_true_together_raise_at_class_definition
+      error = assert_raises(ArgumentError) do
+        Class.new(Assistant::Service) do
+          input :foo, type: String, required: true, optional: true
+        end
+      end
+
+      assert_match(/input :foo cannot be both required: true and optional: true/, error.message)
+    end
+
+    def test_non_boolean_optional_raises_at_class_definition
+      error = assert_raises(ArgumentError) do
+        Class.new(Assistant::Service) do
+          input :foo, type: String, optional: :sometimes
+        end
+      end
+
+      assert_match(/optional: for input :foo must be true or false/, error.message)
+    end
+
+    def test_optional_true_with_default_applies_default_when_key_absent
+      klass = Class.new(Assistant::Service) do
+        input :limit, type: Integer, optional: true, default: 25
+        def execute = limit
+      end
+
+      outcome = klass.run
+
+      assert_equal 25, outcome[:result]
+      assert_equal :ok, outcome[:status]
+    end
+
+    def test_optional_true_with_allow_nil_accepts_explicit_nil
+      klass = Class.new(Assistant::Service) do
+        input :note, type: String, optional: true, allow_nil: true
+        def execute = note
+      end
+
+      outcome = klass.run(note: nil)
+
+      assert_equal :ok, outcome[:status]
+      assert_nil outcome[:result]
+      assert_nil outcome[:errors]
+    end
+
+    def test_optional_flag_is_retained_in_input_definitions
+      klass = Class.new(Assistant::Service) do
+        input :nickname, type: String, optional: true
+      end
+
+      assert(klass.input_definitions[:nickname][:optional])
+    end
+
+    # ---- optional: helpers in isolation (M7 SRP split) ----
+
+    def test_validate_optional_bang_raises_on_non_boolean
+      builder = Class.new { extend Assistant::InputBuilder }
+
+      error = assert_raises(ArgumentError) do
+        builder.validate_optional!(:foo, { optional: :sometimes })
+      end
+
+      assert_match(/optional: for input :foo must be true or false/, error.message)
+    end
+
+    def test_validate_optional_bang_raises_on_required_optional_contradiction
+      builder = Class.new { extend Assistant::InputBuilder }
+
+      error = assert_raises(ArgumentError) do
+        builder.validate_optional!(:foo, { optional: true, required: true })
+      end
+
+      assert_match(/cannot be both required: true and optional: true/, error.message)
+    end
+
+    def test_validate_optional_bang_returns_nil_on_valid_options
+      builder = Class.new { extend Assistant::InputBuilder }
+
+      assert_nil builder.validate_optional!(:foo, { optional: true })
+      assert_nil builder.validate_optional!(:foo, { optional: false })
+    end
+
+    def test_apply_optional_option_translates_false_to_required_true
+      builder = Class.new { extend Assistant::InputBuilder }
+      result = builder.apply_optional_option({ optional: false, type: String })
+
+      assert(result[:required])
+      refute(result[:optional])
+    end
+
+    def test_apply_optional_option_leaves_true_untouched
+      builder = Class.new { extend Assistant::InputBuilder }
+      input  = { optional: true, type: String }
+      result = builder.apply_optional_option(input)
+
+      refute result.key?(:required)
+      assert_equal input, result
+    end
+
+    def test_apply_optional_option_is_non_mutating
+      builder = Class.new { extend Assistant::InputBuilder }
+      input  = { optional: false, type: String }
+      before = input.dup
+
+      builder.apply_optional_option(input)
+
+      assert_equal before, input
+    end
+
     private
 
     def capture_io_warn

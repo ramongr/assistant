@@ -69,6 +69,13 @@ Metrics/ClassLength:
   Exclude:
     - 'test/**/*.rb'
 
+# InputBuilder hosts the entire input DSL (registration, validators,
+# default/optional/allow_nil normalisation). Each helper is small but the
+# module aggregates many of them by design; raising the threshold beats
+# splintering related metaprogramming across files.
+Metrics/ModuleLength:
+  Max: 150
+
 Metrics/MethodLength:
   Exclude:
     - 'test/**/*.rb'

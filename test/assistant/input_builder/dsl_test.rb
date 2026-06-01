@@ -12,7 +12,7 @@ module Assistant::InputBuilder
 
       %i[a b c a? b? c?
          valid_type_a? valid_type_b? valid_type_c?
-         valid_require_a? valid_require_b? valid_require_c?].each do |meth|
+         valid_required_a? valid_required_b? valid_required_c?].each do |meth|
         assert_includes klass.instance_methods, meth
       end
     end

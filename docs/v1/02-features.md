@@ -571,6 +571,56 @@ documented to avoid surprise.
 - **Owner**: _TBD_.
 - **Status**: `[ ]`.
 
+### M13. Split `Assistant::InputBuilder` into per-concern submodules
+
+- **Rationale**: M7 (`feature/m7-input-optional`, #141) raised
+  `Metrics/ModuleLength` to `150` in `.rubocop.yml` to accommodate the
+  new `optional:` helpers. The right answer is to split
+  `lib/assistant/input_builder.rb` along the lines of the
+  responsibilities already implicit in the file (registry, DSL,
+  per-option families, per-generator families) so the umbrella module
+  shrinks back below the default `100`-line ceiling and the override
+  can be removed. Doing this **before M12** keeps the keyword-arg
+  signature sweep scoped to small, focused files rather than churning
+  a single 190-line umbrella.
+- **Scope**: pure structural refactor — no behaviour change, no public
+  API change, no test assertion change. `Service` continues to
+  `extend Assistant::InputBuilder`; method lookup is unchanged because
+  the umbrella `include`s each submodule.
+- **File layout**:
+  ```text
+  lib/assistant/input_builder.rb                       # umbrella: requires + includes
+  lib/assistant/input_builder/registry.rb              # Registry submodule
+  lib/assistant/input_builder/dsl.rb                   # Dsl (input, inputs)
+  lib/assistant/input_builder/default_option.rb        # DefaultOption (M1 trio)
+  lib/assistant/input_builder/optional_option.rb       # OptionalOption (M7 trio)
+  lib/assistant/input_builder/accessors.rb             # Accessors (refinement-scoped)
+  lib/assistant/input_builder/require_validator.rb     # RequireValidator
+  lib/assistant/input_builder/type_validator.rb        # TypeValidator
+  ```
+  Mirrored under `test/assistant/input_builder/` so each submodule has
+  its own focused test file; the umbrella `test/assistant/input_builder_test.rb`
+  keeps only structural smoke tests (every submodule is included; every
+  method is reachable from a fresh `extend`).
+- **Test plan**: redistribute the existing tests in
+  `test/assistant/input_builder_test.rb` per the table in the M13
+  execution plan; the suite must remain green with the same
+  assertion count plus a handful of new umbrella smoke assertions.
+  Add per-submodule includability tests so an include-order regression
+  is caught immediately.
+- **Tooling**: remove the `Metrics/ModuleLength: Max: 150` block from
+  `.rubocop.yml` once the split lands; CI must be clean against the
+  default `100`-line ceiling.
+- **Ordering**: lands **before M12**. M11 (RBS CLI) reads
+  `Service.input_definitions` from `Registry`; the file move is
+  transparent to it.
+- **Risk**: low. The lexical refinement
+  `using Assistant::Refinements::StringBlankness` narrows from the
+  whole module to just `accessors.rb`; existing checker tests cover
+  the whitespace path.
+- **Owner**: _TBD_.
+- **Status**: `[ ]`.
+
 ---
 
 ## Should (promoted to Must for 1.0)

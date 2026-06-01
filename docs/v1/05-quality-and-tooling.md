@@ -42,6 +42,10 @@ Configuration lives in `.rubocop.yml` and `.rubocop_todo.yml`.
       every offense; aim for an empty TODO at 1.0.0.
 - [ ] Keep the existing `rubocop-minitest`, `rubocop-performance`,
       `rubocop-rake` extensions (per `Gemfile.lock`).
+- [ ] Drop the temporary `Metrics/ModuleLength: Max: 150` override
+      (added for M7) once M13 ships and `lib/assistant/input_builder.rb`
+      is split into per-concern submodules. See
+      [`02-features.md`](./02-features.md) M13.
 
 ## Brakeman + Fasterer
 

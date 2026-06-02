@@ -1,6 +1,13 @@
 {
   "$schema": "https://opencode.ai/config.json",
   "plugin": [
-    "@tarquinen/opencode-dcp@latest"
+    "@tarquinen/opencode-dcp@latest",
+    [
+      "@plannotator/opencode@latest",
+      {
+        "workflow": "plan-agent",
+        "planningAgents": ["plan"]
+      }
+    ]
   ]
 }

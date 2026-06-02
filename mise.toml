@@ -2,3 +2,5 @@
 opencode="latest"
 ruby="3.4"
 gh="latest"
+node="latest"
+npm="latest"

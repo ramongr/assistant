@@ -39,6 +39,14 @@ module Assistant
       assert_match(/message/, error.message)
     end
 
+    def test_log_item_with_whitespace_message_raises
+      error = assert_raises(ArgumentError) do
+        Assistant::LogItem.new(level: :info, source: :source, detail: :detail, message: '   ')
+      end
+
+      assert_match(/message/, error.message)
+    end
+
     def test_log_item_with_same_source_and_detail_raises_with_both_names
       error = assert_raises(ArgumentError) do
         Assistant::LogItem.new(level: :info, source: :same, detail: :same, message: 'message')

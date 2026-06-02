@@ -4,6 +4,12 @@ module Assistant
   # Log base class
   class LogItem
     VALID_LEVELS = %i[info warning error].freeze
+    ERRORS = [
+      ["level must be one of [#{VALID_LEVELS.join(', ')}]", :valid_level?],
+      ['source must be present and different from detail', :valid_source?],
+      ['detail must be present and different from source', :valid_detail?],
+      ['message must be present', :valid_message?]
+    ].freeze
 
     attr_reader :level, :source, :detail, :message, :trace
 
@@ -16,9 +22,7 @@ module Assistant
       validate!
     end
 
-    def valid?
-      [valid_level?, valid_source?, valid_detail?, valid_message?].all?
-    end
+    def valid? = [valid_level?, valid_source?, valid_detail?, valid_message?].all?
 
     def item
       { level:, source:, detail:, message:, trace: }
@@ -31,38 +35,24 @@ module Assistant
       end
     end
 
-    def valid_level?
-      VALID_LEVELS.include?(level)
-    end
+    def valid_level? = VALID_LEVELS.include?(level)
 
-    def valid_source?
-      present_log_attribute?(source) && detail != source
-    end
+    def valid_source? = present_log_attribute?(source) && detail != source
 
-    def valid_detail?
-      present_log_attribute?(detail) && source != detail
-    end
+    def valid_detail? = present_log_attribute?(detail) && source != detail
 
-    def valid_message?
-      message.size.positive?
-    end
+    def valid_message? = !message.strip.empty?
 
     private
 
     def validate!
-      return if valid?
+      errors = validation_errors
+      return if errors.empty?
 
-      raise ArgumentError, "invalid LogItem: #{validation_errors.join('; ')}"
+      raise ArgumentError, "invalid LogItem: #{errors.join('; ')}"
     end
 
-    def validation_errors
-      errors = []
-      errors << "level must be one of [#{VALID_LEVELS.join(', ')}]" unless valid_level?
-      errors << 'source must be present and different from detail' unless valid_source?
-      errors << 'detail must be present and different from source' unless valid_detail?
-      errors << 'message must be present' unless valid_message?
-      errors
-    end
+    def validation_errors = ERRORS.reject { |_, validation_method| send(validation_method) }.map(&:first)
 
     def normalize_symbol(value)
       value.respond_to?(:to_sym) ? value.to_sym : value

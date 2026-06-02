@@ -47,7 +47,10 @@ Two behavioural changes ship in 1.0 that may require code changes:
 - **Before** (0.1.0): `LogItem.new(level: '', ...)` succeeded and
   `#valid?` returned `false`.
 - **After** (1.0.0): the same call raises `ArgumentError` with a message
-  listing every failing attribute.
+  listing every failing attribute:
+  ```text
+  invalid LogItem: level must be one of [info, warning, error]; source must be present and different from detail
+  ```
 - **Migration**:
   - Audit every direct `LogItem.new` call to confirm the four required
     attrs (`level`, `source`, `detail`, `message`) are non-empty and

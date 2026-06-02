@@ -8,11 +8,12 @@ module Assistant
     attr_reader :level, :source, :detail, :message, :trace
 
     def initialize(level:, source:, detail:, message:, trace: nil)
-      @level = level.to_sym
-      @source = source.to_sym
-      @detail = detail.to_sym
+      @level = normalize_symbol(level)
+      @source = normalize_symbol(source)
+      @detail = normalize_symbol(detail)
       @message = message.to_s
       @trace = trace
+      validate!
     end
 
     def valid?
@@ -35,15 +36,40 @@ module Assistant
     end
 
     def valid_source?
-      source.size.positive? && detail != source
+      present_log_attribute?(source) && detail != source
     end
 
     def valid_detail?
-      detail.size.positive? && source != detail
+      present_log_attribute?(detail) && source != detail
     end
 
     def valid_message?
       message.size.positive?
+    end
+
+    private
+
+    def validate!
+      return if valid?
+
+      raise ArgumentError, "invalid LogItem: #{validation_errors.join('; ')}"
+    end
+
+    def validation_errors
+      errors = []
+      errors << "level must be one of [#{VALID_LEVELS.join(', ')}]" unless valid_level?
+      errors << 'source must be present and different from detail' unless valid_source?
+      errors << 'detail must be present and different from source' unless valid_detail?
+      errors << 'message must be present' unless valid_message?
+      errors
+    end
+
+    def normalize_symbol(value)
+      value.respond_to?(:to_sym) ? value.to_sym : value
+    end
+
+    def present_log_attribute?(value)
+      value.respond_to?(:size) && value.size.positive?
     end
   end
 end

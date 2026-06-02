@@ -55,6 +55,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+- `Assistant::LogItem.new` now raises `ArgumentError` when constructed with
+  invalid attributes instead of returning an invalid object. Validation runs at
+  the end of initialization and reports every failing attribute in one message
+  (level, source, detail, message). The `#valid?` predicate family remains for
+  introspection and returns `true` for normally constructed instances.
+  `LogList#add_log` now inherits this fail-fast behaviour because it constructs
+  `LogItem` internally. (M10, v1 plan)
 - `Assistant::InputBuilder` split into per-concern submodules under
   `lib/assistant/input_builder/` (`Registry`, `DefaultOption`,
   `OptionalOption`, `Accessors`, `RequireValidator`, `TypeValidator`,

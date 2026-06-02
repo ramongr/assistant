@@ -85,7 +85,12 @@ module Assistant
     end
 
     def validate_inputs
-      methods.grep(/valid_(require|type|require_conditional)_\w+\?$/).each do |validation_method|
+      # M9: regex matches only the canonical `valid_required_*?` /
+      # `valid_required_conditional_*?` / `valid_type_*?` predicates so
+      # the deprecated `valid_require_*?` aliases are not auto-invoked
+      # (which would emit the M9 deprecation warning from inside the
+      # framework itself).
+      methods.grep(/valid_(required|type)_\w+\?$/).each do |validation_method|
         send(validation_method)
       end
     end

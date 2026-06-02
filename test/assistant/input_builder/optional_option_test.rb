@@ -24,6 +24,7 @@ module Assistant::InputBuilder
         input :nickname, type: String, optional: true
       end
 
+      refute_includes klass.instance_methods, :valid_required_nickname?
       refute_includes klass.instance_methods, :valid_require_nickname?
     end
 
@@ -33,7 +34,7 @@ module Assistant::InputBuilder
         def execute = email
       end
 
-      assert_includes klass.instance_methods, :valid_require_email?
+      assert_includes klass.instance_methods, :valid_required_email?
 
       outcome = klass.run
 

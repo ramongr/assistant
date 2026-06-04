@@ -683,7 +683,7 @@ documented to avoid surprise.
   `:service_failed` (Frozen event set for 1.0). Payload always includes
   `:service_class`, `:duration_s`.
 - **Risk**: low. Default notifier is a no-op proc.
-- **Status**: `[ ]`.
+- **Status**: `[x]` — shipped on `feature/m-s3-instrumentation-notifier`.
 
 ### M-S4. Frozen Data for input snapshot
 

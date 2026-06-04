@@ -17,6 +17,7 @@ class Assistant::Service
   @inputs: Hash[Symbol, untyped]
   @logs: Array[Assistant::LogItem]
   @result: untyped
+  @run_started_at: Float
 
   attr_reader logs: Array[Assistant::LogItem]
 
@@ -38,6 +39,10 @@ class Assistant::Service
 
   attr_reader inputs: Hash[Symbol, untyped]
 
+  def executed_payload: () -> Hash[Symbol, untyped]
+
+  def failed_payload: () -> Hash[Symbol, untyped]
+
   def apply_input_defaults: () -> void
 
   def input_definitions_needing_default: () -> Hash[Symbol, Hash[Symbol, untyped]]
@@ -45,6 +50,8 @@ class Assistant::Service
   def input_supplied?: (Symbol attr_name, Hash[Symbol, untyped] options) -> bool
 
   def validate_inputs: () -> Array[Symbol]
+
+  def notify: (Symbol event) -> void
 
   def execute: () -> untyped
 

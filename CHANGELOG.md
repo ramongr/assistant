@@ -10,6 +10,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- `Assistant.notifier` and `Assistant.notifier=` — module-level
+  configuration accessor for an instrumentation callable. The default
+  notifier is a frozen no-op lambda (`Assistant::DEFAULT_NOTIFIER`);
+  the setter accepts any object responding to `#call(event, payload)`
+  or `nil` to reset to the default. Passing anything else raises
+  `ArgumentError` immediately. `Service#run` now fires four frozen
+  events around its lifecycle: `:service_started` at entry,
+  `:service_validated` after `validate_inputs` + `validate`, and
+  exactly one of `:service_executed` (no logged errors) or
+  `:service_failed` (errors present) before returning. Every payload
+  carries `{ service_class:, duration_s: }`; `duration_s` is a `Float`
+  measured against `Process::CLOCK_MONOTONIC` from the start of `#run`.
+  Notifier exceptions (`StandardError`) are caught and surfaced via
+  `Kernel.warn`; subsequent events still fire. (M-S3, v1 plan)
+
 - `bin/assistant-rbs` (shipped as `exe/assistant-rbs`) — a CLI that
   loads user-supplied Ruby paths and emits an `.rbs` file per
   `Assistant::Service` subclass into a configurable output directory

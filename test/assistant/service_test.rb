@@ -4,6 +4,18 @@ require_relative '../test_helper'
 
 module Assistant
   class ServiceTest < Minitest::Test
+    # ---- M-S3: instrumentation notifier ----
+    #
+    # Each test resets the notifier in teardown so configuration cannot
+    # leak across tests or to AssistantTest.
+
+    include TestHelpers::IoCapture
+
+    def teardown
+      Assistant.notifier = nil
+      super
+    end
+
     # ---- Base class without arguments ----
 
     def test_inputs_default_to_empty_hash
@@ -204,6 +216,131 @@ module Assistant
 
       assert_equal((service.infos + service.warnings + service.errors).sort_by(&:object_id),
                    service.logs.sort_by(&:object_id))
+    end
+
+    def with_recording_notifier
+      events = []
+      Assistant.notifier = ->(event, payload) { events << [event, payload] }
+      events
+    end
+
+    def test_successful_run_fires_started_validated_executed_in_order
+      events = with_recording_notifier
+      klass = Class.new(Assistant::Service) do
+        def execute = :ok
+      end
+
+      klass.run
+
+      assert_equal %i[service_started service_validated service_executed], events.map(&:first)
+    end
+
+    def test_successful_run_does_not_fire_service_failed
+      events = with_recording_notifier
+      klass = Class.new(Assistant::Service) do
+        def execute = :ok
+      end
+
+      klass.run
+
+      refute_includes events.map(&:first), :service_failed
+    end
+
+    def test_failing_run_fires_started_validated_failed_in_order
+      events = with_recording_notifier
+      klass = Class.new(Assistant::Service) do
+        input :one, type: Integer, required: true
+        def execute = true
+      end
+
+      klass.run
+
+      assert_equal %i[service_started service_validated service_failed], events.map(&:first)
+    end
+
+    def test_failing_run_does_not_fire_service_executed
+      events = with_recording_notifier
+      klass = Class.new(Assistant::Service) do
+        input :one, type: Integer, required: true
+        def execute = true
+      end
+
+      klass.run
+
+      refute_includes events.map(&:first), :service_executed
+    end
+
+    def test_event_payload_includes_service_class_and_duration
+      events = with_recording_notifier
+      klass = Class.new(Assistant::Service) do
+        def execute = :ok
+      end
+
+      klass.run
+
+      events.each do |(_event, payload)|
+        assert_same klass, payload[:service_class]
+        assert_kind_of Float, payload[:duration_s]
+        assert_operator payload[:duration_s], :>=, 0.0
+      end
+    end
+
+    def test_event_duration_is_monotonically_non_decreasing_across_events
+      events = with_recording_notifier
+      klass = Class.new(Assistant::Service) do
+        def execute = :ok
+      end
+
+      klass.run
+
+      durations = events.map { |(_event, payload)| payload[:duration_s] }
+
+      assert_equal durations.sort, durations,
+                   "expected duration_s to be non-decreasing across events, got #{durations.inspect}"
+    end
+
+    def test_notifier_exception_is_captured_and_run_returns_normally
+      Assistant.notifier = ->(_event, _payload) { raise 'boom from notifier' }
+      klass = Class.new(Assistant::Service) do
+        def execute = :ok
+      end
+
+      outcome = nil
+      stderr = capture_io_warn { outcome = klass.run }
+
+      assert_equal :ok, outcome[:status]
+      assert_equal :ok, outcome[:result]
+      assert_match(/notifier raised during service_started/, stderr)
+    end
+
+    def test_notifier_exception_does_not_block_subsequent_events
+      events = []
+      first_call = true
+      Assistant.notifier = lambda do |event, payload|
+        if first_call
+          first_call = false
+          raise 'boom from notifier'
+        end
+        events << [event, payload]
+      end
+
+      klass = Class.new(Assistant::Service) do
+        def execute = :ok
+      end
+
+      capture_io_warn { klass.run }
+
+      assert_equal %i[service_validated service_executed], events.map(&:first)
+    end
+
+    def test_run_with_default_notifier_is_a_silent_no_op
+      klass = Class.new(Assistant::Service) do
+        def execute = :ok
+      end
+
+      stderr = capture_io_warn { klass.run }
+
+      assert_empty stderr
     end
   end
 end

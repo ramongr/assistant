@@ -32,6 +32,9 @@ target :lib do
   check 'lib/assistant/input_builder/default_option.rb'
   check 'lib/assistant/input_builder/optional_option.rb'
   check 'lib/assistant/rbs_generator.rb'
+  check 'lib/assistant/rbs_generator/renderer.rb'
+  check 'lib/assistant/rbs_generator/writer.rb'
+  check 'lib/assistant/rbs_generator/cli.rb'
 end
 
 # Type-checks the sample service in `examples/` against the .rbs

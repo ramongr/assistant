@@ -1,0 +1,24 @@
+class Assistant::RbsGenerator::Cli
+  USAGE: String
+
+  @argv: Array[String]
+  @stdout: IO
+  @stderr: IO
+  @output_dir: String
+  @quiet: bool
+  @paths: Array[String]?
+
+  def self.run: (Array[String] argv, ?stdout: IO, ?stderr: IO) -> Integer
+
+  def initialize: (Array[String] argv, ?stdout: IO, ?stderr: IO) -> void
+  def run: () -> Integer
+
+  private
+
+  def emit: (Array[singleton(Assistant::Service)] services) -> void
+  def parse_options!: () -> void
+  def configure_parser: (OptionParser opts) -> void
+  def load_paths: (Array[String] paths) -> void
+  def safe_require: (String path) -> void
+  def service_subclasses: () -> Array[singleton(Assistant::Service)]
+end

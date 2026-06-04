@@ -1,0 +1,24 @@
+class Assistant::RbsGenerator::Writer
+  @output_dir: String
+  @quiet: bool
+  @stdout: IO
+  @stderr: IO
+
+  def initialize: (output_dir: String, ?quiet: bool, ?stdout: IO, ?stderr: IO) -> void
+  def write: (singleton(Assistant::Service) service_class, String contents) -> Symbol
+
+  private
+
+  attr_reader output_dir: String
+  attr_reader quiet: bool
+  attr_reader stdout: IO
+  attr_reader stderr: IO
+
+  def path_for: (singleton(Assistant::Service) service_class) -> String
+  def exists_without_marker?: (String target) -> bool
+  def skip!: (String target) -> Symbol
+  def unchanged!: (String target) -> Symbol
+  def underscore: (String camel) -> String
+  def generated_file?: (String path) -> bool
+  def announce: (String message) -> void
+end

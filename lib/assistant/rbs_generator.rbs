@@ -1,0 +1,5 @@
+module Assistant::RbsGenerator
+  MARKER: String
+  DEFAULT_OUTPUT_DIR: String
+  DEFAULT_INPUT_PATHS: Array[String]
+end

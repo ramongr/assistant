@@ -1,0 +1,11 @@
+module Assistant::RbsGenerator::Renderer
+  def self.render: (singleton(Assistant::Service) service_class) -> String
+
+  private
+
+  def self.render_class_body: (String class_name, Hash[Symbol, untyped] definitions) -> Array[String]
+  def self.nest_in_modules: (Array[String] segments, Array[String] body_lines) -> Array[String]
+  def self.input_method_lines: (Symbol name, Hash[Symbol, untyped] options) -> Array[String]
+  def self.render_type: (Symbol name, Hash[Symbol, untyped] options) -> String
+  def self.render_single_type: (Symbol name, untyped type) -> String
+end

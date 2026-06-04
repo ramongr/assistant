@@ -10,6 +10,24 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- `bin/assistant-rbs` (shipped as `exe/assistant-rbs`) — a CLI that
+  loads user-supplied Ruby paths and emits an `.rbs` file per
+  `Assistant::Service` subclass into a configurable output directory
+  (default `sig/`). Each generated file declares the per-input getter
+  (`def <name>: () -> Type`) and predicate (`def <name>?: () -> bool`)
+  pairs derived from `Service.input_definitions`, including multi-type
+  unions (`(A | B)`) and `allow_nil:` (`(A | B)?`). Output is marked
+  with a header sentinel and is idempotent: rerunning leaves unchanged
+  files alone (`[unchanged]`) and refuses to overwrite hand-written
+  `.rbs` files that lack the sentinel (`[skipped]`). Namespaced classes
+  are emitted with nested `module` declarations so the generated file is
+  self-contained. Use `--output DIR`, `--quiet`, and `--help`. The
+  generator only emits sigs for `Service` subclasses introduced by the
+  paths it was asked to load (snapshot diff via `ObjectSpace`).
+  An `examples/greeter.rb` + generated `sig/examples/greeter.rbs`
+  fixture is type-checked by Steep as the acceptance test. The CLI
+  itself is Experimental; the generated `.rbs` content tracks the
+  Frozen `Service.input` surface. (M11, v1 plan)
 - Hand-written RBS signatures for the frozen public surface defined in
   `docs/v1/01-api-surface.md`: `Assistant::VERSION`, `Assistant::LogItem`,
   `Assistant::LogList`, `Assistant::Service` (excluding the per-input

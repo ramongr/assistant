@@ -458,7 +458,7 @@ documented to avoid surprise.
   **Experimental** in [`01-api-surface.md`](./01-api-surface.md) so the
   output format can evolve in 1.x.
 - **Owner**: _TBD_.
-- **Status**: `[ ]`.
+- **Status**: `[x]`.
 
 ### M12. Keyword arguments for every public and internal method
 

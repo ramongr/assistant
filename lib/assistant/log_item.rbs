@@ -1,0 +1,40 @@
+# Type signatures for `lib/assistant/log_item.rb`. See
+# docs/v1/01-api-surface.md for the frozen surface.
+
+class Assistant::LogItem
+  VALID_LEVELS: Array[Symbol]
+  ERRORS: Array[[String, Symbol]]
+
+  attr_reader level: Symbol
+  attr_reader source: Symbol
+  attr_reader detail: Symbol
+  attr_reader message: String
+  attr_reader trace: untyped
+
+  def initialize: (
+    detail: Symbol | String,
+    message: String | _ToS,
+    level: Symbol | String,
+    source: Symbol | String,
+    ?trace: untyped
+  ) -> void
+
+  def valid?: () -> bool
+  def valid_level?: () -> bool
+  def valid_source?: () -> bool
+  def valid_detail?: () -> bool
+  def valid_message?: () -> bool
+
+  def info?: () -> bool
+  def warning?: () -> bool
+  def error?: () -> bool
+
+  def item: () -> Hash[Symbol, untyped]
+
+  private
+
+  def validate!: () -> void
+  def validation_errors: () -> Array[String]
+  def normalize_symbol: (untyped value) -> untyped
+  def present_log_attribute?: (untyped value) -> bool
+end

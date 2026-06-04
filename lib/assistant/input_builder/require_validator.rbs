@@ -1,0 +1,24 @@
+# Type signatures for `lib/assistant/input_builder/require_validator.rb`
+# (M9). Generates the canonical `valid_required_*?` and
+# `valid_required_conditional_*?` instance methods plus deprecated
+# `valid_require_*?` aliases.
+
+module Assistant::InputBuilder::RequireValidator
+  DEPRECATION_WARNED: Set[Array[untyped]]
+
+  def self.warn_deprecated: (Symbol deprecated_name, Symbol canonical_name, Thread::Backtrace::Location caller_location) -> void
+
+  def self.__reset_deprecation_warnings__: () -> void
+
+  def input_require_validator_meth: (Symbol attr_name, **untyped) -> Symbol
+
+  def input_require_conditional_meth: (Symbol attr_name, **untyped) -> Symbol
+
+  private
+
+  def define_required_validator: (Symbol canonical, Symbol attr_name, **untyped) -> Symbol
+
+  def define_required_conditional_validator: (Symbol canonical, Symbol attr_name, **untyped) -> Symbol
+
+  def define_deprecated_alias: (Symbol deprecated, Symbol canonical) -> Symbol
+end

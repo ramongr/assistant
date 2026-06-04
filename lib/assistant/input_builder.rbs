@@ -1,0 +1,15 @@
+# Type signatures for `lib/assistant/input_builder.rb` — the umbrella
+# module that includes every per-concern submodule. The submodule
+# signatures live alongside the corresponding `.rb` files under
+# `lib/assistant/input_builder/`. See docs/v1/01-api-surface.md and
+# docs/v1/02-features.md (M13).
+
+module Assistant::InputBuilder
+  include Registry
+  include DefaultOption
+  include OptionalOption
+  include Accessors
+  include RequireValidator
+  include TypeValidator
+  include Dsl
+end

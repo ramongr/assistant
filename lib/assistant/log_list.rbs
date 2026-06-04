@@ -1,0 +1,48 @@
+# Type signatures for `lib/assistant/log_list.rb`. See
+# docs/v1/01-api-surface.md for the frozen surface.
+#
+# `Assistant::LogList` is mixed into `Assistant::Service`; the `@logs`
+# instance variable it operates on is declared on `Service` itself.
+
+module Assistant::LogList
+  def add_log: (
+    detail: Symbol | String,
+    level: Symbol | String,
+    message: String | _ToS,
+    source: Symbol | String,
+    ?trace: untyped
+  ) -> Array[Assistant::LogItem]
+
+  def merge_logs: (Array[Assistant::LogItem] other_logs) -> Array[Assistant::LogItem]
+
+  def log_item_error_initialize: (
+    attr_name: Symbol | String,
+    message: String | _ToS
+  ) -> Array[Assistant::LogItem]
+
+  # M5 shorthands: `log_item_info`, `log_item_warning`, `log_item_error`.
+  def log_item_info: (
+    detail: Symbol | String,
+    message: String | _ToS,
+    source: Symbol | String,
+    ?trace: untyped
+  ) -> Array[Assistant::LogItem]
+
+  def log_item_warning: (
+    detail: Symbol | String,
+    message: String | _ToS,
+    source: Symbol | String,
+    ?trace: untyped
+  ) -> Array[Assistant::LogItem]
+
+  def log_item_error: (
+    detail: Symbol | String,
+    message: String | _ToS,
+    source: Symbol | String,
+    ?trace: untyped
+  ) -> Array[Assistant::LogItem]
+
+  def infos: () -> Array[Assistant::LogItem]
+  def warnings: () -> Array[Assistant::LogItem]
+  def errors: () -> Array[Assistant::LogItem]
+end

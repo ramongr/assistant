@@ -1,0 +1,11 @@
+# Type signatures for `lib/assistant/input_builder/default_option.rb`
+# (M1). Raises `ArgumentError` at class-definition time for illegal
+# default providers; warns on shared mutable literals.
+
+module Assistant::InputBuilder::DefaultOption
+  def process_default_option: (Symbol attr_name, untyped default) -> void
+
+  def validate_default!: (Symbol attr_name, untyped default) -> void
+
+  def warn_on_mutable_default: (Symbol attr_name, untyped default) -> void
+end

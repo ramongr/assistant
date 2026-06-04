@@ -1,0 +1,13 @@
+# Type signatures for `lib/assistant/input_builder/registry.rb`.
+
+module Assistant::InputBuilder::Registry
+  @input_definitions: Hash[Symbol, Hash[Symbol, untyped]]
+
+  def input_definitions: () -> Hash[Symbol, Hash[Symbol, untyped]]
+
+  def register_input_definition: (
+    Symbol attr_name,
+    untyped type,
+    Hash[Symbol, untyped] options
+  ) -> Hash[Symbol, untyped]
+end

@@ -421,7 +421,7 @@ documented to avoid surprise.
   ensure validity. Documented as breaking in
   [`06-migration-0x-to-1.md`](./06-migration-0x-to-1.md).
 - **Owner**: _TBD_.
-- **Status**: `[ ]`.
+- **Status**: `[x]` — shipped on `feature/m10-strict-log-item`.
 
 ### M11. `bin/assistant-rbs` per-class RBS generator
 

@@ -14,10 +14,13 @@ module Assistant
       assert_raises(ArgumentError) { @host.add_log }
     end
 
-    def test_add_log_with_invalid_arguments_still_appends
-      result = @host.add_log(level: '', source: '', detail: '', message: '')
+    def test_add_log_with_invalid_arguments_raises_and_does_not_append
+      error = assert_raises(ArgumentError) do
+        @host.add_log(level: '', source: '', detail: '', message: '')
+      end
 
-      assert_equal 1, result.size
+      assert_match(/invalid LogItem/, error.message)
+      assert_empty @host.logs
     end
 
     def test_add_log_with_valid_arguments

@@ -1,9 +1,22 @@
 # Type signatures for `lib/assistant.rb` — declares the top-level
-# `Assistant` namespace and the empty namespace shells for
+# `Assistant` namespace, the empty namespace shells for
 # `Assistant::InputBuilder` and `Assistant::Refinements` that the
-# multi-segment submodule files reopen. See docs/v1/01-api-surface.md.
+# multi-segment submodule files reopen, and the M-S3 instrumentation
+# notifier accessor. See docs/v1/01-api-surface.md.
 
 module Assistant
+  # M-S3: instrumentation notifier. The setter accepts any object
+  # responding to `#call(event, payload)` or `nil` (reset to default).
+  # The contract is documented in docs/v1/01-api-surface.md; we use
+  # `untyped` for the setter parameter because the runtime check is
+  # `respond_to?(:call)` rather than a structural Proc type.
+  DEFAULT_NOTIFIER: ^(Symbol, Hash[Symbol, untyped]) -> void
+
+  self.@notifier: ^(Symbol, Hash[Symbol, untyped]) -> void
+
+  def self.notifier: () -> ^(Symbol, Hash[Symbol, untyped]) -> void
+  def self.notifier=: (untyped callable) -> ^(Symbol, Hash[Symbol, untyped]) -> void
+
   module InputBuilder
   end
 

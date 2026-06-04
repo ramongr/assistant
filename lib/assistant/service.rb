@@ -27,14 +27,14 @@ module Assistant
     end
 
     def run
+      @run_started_at = Process.clock_gettime(Process::CLOCK_MONOTONIC)
+      notify(:service_started)
+
       validate_inputs
       validate
+      notify(:service_validated)
 
-      if errors.empty?
-        { result:, status:, warnings: }
-      else
-        { errors:, result: nil, status: :with_errors }
-      end
+      errors.empty? ? executed_payload : failed_payload
     end
 
     def result
@@ -54,6 +54,22 @@ module Assistant
     end
 
     private
+
+    # Build the success-path result hash and fire the terminal
+    # `:service_executed` event. Triggers `#execute` lazily via `#result`.
+    def executed_payload
+      payload = { result:, status:, warnings: }
+      notify(:service_executed)
+      payload
+    end
+
+    # Build the failure-path result hash and fire the terminal
+    # `:service_failed` event. Does not invoke `#execute`.
+    def failed_payload
+      payload = { errors:, result: nil, status: :with_errors }
+      notify(:service_failed)
+      payload
+    end
 
     # M1: apply input defaults declared via `input :name, default: ...`.
     # A default fires when the key is absent, or when the value is an
@@ -93,6 +109,21 @@ module Assistant
       methods.grep(/valid_(required|type)_\w+\?$/).each do |validation_method|
         send(validation_method)
       end
+    end
+
+    # M-S3: dispatch a frozen-set instrumentation event to the configured
+    # `Assistant.notifier`. Payload always includes `:service_class` and
+    # `:duration_s` (Float seconds since the start of `#run`). The notifier
+    # is treated as untrusted infra: any `StandardError` it raises is
+    # caught and surfaced via `Kernel.warn` so a misconfigured notifier
+    # cannot tear down every service in the process. Non-`StandardError`
+    # exceptions (e.g. `SystemExit`, `Interrupt`) are intentionally
+    # allowed to propagate.
+    def notify(event)
+      duration_s = Process.clock_gettime(Process::CLOCK_MONOTONIC) - @run_started_at
+      Assistant.notifier.call(event, { service_class: self.class, duration_s: duration_s })
+    rescue StandardError => e
+      Kernel.warn "assistant: notifier raised during #{event} for #{self.class}: #{e.class}: #{e.message}"
     end
 
     attr_reader :inputs

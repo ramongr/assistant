@@ -239,7 +239,7 @@ documented to avoid surprise.
   `infos + warnings + errors` modulo ordering.
 - **Risk**: trivial. Add `attr_reader :logs` to `Assistant::Service`.
 - **Owner**: _TBD_.
-- **Status**: `[ ]`.
+- **Status**: `[x]` — shipped in PR #133 (`d6ba7d1`).
 
 ### M5. Generic `log_item_*` shorthands on `LogList`
 
@@ -282,7 +282,7 @@ documented to avoid surprise.
   `defined?(Assistant::LogList)`.
 - **Risk**: trivial.
 - **Owner**: _TBD_.
-- **Status**: `[ ]`.
+- **Status**: `[x]` — shipped in PR #132 (`231a519`).
 
 ### M7. `input(..., optional:)`
 

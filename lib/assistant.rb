@@ -50,6 +50,7 @@ end
 # Core building blocks for the Assistant gem. Listed alphabetically so the
 # top-level entry point exposes every public constant after a bare
 # `require "assistant"` (M6).
+require 'assistant/execute_callbacks'
 require 'assistant/input_builder'
 require 'assistant/log_item'
 require 'assistant/log_list'

@@ -1,0 +1,30 @@
+# Type signatures for `lib/assistant/execute_callbacks.rb`. See
+# docs/v1/01-api-surface.md for the frozen 1.0 surface. The block types
+# for `before_execute` / `after_execute` / `around_execute` are loosely
+# typed because the user's block can take a `&blk` continuation, varied
+# `result` shapes, or no arguments at all — RBS cannot model the
+# `instance_exec`-like rebinding precisely.
+
+module Assistant
+  module ExecuteCallbacks
+    HOOK_TYPES: Array[Symbol]
+
+    @before_execute_hooks: Array[UnboundMethod]
+    @after_execute_hooks: Array[UnboundMethod]
+    @around_execute_hooks: Array[UnboundMethod]
+
+    def before_execute_hooks: () -> Array[UnboundMethod]
+    def after_execute_hooks: () -> Array[UnboundMethod]
+    def around_execute_hooks: () -> Array[UnboundMethod]
+
+    def before_execute: () { (*untyped) -> untyped } -> Array[UnboundMethod]
+    def after_execute: () { (*untyped) -> untyped } -> Array[UnboundMethod]
+    def around_execute: () { (*untyped) -> untyped } -> Array[UnboundMethod]
+
+    def inherited: (Class subclass) -> void
+
+    private
+
+    def build_hook: (Proc block) -> UnboundMethod
+  end
+end

@@ -13,6 +13,7 @@ class Assistant::Service
   include Assistant::LogList
 
   extend Assistant::InputBuilder
+  extend Assistant::ExecuteCallbacks
 
   @inputs: Hash[Symbol, untyped]
   @logs: Array[Assistant::LogItem]
@@ -52,6 +53,18 @@ class Assistant::Service
   def validate_inputs: () -> Array[Symbol]
 
   def notify: (Symbol event) -> void
+
+  def run_execute_with_callbacks: () -> untyped
+
+  def run_before_execute_hooks: () -> Array[UnboundMethod]
+
+  def run_after_execute_hooks: (untyped execute_result) -> Array[UnboundMethod]
+
+  def run_around_execute_chain: () -> untyped
+
+  def wrap_around_layer: (UnboundMethod hook, ^() -> untyped inner) -> ^() -> untyped
+
+  def log_hook_error: (Symbol hook_type, Exception exception) -> void
 
   def execute: () -> untyped
 

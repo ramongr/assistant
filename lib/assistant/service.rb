@@ -1,11 +1,14 @@
 # frozen_string_literal: true
 
+require_relative 'execute_callbacks'
 require_relative 'input_builder'
 require_relative 'log_list'
 
 module Assistant
-  # Base class for the Assistant gem
-  class Service
+  # Core Service base class. Subclasses declare inputs via the
+  # InputBuilder DSL, optionally register before/after/around execute
+  # hooks via ExecuteCallbacks, and implement `#execute`.
+  class Service # rubocop:disable Metrics/ClassLength
     include Assistant::LogList
 
     # Public reader for the full log timeline (info + warning + error), in
@@ -14,6 +17,7 @@ module Assistant
 
     class << self
       include Assistant::InputBuilder
+      include Assistant::ExecuteCallbacks
 
       def run(**)
         new(**).run
@@ -34,11 +38,17 @@ module Assistant
       validate
       notify(:service_validated)
 
+      return failed_payload if errors.any?
+
+      # Trigger `#execute` (through the M-S1 hook chain) eagerly so any
+      # error logged by a `before_/after_/around_execute` hook influences
+      # the terminal event and the payload's `:status` field.
+      result
       errors.empty? ? executed_payload : failed_payload
     end
 
     def result
-      @result ||= execute
+      @result ||= run_execute_with_callbacks
     end
 
     def success?
@@ -124,6 +134,79 @@ module Assistant
       Assistant.notifier.call(event, { service_class: self.class, duration_s: duration_s })
     rescue StandardError => e
       Kernel.warn "assistant: notifier raised during #{event} for #{self.class}: #{e.class}: #{e.message}"
+    end
+
+    # M-S1: thread `#execute` through the registered before/around/after
+    # hook chains. Called once via `#result`'s memoization, so each
+    # service instance runs hooks at most once even if `#result` is
+    # invoked repeatedly.
+    def run_execute_with_callbacks
+      run_before_execute_hooks
+      result = run_around_execute_chain
+      run_after_execute_hooks(result)
+      result
+    end
+
+    # M-S1: invoke every registered `before_execute` hook in declaration
+    # order. Each hook is independent — a `StandardError` from one is
+    # logged via `add_log(level: :error, source: :hook, …)` and the
+    # remaining hooks still fire.
+    def run_before_execute_hooks
+      self.class.before_execute_hooks.each do |hook|
+        hook.bind_call(self)
+      rescue StandardError => e
+        log_hook_error(:before_execute, e)
+      end
+    end
+
+    # M-S1: invoke every registered `after_execute` hook in declaration
+    # order, passing the execute result as the single positional arg.
+    def run_after_execute_hooks(execute_result)
+      self.class.after_execute_hooks.each do |hook|
+        hook.bind_call(self, execute_result)
+      rescue StandardError => e
+        log_hook_error(:after_execute, e)
+      end
+    end
+
+    # M-S1: build the around-hook chain from the innermost layer (the
+    # raw `#execute` call) outwards. Declaration order wraps: the
+    # first-declared hook is the outermost layer. If an around hook
+    # raises before yielding to its continuation, that layer (and any
+    # inner layers, including `#execute` itself) does not run; the
+    # layer returns `nil` and outer hooks still wrap normally.
+    def run_around_execute_chain
+      chain = -> { execute }
+      self.class.around_execute_hooks.reverse_each do |hook|
+        chain = wrap_around_layer(hook, chain)
+      end
+      chain.call
+    end
+
+    # Build a single around layer: a lambda that runs `hook` with
+    # `inner` as its continuation. Hook exceptions raised before the
+    # continuation runs are caught, logged, and the layer returns nil.
+    def wrap_around_layer(hook, inner)
+      lambda do
+        hook.bind_call(self, &inner)
+      rescue StandardError => e
+        log_hook_error(:around_execute, e)
+        nil
+      end
+    end
+
+    # M-S1: shared hook-error logger. Stamps `source: :hook` and uses
+    # the hook type as `detail:` so callers can grep their log timeline
+    # by either field. The exception's backtrace is preserved on the
+    # `LogItem#trace` field for downstream diagnostics.
+    def log_hook_error(hook_type, exception)
+      add_log(
+        level: :error,
+        source: :hook,
+        detail: hook_type,
+        message: "#{exception.class}: #{exception.message}",
+        trace: exception.backtrace
+      )
     end
 
     attr_reader :inputs

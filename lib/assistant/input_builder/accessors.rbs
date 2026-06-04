@@ -1,0 +1,10 @@
+# Type signatures for `lib/assistant/input_builder/accessors.rb`. Each
+# helper defines a per-input instance method on the host Service
+# subclass via `define_method`; from RBS's perspective the helpers
+# return whatever `define_method` returns (a Symbol).
+
+module Assistant::InputBuilder::Accessors
+  def input_getter_meth: (Symbol attr_name) -> Symbol
+
+  def input_checker_meth: (Symbol attr_name) -> Symbol
+end

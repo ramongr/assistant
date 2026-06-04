@@ -1,0 +1,8 @@
+# Type signatures for `lib/assistant/input_builder/dsl.rb`. The public
+# `#input`/`#inputs` DSL surface; see docs/v1/01-api-surface.md.
+
+module Assistant::InputBuilder::Dsl
+  def inputs: (Array[Symbol] attr_names, type: untyped, **untyped) -> Array[Symbol]
+
+  def input: (Symbol attr_name, type: untyped, **untyped) -> untyped
+end

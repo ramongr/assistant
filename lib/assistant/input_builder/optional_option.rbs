@@ -1,0 +1,10 @@
+# Type signatures for `lib/assistant/input_builder/optional_option.rb`
+# (M7). Validates the `optional:` flag and normalises the option hash.
+
+module Assistant::InputBuilder::OptionalOption
+  def process_optional_option: (Symbol attr_name, Hash[Symbol, untyped] options) -> Hash[Symbol, untyped]
+
+  def validate_optional!: (Symbol attr_name, Hash[Symbol, untyped] options) -> void
+
+  def apply_optional_option: (Hash[Symbol, untyped] options) -> Hash[Symbol, untyped]
+end

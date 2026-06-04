@@ -351,7 +351,7 @@ documented to avoid surprise.
   code can be type-checked. Document the limitation in
   `docs/guides/inputs.md`.
 - **Owner**: _TBD_.
-- **Status**: `[ ]`.
+- **Status**: `[x]`.
 
 ### M9. Deprecate `valid_require_*?` in favour of `valid_required_*?`
 

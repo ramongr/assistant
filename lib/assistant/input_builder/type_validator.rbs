@@ -1,0 +1,18 @@
+# Type signatures for `lib/assistant/input_builder/type_validator.rb`
+# (M3 multi-type; M2 `allow_nil:`).
+
+module Assistant::InputBuilder::TypeValidator
+  def input_type_validator_meth: (Symbol attr_name, untyped type, **untyped) -> Symbol
+
+  def type_validator_body: (
+    Symbol attr_name,
+    Array[untyped] types,
+    bool allow_nil,
+    ^(Class) -> String message_builder
+  ) -> ^() -> bool
+
+  def type_mismatch_message_builder: (
+    Symbol attr_name,
+    Array[untyped] types
+  ) -> ^(Class) -> String
+end

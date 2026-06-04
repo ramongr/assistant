@@ -1,0 +1,5 @@
+# Type signatures for `lib/assistant/version.rb`. See docs/v1/01-api-surface.md.
+
+module Assistant
+  VERSION: String
+end

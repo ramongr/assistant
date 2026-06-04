@@ -1,0 +1,12 @@
+# Type signatures for `lib/assistant.rb` — declares the top-level
+# `Assistant` namespace and the empty namespace shells for
+# `Assistant::InputBuilder` and `Assistant::Refinements` that the
+# multi-segment submodule files reopen. See docs/v1/01-api-surface.md.
+
+module Assistant
+  module InputBuilder
+  end
+
+  module Refinements
+  end
+end

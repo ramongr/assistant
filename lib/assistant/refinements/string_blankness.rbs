@@ -1,0 +1,6 @@
+# Type signatures for `lib/assistant/refinements/string_blankness.rb`.
+# RBS cannot fully model refinements; the bundled refinement module is
+# declared as an empty module so downstream signatures can name it.
+
+module Assistant::Refinements::StringBlankness
+end

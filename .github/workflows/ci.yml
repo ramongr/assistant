@@ -39,3 +39,15 @@ jobs:
           bundler-cache: true
       - name: Run RuboCop
         run: bundle exec rubocop --parallel
+
+  steep:
+    name: Steep
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.4'
+          bundler-cache: true
+      - name: Run Steep
+        run: bundle exec steep check --jobs=1

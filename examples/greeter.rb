@@ -14,9 +14,9 @@ require 'assistant'
 module Examples
   # Sample Service used to verify generator output type-checks.
   class Greeter < Assistant::Service
-    input :name, type: String, required: true
-    input :age, type: [Integer, Float]
-    input :nickname, type: String, allow_nil: true
+    input name: :name, type: String, required: true
+    input name: :age, type: [Integer, Float]
+    input name: :nickname, type: String, allow_nil: true
 
     def execute
       "hi #{name}"

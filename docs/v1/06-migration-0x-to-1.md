@@ -205,7 +205,7 @@ These are not required but become simpler with 1.0:
    end
 
    # after
-   input :limit, type: Integer, default: 25
+   input name: :limit, type: Integer, default: 25
    ```
 
 4. Replace explicit `nil`-tolerance with `allow_nil:`:
@@ -219,7 +219,7 @@ These are not required but become simpler with 1.0:
    end
 
    # after
-   input :note, type: String, allow_nil: true
+   input name: :note, type: String, allow_nil: true
    ```
 
 5. Replace one-of type guards with multi-type:
@@ -229,7 +229,7 @@ These are not required but become simpler with 1.0:
    input :amount, type: Numeric
 
    # after — narrower, more explicit
-   input :amount, type: [Integer, Float]
+   input name: :amount, type: [Integer, Float]
    ```
 
 ## What was **not** changed in 1.0

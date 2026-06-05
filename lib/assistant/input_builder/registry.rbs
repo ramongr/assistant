@@ -6,8 +6,8 @@ module Assistant::InputBuilder::Registry
   def input_definitions: () -> Hash[Symbol, Hash[Symbol, untyped]]
 
   def register_input_definition: (
-    Symbol attr_name,
-    untyped type,
-    Hash[Symbol, untyped] options
+    name: Symbol,
+    type: untyped,
+    options: Hash[Symbol, untyped]
   ) -> Hash[Symbol, untyped]
 end

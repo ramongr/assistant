@@ -8,7 +8,7 @@ module Assistant::InputBuilder
       a = Class.new { extend Assistant::InputBuilder }
       b = Class.new { extend Assistant::InputBuilder }
 
-      a.input(:foo, type: String)
+      a.input(name: :foo, type: String)
 
       assert_equal({ type: String }, a.input_definitions[:foo])
       assert_empty b.input_definitions
@@ -16,14 +16,14 @@ module Assistant::InputBuilder
 
     def test_register_input_definition_freezes_the_per_input_options_hash
       klass = Class.new { extend Assistant::InputBuilder }
-      klass.input(:foo, type: Integer, required: true)
+      klass.input(name: :foo, type: Integer, required: true)
 
       assert_predicate klass.input_definitions[:foo], :frozen?
     end
 
     def test_register_input_definition_records_type_and_options
       klass = Class.new { extend Assistant::InputBuilder }
-      klass.input(:limit, type: Integer, required: true, default: 25)
+      klass.input(name: :limit, type: Integer, required: true, default: 25)
 
       defn = klass.input_definitions[:limit]
 
@@ -36,7 +36,7 @@ module Assistant::InputBuilder
       bare = Class.new { extend Assistant::InputBuilder::Registry }
 
       assert_empty bare.input_definitions
-      bare.register_input_definition(:foo, String, { required: true })
+      bare.register_input_definition(name: :foo, type: String, options: { required: true })
 
       assert_equal({ type: String, required: true }, bare.input_definitions[:foo])
     end

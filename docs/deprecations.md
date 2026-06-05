@@ -23,7 +23,7 @@ The deprecation policy is one full minor cycle: anything marked here in
 ### What changed
 
 Per-input requirement validators are now generated under their
-grammatically correct names. For each `input :name, required: true`
+grammatically correct names. For each `input name: :name, required: true`
 declaration, `Assistant::Service` subclasses gain:
 
 | Canonical (use this)                          | Deprecated alias (still works, warns once per call site) |

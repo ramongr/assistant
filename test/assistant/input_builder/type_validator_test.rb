@@ -8,7 +8,7 @@ module Assistant::InputBuilder
 
     def test_type_validator_logs_error_on_mismatch
       klass = Class.new(Assistant::Service) do
-        input :one, type: String
+        input name: :one, type: String
         def execute = 'Hello World'
       end
 
@@ -20,7 +20,7 @@ module Assistant::InputBuilder
 
     def test_type_validator_passes_when_input_absent_and_optional
       klass = Class.new(Assistant::Service) do
-        input :one, type: String
+        input name: :one, type: String
         def execute = 'Hello World'
       end
 
@@ -33,7 +33,7 @@ module Assistant::InputBuilder
     def test_single_type_error_message_format_is_unchanged
       # Back-compat: single-type stays "is not a X but Y" (no brackets).
       klass = Class.new(Assistant::Service) do
-        input :one, type: String
+        input name: :one, type: String
         def execute = one
       end
 
@@ -47,7 +47,7 @@ module Assistant::InputBuilder
     def test_allow_nil_false_without_required_silently_accepts_nil_back_compat
       # Pre-M2 behaviour: an explicit nil on an optional input produces no error.
       klass = Class.new(Assistant::Service) do
-        input :note, type: String
+        input name: :note, type: String
         def execute = :ok
       end
 
@@ -60,7 +60,7 @@ module Assistant::InputBuilder
 
     def test_allow_nil_true_explicitly_accepts_nil_on_type_check
       klass = Class.new(Assistant::Service) do
-        input :note, type: String, allow_nil: true
+        input name: :note, type: String, allow_nil: true
         def execute = note
       end
 
@@ -78,7 +78,7 @@ module Assistant::InputBuilder
       # this turns off type-checking for that input, mirroring the
       # behaviour of the require validator.
       klass = Class.new(Assistant::Service) do
-        input :note, type: String, allow_nil: true
+        input name: :note, type: String, allow_nil: true
         def execute = note
       end
 
@@ -93,7 +93,7 @@ module Assistant::InputBuilder
 
     def test_multi_type_accepts_first_member_type
       klass = Class.new(Assistant::Service) do
-        input :amount, type: [Integer, Float]
+        input name: :amount, type: [Integer, Float]
         def execute = amount
       end
 
@@ -105,7 +105,7 @@ module Assistant::InputBuilder
 
     def test_multi_type_accepts_second_member_type
       klass = Class.new(Assistant::Service) do
-        input :amount, type: [Integer, Float]
+        input name: :amount, type: [Integer, Float]
         def execute = amount
       end
 
@@ -117,7 +117,7 @@ module Assistant::InputBuilder
 
     def test_multi_type_logs_error_with_union_message_on_non_member
       klass = Class.new(Assistant::Service) do
-        input :amount, type: [Integer, Float]
+        input name: :amount, type: [Integer, Float]
         def execute = amount
       end
 
@@ -132,7 +132,7 @@ module Assistant::InputBuilder
 
     def test_multi_type_passes_when_input_absent_and_optional
       klass = Class.new(Assistant::Service) do
-        input :amount, type: [Integer, Float]
+        input name: :amount, type: [Integer, Float]
         def execute = :ok
       end
 
@@ -146,14 +146,14 @@ module Assistant::InputBuilder
 
     def test_type_mismatch_message_builder_single_type
       bare = Class.new { extend Assistant::InputBuilder::TypeValidator }
-      msg  = bare.type_mismatch_message_builder(:limit, [Integer]).call(String)
+      msg  = bare.type_mismatch_message_builder(name: :limit, types: [Integer]).call(String)
 
       assert_equal 'Service argument with name limit is not a Integer but String', msg
     end
 
     def test_type_mismatch_message_builder_multi_type
       bare = Class.new { extend Assistant::InputBuilder::TypeValidator }
-      msg  = bare.type_mismatch_message_builder(:amount, [Integer, Float]).call(String)
+      msg  = bare.type_mismatch_message_builder(name: :amount, types: [Integer, Float]).call(String)
 
       assert_equal 'Service argument with name amount is not one of [Integer, Float] but String', msg
     end

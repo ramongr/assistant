@@ -3,9 +3,9 @@
 # default providers; warns on shared mutable literals.
 
 module Assistant::InputBuilder::DefaultOption
-  def process_default_option: (Symbol attr_name, untyped default) -> void
+  def process_default_option: (name: Symbol, default: untyped) -> void
 
-  def validate_default!: (Symbol attr_name, untyped default) -> void
+  def validate_default!: (name: Symbol, default: untyped) -> void
 
-  def warn_on_mutable_default: (Symbol attr_name, untyped default) -> void
+  def warn_on_mutable_default: (name: Symbol, default: untyped) -> void
 end

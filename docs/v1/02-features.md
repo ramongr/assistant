@@ -14,10 +14,10 @@ placeholder. Status uses the legend in [`README.md`](./README.md).
   Defaults are the single most-requested service-object affordance.
 - **API sketch**:
   ```ruby
-  input :limit,     type: Integer, default: 25
-  input :now,       type: Time,    default: -> { Time.now }
-  input :tags,      type: Array,   default: -> { [] }
-  input :threshold, type: Float,   default: -> { ENV.fetch("THRESHOLD", "0.5").to_f }
+  input name: :limit,     type: Integer, default: 25
+  input name: :now,       type: Time,    default: -> { Time.now }
+  input name: :tags,      type: Array,   default: -> { [] }
+  input name: :threshold, type: Float,   default: -> { ENV.fetch("THRESHOLD", "0.5").to_f }
   ```
 
 #### Formal semantics
@@ -52,8 +52,8 @@ provider is consulted exactly once per service instance, during
    cannot read other inputs:
    ```ruby
    # NOT supported — defaults cannot depend on other inputs in 1.0.
-   input :a, type: Integer
-   input :b, type: Integer, default: -> { a * 2 }   # NameError at run time
+   input name: :a, type: Integer
+   input name: :b, type: Integer, default: -> { a * 2 }   # NameError at run time
    ```
    Inter-input defaults are deferred to 1.x (see "Open follow-ups" below).
 4. **Ordering inside `#initialize`**:
@@ -76,7 +76,7 @@ provider is consulted exactly once per service instance, during
    combination is allowed and idiomatic for "this input must have a
    value, here's a sensible one":
    ```ruby
-   input :limit, type: Integer, required: true, default: 25
+   input name: :limit, type: Integer, required: true, default: 25
    ```
 7. **Interaction with the `if:` conditional requirement** — the `if:`
    predicate is evaluated **after** defaulting, so it always sees a
@@ -129,9 +129,9 @@ provider is consulted exactly once per service instance, during
 
 ```ruby
 class FetchUsers < Assistant::Service
-  input :limit,  type: Integer, required: true, default: 25
-  input :cursor, type: String,  optional: true                  # no default -> nil
-  input :now,    type: Time,    default: -> { Time.now }
+  input name: :limit,  type: Integer, required: true, default: 25
+  input name: :cursor, type: String,  optional: true                  # no default -> nil
+  input name: :now,    type: Time,    default: -> { Time.now }
 
   def execute
     { limit:, cursor:, now: }
@@ -196,8 +196,8 @@ documented to avoid surprise.
   can either reject `nil` or accept it.
 - **API sketch**:
   ```ruby
-  input :note, type: String, allow_nil: true   # nil is OK, otherwise must be String
-  input :note, type: String                    # nil is treated as missing (current behaviour)
+  input name: :note, type: String, allow_nil: true   # nil is OK, otherwise must be String
+  input name: :note, type: String                    # nil is treated as missing (current behaviour)
   ```
 - **Test plan**: cases for explicit `nil` with and without `allow_nil:`, with
   and without `required: true`.
@@ -212,7 +212,7 @@ documented to avoid surprise.
   String".
 - **API sketch**:
   ```ruby
-  input :amount, type: [Integer, Float]
+  input name: :amount, type: [Integer, Float]
   ```
   `valid_type_amount?` passes if `@inputs[:amount].is_a?` matches **any** of
   the listed types.
@@ -294,13 +294,13 @@ documented to avoid surprise.
   lets the DSL raise on contradictory declarations.
 - **API sketch**:
   ```ruby
-  input :nickname, type: String, optional: true   # explicit; same runtime
-                                                  # behaviour as omitting the flag
+  input name: :nickname, type: String, optional: true   # explicit; same runtime
+                                                        # behaviour as omitting the flag
 
-  input :email, type: String, required: true      # unchanged
+  input name: :email, type: String, required: true      # unchanged
 
   # Contradiction — raises ArgumentError at class-definition time:
-  input :foo, type: String, required: true, optional: true
+  input name: :foo, type: String, required: true, optional: true
   ```
   Semantics:
   - `optional: true` is the default when neither `required:` nor
@@ -570,7 +570,7 @@ documented to avoid surprise.
     and the README quickstart examples updated to the new form during
     Phase 4.
 - **Owner**: _TBD_.
-- **Status**: `[ ]`.
+- **Status**: `[x]`.
 
 ### M13. Split `Assistant::InputBuilder` into per-concern submodules
 

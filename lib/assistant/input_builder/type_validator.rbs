@@ -2,17 +2,17 @@
 # (M3 multi-type; M2 `allow_nil:`).
 
 module Assistant::InputBuilder::TypeValidator
-  def input_type_validator_meth: (Symbol attr_name, untyped type, **untyped) -> Symbol
+  def input_type_validator_meth: (name: Symbol, type: untyped, **untyped) -> Symbol
 
   def type_validator_body: (
-    Symbol attr_name,
-    Array[untyped] types,
-    bool allow_nil,
-    ^(Class) -> String message_builder
+    name: Symbol,
+    types: Array[untyped],
+    allow_nil: bool,
+    message_builder: ^(Class) -> String
   ) -> ^() -> bool
 
   def type_mismatch_message_builder: (
-    Symbol attr_name,
-    Array[untyped] types
+    name: Symbol,
+    types: Array[untyped]
   ) -> ^(Class) -> String
 end

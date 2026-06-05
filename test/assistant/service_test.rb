@@ -51,7 +51,7 @@ module Assistant
 
     def test_service_with_optional_input_executes_successfully
       klass = Class.new(Assistant::Service) do
-        input :one, type: Integer
+        input name: :one, type: Integer
         def execute = true
       end
 
@@ -63,7 +63,7 @@ module Assistant
 
     def test_service_with_required_input_missing_returns_errors
       klass = Class.new(Assistant::Service) do
-        input :one, type: Integer, required: true
+        input name: :one, type: Integer, required: true
         def execute = true
       end
 
@@ -76,7 +76,7 @@ module Assistant
 
     def test_service_with_required_string_input_treats_whitespace_as_missing
       klass = Class.new(Assistant::Service) do
-        input :name, type: String, required: true
+        input name: :name, type: String, required: true
         def execute = true
       end
 
@@ -91,7 +91,7 @@ module Assistant
 
     def test_custom_validate_with_error_log_fails
       klass = Class.new(Assistant::Service) do
-        input :one, type: Integer
+        input name: :one, type: Integer
         def validate
           add_log(level: :error, detail: :base, source: :validate, message: 'boom')
         end
@@ -107,7 +107,7 @@ module Assistant
 
     def test_custom_validate_with_warning_log_succeeds_with_warnings
       klass = Class.new(Assistant::Service) do
-        input :one, type: Integer
+        input name: :one, type: Integer
         def validate
           add_log(level: :warning, detail: :base, source: :validate, message: 'heads up')
         end
@@ -249,7 +249,7 @@ module Assistant
     def test_failing_run_fires_started_validated_failed_in_order
       events = with_recording_notifier
       klass = Class.new(Assistant::Service) do
-        input :one, type: Integer, required: true
+        input name: :one, type: Integer, required: true
         def execute = true
       end
 
@@ -261,7 +261,7 @@ module Assistant
     def test_failing_run_does_not_fire_service_executed
       events = with_recording_notifier
       klass = Class.new(Assistant::Service) do
-        input :one, type: Integer, required: true
+        input name: :one, type: Integer, required: true
         def execute = true
       end
 
@@ -347,7 +347,7 @@ module Assistant
 
     def build_doubler_service
       Class.new(Assistant::Service) do
-        input :n, type: Integer, required: true
+        input name: :n, type: Integer, required: true
         def execute = n * 2
       end
     end
@@ -535,8 +535,8 @@ module Assistant
 
     def test_input_snapshot_returns_data_instance_with_declared_members
       klass = Class.new(Assistant::Service) do
-        input :name, type: String, required: true
-        input :age,  type: Integer
+        input name: :name, type: String, required: true
+        input name: :age,  type: Integer
       end
 
       snapshot = klass.new(name: 'Ada', age: 37).input_snapshot
@@ -548,9 +548,9 @@ module Assistant
 
     def test_input_snapshot_preserves_declaration_order
       klass = Class.new(Assistant::Service) do
-        input :z, type: Integer
-        input :a, type: Integer
-        input :m, type: Integer
+        input name: :z, type: Integer
+        input name: :a, type: Integer
+        input name: :m, type: Integer
       end
 
       snapshot = klass.new(z: 1, a: 2, m: 3).input_snapshot
@@ -560,7 +560,7 @@ module Assistant
 
     def test_input_snapshot_is_structurally_immutable
       klass = Class.new(Assistant::Service) do
-        input :n, type: Integer
+        input name: :n, type: Integer
       end
 
       snapshot = klass.new(n: 1).input_snapshot
@@ -571,8 +571,8 @@ module Assistant
 
     def test_input_snapshot_reflects_m1_defaults
       klass = Class.new(Assistant::Service) do
-        input :limit, type: Integer, default: 25
-        input :now,   type: Time,    default: -> { Time.utc(2024, 1, 1) }
+        input name: :limit, type: Integer, default: 25
+        input name: :now,   type: Time,    default: -> { Time.utc(2024, 1, 1) }
       end
 
       snapshot = klass.new.input_snapshot
@@ -583,7 +583,7 @@ module Assistant
 
     def test_input_snapshot_with_m2_allow_nil_keeps_explicit_nil
       klass = Class.new(Assistant::Service) do
-        input :note, type: String, allow_nil: true
+        input name: :note, type: String, allow_nil: true
       end
 
       snapshot = klass.new(note: nil).input_snapshot
@@ -597,7 +597,7 @@ module Assistant
       # honoured and the default is skipped. The snapshot reflects
       # that post-`apply_input_defaults` value.
       klass = Class.new(Assistant::Service) do
-        input :note, type: String, default: 'hi', allow_nil: true
+        input name: :note, type: String, default: 'hi', allow_nil: true
       end
 
       assert_nil klass.new(note: nil).input_snapshot.note
@@ -606,7 +606,7 @@ module Assistant
 
     def test_input_snapshot_excludes_undeclared_kwargs
       klass = Class.new(Assistant::Service) do
-        input :declared, type: String
+        input name: :declared, type: String
       end
 
       snapshot = klass.new(declared: 'yes', undeclared: 'no').input_snapshot
@@ -627,7 +627,7 @@ module Assistant
       # require successful #run. A missing required input simply
       # surfaces as nil, matching the per-input getter behaviour.
       klass = Class.new(Assistant::Service) do
-        input :name, type: String, required: true
+        input name: :name, type: String, required: true
       end
 
       snapshot = klass.new.input_snapshot
@@ -637,25 +637,25 @@ module Assistant
 
     def test_input_snapshot_class_is_memoised_per_subclass
       klass = Class.new(Assistant::Service) do
-        input :n, type: Integer
+        input name: :n, type: Integer
       end
 
       assert_same klass.input_snapshot_class, klass.input_snapshot_class
     end
 
     def test_input_snapshot_class_differs_between_subclasses
-      one = Class.new(Assistant::Service) { input :a, type: Integer }
-      two = Class.new(Assistant::Service) { input :b, type: Integer }
+      one = Class.new(Assistant::Service) { input name: :a, type: Integer }
+      two = Class.new(Assistant::Service) { input name: :b, type: Integer }
 
       refute_same one.input_snapshot_class, two.input_snapshot_class
     end
 
     def test_input_snapshot_class_rebuilds_when_definitions_change
       klass = Class.new(Assistant::Service)
-      klass.input :a, type: Integer
+      klass.input name: :a, type: Integer
       first = klass.input_snapshot_class
 
-      klass.input :b, type: Integer
+      klass.input name: :b, type: Integer
       second = klass.input_snapshot_class
 
       refute_same first, second
@@ -664,7 +664,7 @@ module Assistant
 
     def test_input_snapshot_returns_fresh_instance_each_call
       klass = Class.new(Assistant::Service) do
-        input :n, type: Integer
+        input name: :n, type: Integer
       end
       svc = klass.new(n: 1)
 
@@ -680,7 +680,7 @@ module Assistant
       # a mutable input value is the same object in the snapshot.
       mutable = [1, 2, 3]
       klass = Class.new(Assistant::Service) do
-        input :xs, type: Array
+        input name: :xs, type: Array
       end
 
       snapshot = klass.new(xs: mutable).input_snapshot
@@ -690,7 +690,7 @@ module Assistant
 
     def test_input_snapshot_callable_from_inside_execute
       klass = Class.new(Assistant::Service) do
-        input :n, type: Integer, required: true
+        input name: :n, type: Integer, required: true
         def execute = input_snapshot.n * 10
       end
 

@@ -6,7 +6,7 @@ module Assistant::InputBuilder
   class DslTest < Minitest::Test
     def test_inputs_plural_declares_getters_and_validators_for_each_name
       klass = Class.new(Assistant::Service) do
-        inputs %i[a b c], type: Integer, required: true
+        inputs names: %i[a b c], type: Integer, required: true
         def execute = [a, b, c].sum
       end
 
@@ -19,7 +19,7 @@ module Assistant::InputBuilder
 
     def test_inputs_plural_errors_when_any_input_is_missing
       klass = Class.new(Assistant::Service) do
-        inputs %i[a b c], type: Integer, required: true
+        inputs names: %i[a b c], type: Integer, required: true
         def execute = [a, b, c].sum
       end
 
@@ -31,7 +31,7 @@ module Assistant::InputBuilder
 
     def test_inputs_plural_succeeds_with_full_set
       klass = Class.new(Assistant::Service) do
-        inputs %i[a b c], type: Integer, required: true
+        inputs names: %i[a b c], type: Integer, required: true
         def execute = [a, b, c].sum
       end
 

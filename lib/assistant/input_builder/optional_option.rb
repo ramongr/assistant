@@ -5,8 +5,8 @@
 # `optional: false`). Mirrors `DefaultOption`'s shape so the `#input`
 # call site stays one line per option family.
 module Assistant::InputBuilder::OptionalOption
-  def process_optional_option(attr_name, options)
-    validate_optional!(attr_name, options)
+  def process_optional_option(name:, options:)
+    validate_optional!(name:, options:)
     apply_optional_option(options)
   end
 
@@ -14,14 +14,14 @@ module Assistant::InputBuilder::OptionalOption
   # `required: true` is a contradiction. Both rules raise
   # `ArgumentError` at class-definition time, before any method is
   # generated.
-  def validate_optional!(attr_name, options)
+  def validate_optional!(name:, options:)
     optional = options[:optional]
     unless [true, false].include?(optional)
-      raise ArgumentError, "optional: for input :#{attr_name} must be true or false, got #{optional.inspect}"
+      raise ArgumentError, "optional: for input :#{name} must be true or false, got #{optional.inspect}"
     end
     return unless optional == true && options[:required] == true
 
-    raise ArgumentError, "input :#{attr_name} cannot be both required: true and optional: true"
+    raise ArgumentError, "input :#{name} cannot be both required: true and optional: true"
   end
 
   # M7: pure translation of the validated `optional:` value into the

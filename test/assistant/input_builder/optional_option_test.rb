@@ -8,7 +8,7 @@ module Assistant::InputBuilder
 
     def test_optional_true_runs_cleanly_when_key_absent
       klass = Class.new(Assistant::Service) do
-        input :nickname, type: String, optional: true
+        input name: :nickname, type: String, optional: true
         def execute = nickname || :missing
       end
 
@@ -21,7 +21,7 @@ module Assistant::InputBuilder
 
     def test_optional_true_alone_does_not_generate_require_validator
       klass = Class.new(Assistant::Service) do
-        input :nickname, type: String, optional: true
+        input name: :nickname, type: String, optional: true
       end
 
       refute_includes klass.instance_methods, :valid_required_nickname?
@@ -30,7 +30,7 @@ module Assistant::InputBuilder
 
     def test_optional_false_is_equivalent_to_required_true
       klass = Class.new(Assistant::Service) do
-        input :email, type: String, optional: false
+        input name: :email, type: String, optional: false
         def execute = email
       end
 
@@ -45,7 +45,7 @@ module Assistant::InputBuilder
     def test_required_true_and_optional_true_together_raise_at_class_definition
       error = assert_raises(ArgumentError) do
         Class.new(Assistant::Service) do
-          input :foo, type: String, required: true, optional: true
+          input name: :foo, type: String, required: true, optional: true
         end
       end
 
@@ -55,7 +55,7 @@ module Assistant::InputBuilder
     def test_non_boolean_optional_raises_at_class_definition
       error = assert_raises(ArgumentError) do
         Class.new(Assistant::Service) do
-          input :foo, type: String, optional: :sometimes
+          input name: :foo, type: String, optional: :sometimes
         end
       end
 
@@ -64,7 +64,7 @@ module Assistant::InputBuilder
 
     def test_optional_true_with_default_applies_default_when_key_absent
       klass = Class.new(Assistant::Service) do
-        input :limit, type: Integer, optional: true, default: 25
+        input name: :limit, type: Integer, optional: true, default: 25
         def execute = limit
       end
 
@@ -76,7 +76,7 @@ module Assistant::InputBuilder
 
     def test_optional_true_with_allow_nil_accepts_explicit_nil
       klass = Class.new(Assistant::Service) do
-        input :note, type: String, optional: true, allow_nil: true
+        input name: :note, type: String, optional: true, allow_nil: true
         def execute = note
       end
 
@@ -89,7 +89,7 @@ module Assistant::InputBuilder
 
     def test_optional_flag_is_retained_in_input_definitions
       klass = Class.new(Assistant::Service) do
-        input :nickname, type: String, optional: true
+        input name: :nickname, type: String, optional: true
       end
 
       assert(klass.input_definitions[:nickname][:optional])
@@ -101,7 +101,7 @@ module Assistant::InputBuilder
       bare = Class.new { extend Assistant::InputBuilder::OptionalOption }
 
       error = assert_raises(ArgumentError) do
-        bare.validate_optional!(:foo, { optional: :sometimes })
+        bare.validate_optional!(name: :foo, options: { optional: :sometimes })
       end
 
       assert_match(/optional: for input :foo must be true or false/, error.message)
@@ -111,7 +111,7 @@ module Assistant::InputBuilder
       bare = Class.new { extend Assistant::InputBuilder::OptionalOption }
 
       error = assert_raises(ArgumentError) do
-        bare.validate_optional!(:foo, { optional: true, required: true })
+        bare.validate_optional!(name: :foo, options: { optional: true, required: true })
       end
 
       assert_match(/cannot be both required: true and optional: true/, error.message)
@@ -120,8 +120,8 @@ module Assistant::InputBuilder
     def test_validate_optional_bang_returns_nil_on_valid_options
       bare = Class.new { extend Assistant::InputBuilder::OptionalOption }
 
-      assert_nil bare.validate_optional!(:foo, { optional: true })
-      assert_nil bare.validate_optional!(:foo, { optional: false })
+      assert_nil bare.validate_optional!(name: :foo, options: { optional: true })
+      assert_nil bare.validate_optional!(name: :foo, options: { optional: false })
     end
 
     def test_apply_optional_option_translates_false_to_required_true

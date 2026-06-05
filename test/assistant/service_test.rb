@@ -342,5 +342,193 @@ module Assistant
 
       assert_empty stderr
     end
+
+    # ---- M-S2: call_service composition ----
+
+    def build_doubler_service
+      Class.new(Assistant::Service) do
+        input :n, type: Integer, required: true
+        def execute = n * 2
+      end
+    end
+
+    def build_warner_service
+      Class.new(Assistant::Service) do
+        def validate
+          add_log(level: :warning, source: :validate, detail: :slow, message: 'heads up')
+        end
+
+        def execute = :inner_ok
+      end
+    end
+
+    def test_call_service_returns_inner_service_instance
+      doubler = build_doubler_service
+      outer_class = Class.new(Assistant::Service)
+      outer_class.define_method(:execute) { call_service(doubler, n: 21) }
+
+      outer = outer_class.new
+      outer.run
+
+      assert_kind_of doubler, outer.result
+      assert_equal 42, outer.result.result
+    end
+
+    def test_call_service_passes_keyword_inputs_to_inner
+      doubler = build_doubler_service
+      outer_class = Class.new(Assistant::Service)
+      outer_class.define_method(:execute) { call_service(doubler, n: 7).result }
+
+      outcome = outer_class.run
+
+      assert_equal 14, outcome[:result]
+      assert_equal :ok, outcome[:status]
+    end
+
+    def test_call_service_merges_inner_logs_into_outer
+      warner = build_warner_service
+      outer_class = Class.new(Assistant::Service)
+      outer_class.define_method(:execute) { call_service(warner) }
+
+      outer = outer_class.new
+      outer.run
+
+      assert_equal 1, outer.logs.size
+      assert_equal :warning, outer.logs.first.level
+      assert_equal 'heads up', outer.logs.first.message
+    end
+
+    def test_call_service_inner_warning_propagates_to_with_warnings_status
+      warner = build_warner_service
+      outer_class = Class.new(Assistant::Service)
+      outer_class.define_method(:execute) { call_service(warner) }
+
+      outcome = outer_class.run
+
+      assert_equal :with_warnings, outcome[:status]
+      assert_equal 1, outcome[:warnings].size
+    end
+
+    def test_call_service_inner_error_propagates_to_with_errors_status
+      doubler = build_doubler_service
+      outer_class = Class.new(Assistant::Service)
+      outer_class.define_method(:execute) { call_service(doubler) } # missing required :n
+
+      outcome = outer_class.run
+
+      assert_equal :with_errors, outcome[:status]
+      assert_nil outcome[:result]
+      refute_empty outcome[:errors]
+    end
+
+    def test_call_service_outer_failure_predicate_reflects_inner_error
+      doubler = build_doubler_service
+      outer_class = Class.new(Assistant::Service)
+      outer_class.define_method(:execute) do
+        call_service(doubler) # missing :n -> inner failure
+        :outer_executed
+      end
+
+      outer = outer_class.new
+      outer.run
+
+      assert_predicate outer, :failure?
+    end
+
+    def test_call_service_allows_early_return_pattern_from_features_doc
+      doubler = build_doubler_service
+      outer_class = Class.new(Assistant::Service)
+      outer_class.define_method(:execute) do
+        inner = call_service(doubler) # missing :n -> failure
+        return if failure?
+
+        inner.result + 1
+      end
+
+      outcome = outer_class.run
+
+      assert_equal :with_errors, outcome[:status]
+      assert_nil outcome[:result]
+    end
+
+    def test_call_service_log_order_preserves_outer_then_inner_then_outer
+      doubler = build_doubler_service
+      outer_class = Class.new(Assistant::Service)
+      outer_class.define_method(:execute) do
+        add_log(level: :info, source: :execute, detail: :before, message: 'pre')
+        call_service(doubler, n: 1)
+        add_log(level: :info, source: :execute, detail: :after, message: 'post')
+      end
+
+      outer = outer_class.new
+      outer.run
+
+      # inner doubler logs nothing, so only the two outer infos are present
+      assert_equal %i[before after], outer.logs.map(&:detail)
+    end
+
+    def test_call_service_multiple_inner_errors_all_propagate
+      doubler = build_doubler_service
+      outer_class = Class.new(Assistant::Service)
+      outer_class.define_method(:execute) do
+        call_service(doubler) # error 1
+        call_service(doubler) # error 2
+      end
+
+      outcome = outer_class.run
+
+      assert_equal :with_errors, outcome[:status]
+      assert_equal 2, outcome[:errors].size
+    end
+
+    def test_call_service_with_non_class_raises_argument_error
+      outer = Assistant::Service.new
+      error = assert_raises(ArgumentError) { outer.send(:call_service, :not_a_class) }
+
+      assert_match(/Assistant::Service subclass/, error.message)
+    end
+
+    def test_call_service_with_non_service_class_raises_argument_error
+      outer = Assistant::Service.new
+      error = assert_raises(ArgumentError) { outer.send(:call_service, String) }
+
+      assert_match(/Assistant::Service subclass/, error.message)
+    end
+
+    def test_call_service_with_service_base_class_itself_is_allowed
+      outer_class = Class.new(Assistant::Service)
+      outer_class.define_method(:execute) { call_service(Assistant::Service) }
+
+      outcome = outer_class.run
+
+      assert_equal :ok, outcome[:status]
+    end
+
+    def test_call_service_does_not_swallow_inner_execute_exceptions
+      raiser = Class.new(Assistant::Service) do
+        def execute = raise 'inner boom'
+      end
+
+      outer_class = Class.new(Assistant::Service)
+      outer_class.define_method(:execute) { call_service(raiser) }
+
+      assert_raises(RuntimeError) { outer_class.run }
+    end
+
+    def test_call_service_inner_notifier_events_fire_independently
+      events = with_recording_notifier
+      doubler = build_doubler_service
+      outer_class = Class.new(Assistant::Service)
+      outer_class.define_method(:execute) { call_service(doubler, n: 1) }
+
+      outer_class.run
+
+      # outer: started, validated, executed; inner: started, validated, executed.
+      # Notifier sees both lifecycles, ordered by emission.
+      assert_equal 6, events.size
+      assert_equal %i[service_started service_validated service_started service_validated
+                      service_executed service_executed],
+                   events.map(&:first)
+    end
   end
 end

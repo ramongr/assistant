@@ -10,6 +10,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- `Assistant::Service#call_service(klass, **inputs)` — instance-level
+  helper for composing services. Constructs an instance of `klass`
+  (asserted to be an `Assistant::Service` subclass; raises
+  `ArgumentError` otherwise), invokes `inner.run`, merges the inner
+  service's full log timeline (info + warning + error) onto the outer
+  service via `merge_logs`, and returns the inner instance. Because
+  `Service#errors` / `#warnings` / `#status` are derived by filtering
+  `@logs`, inner errors automatically downgrade the outer terminal
+  status to `:with_errors` and inner warnings surface as
+  `:with_warnings` (when no errors are present), without any branching
+  in the caller. Exceptions raised by the inner service's `#execute`
+  or by `Assistant.notifier` are not rescued; they propagate to the
+  caller, matching the base `Service#run` contract. The inner service
+  fires its own `:service_started`/`:service_validated`/
+  `:service_executed`/`:service_failed` events independently of the
+  outer lifecycle. (M-S2, v1 plan)
+
 - `before_execute`, `after_execute { |result| }`, and
   `around_execute { |&blk| ... }` class-level DSL on
   `Assistant::Service` for wrapping `#execute` with reusable hooks.

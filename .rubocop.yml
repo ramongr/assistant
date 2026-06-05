@@ -80,6 +80,13 @@ Metrics/MethodLength:
   Exclude:
     - 'test/**/*.rb'
 
+# Test files use anonymous Class.new blocks with multiple assertions
+# that inflate ABC counts beyond the cop's heuristic without reflecting
+# real branching complexity.
+Metrics/AbcSize:
+  Exclude:
+    - 'test/**/*.rb'
+
 Naming/MethodParameterName:
   AllowedNames:
     - a

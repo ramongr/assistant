@@ -646,7 +646,7 @@ documented to avoid surprise.
   logged via `add_log(level: :error, source: :hook, …)`; they never
   propagate out of `#run`. Around-hook composition uses the inner-most
   block last (declaration order wraps).
-- **Status**: `[ ]`.
+- **Status**: `[x]` — shipped on `feature/m-s1-execute-callbacks`.
 
 ### M-S2. Service composition primitive
 

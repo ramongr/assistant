@@ -10,6 +10,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- `before_execute`, `after_execute { |result| }`, and
+  `around_execute { |&blk| ... }` class-level DSL on
+  `Assistant::Service` for wrapping `#execute` with reusable hooks.
+  Hooks are `instance_exec`'d on the service (so `self` is the service
+  instance) and execute after validation in declaration order; the
+  first-declared `around_execute` is the outermost layer. Hooks are
+  inherited at subclass-definition time via an array snapshot — later
+  additions on the parent do not bleed into existing subclasses. Errors
+  raised inside any hook are caught, never propagate out of `#run`,
+  and are logged via `add_log(level: :error, source: :hook, detail:
+  <hook_type>, message: "<ErrorClass>: <message>", trace: backtrace)`.
+  A hook-logged error downgrades the terminal lifecycle event to
+  `:service_failed` and the run payload to `{ errors:, result: nil,
+  status: :with_errors }`; the actual execute return value remains
+  accessible via `service.result`. (M-S1, v1 plan)
+
 - `Assistant.notifier` and `Assistant.notifier=` — module-level
   configuration accessor for an instrumentation callable. The default
   notifier is a frozen no-op lambda (`Assistant::DEFAULT_NOTIFIER`);

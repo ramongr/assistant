@@ -22,6 +22,19 @@ module Assistant
       def run(**)
         new(**).run
       end
+
+      # M-S4: per-subclass `Data` class whose members are the declared
+      # input names, in declaration order. Memoised on the subclass and
+      # transparently rebuilt if `input_definitions` changes (e.g. a
+      # late `input :foo` after the first snapshot call). Used by
+      # `Service#input_snapshot`; users normally never touch it.
+      def input_snapshot_class
+        keys = input_definitions.keys
+        return @input_snapshot_class if @input_snapshot_class && @input_snapshot_class_keys == keys
+
+        @input_snapshot_class_keys = keys
+        @input_snapshot_class = Data.define(*keys)
+      end
     end
 
     def initialize(**args)
@@ -101,6 +114,39 @@ module Assistant
       inner.run
       merge_logs(inner.logs)
       inner
+    end
+
+    # M-S4: a read-only `Data` view over the declared inputs of this
+    # service, post-`default:` / post-`allow_nil:`. Members are the
+    # input names declared via `Service.input` / `Service.inputs`, in
+    # declaration order; values are read from `@inputs` after
+    # `apply_input_defaults` has run, so callers see the same values
+    # the per-input getters expose.
+    #
+    #   class Greet < Assistant::Service
+    #     input :name, type: String, required: true
+    #     input :loud, type: TrueClass, default: false
+    #   end
+    #
+    #   Greet.new(name: 'Ada').input_snapshot
+    #   # => #<data name="Ada", loud=false>
+    #
+    # The returned object is a `Data` instance, so it is structurally
+    # immutable: no member can be reassigned. Member values that are
+    # themselves mutable (e.g. an `Array` passed as an input) keep
+    # their normal mutability — the snapshot does not deep-freeze.
+    #
+    # Only declared inputs appear in the snapshot. Extra keyword
+    # arguments accepted by `#initialize` (which live in `@inputs`
+    # but have no `input :foo` declaration) are intentionally excluded
+    # so the snapshot's shape matches the public DSL.
+    #
+    # A declared input with no default and no caller-supplied value
+    # appears with a `nil` member value, mirroring the behaviour of
+    # the per-input getter.
+    def input_snapshot
+      keys = self.class.input_definitions.keys
+      self.class.input_snapshot_class.new(**keys.to_h { |name| [name, @inputs[name]] })
     end
 
     private

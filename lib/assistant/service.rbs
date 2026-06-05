@@ -36,6 +36,11 @@ class Assistant::Service
 
   def status: () -> Symbol
 
+  # M-S2: run a child `Assistant::Service` subclass, merge its log
+  # timeline into `self`, return the inner instance. Raises
+  # ArgumentError if `klass` is not an `Assistant::Service` subclass.
+  def call_service: (Class klass, **untyped inputs) -> Assistant::Service
+
   private
 
   attr_reader inputs: Hash[Symbol, untyped]

@@ -670,7 +670,7 @@ documented to avoid surprise.
   status becomes `:with_errors` automatically.
 - **Risk**: medium. Need to be explicit about whether warnings propagate
   (yes) and whether errors are translated (no — they're appended verbatim).
-- **Status**: `[ ]`.
+- **Status**: `[x]` — shipped on `feature/m-s2-call-service`.
 
 ### M-S3. Instrumentation hook
 

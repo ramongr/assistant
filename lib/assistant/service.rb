@@ -63,6 +63,46 @@ module Assistant
       warnings.empty? ? :ok : :with_warnings
     end
 
+    # M-S2: instantiate `klass`, run it, merge its log timeline into the
+    # current service, and return the inner service instance.
+    #
+    # The full log timeline of the inner service (info + warning +
+    # error) is concatenated onto the outer service's `@logs` via
+    # `merge_logs`. Because the outer service's `errors`, `warnings`,
+    # and `status` are derived by filtering `@logs`, an inner error
+    # automatically downgrades the outer terminal status to
+    # `:with_errors`, and inner warnings surface as `:with_warnings`
+    # when no errors are present — without any special handling in
+    # the caller.
+    #
+    # The returned inner instance exposes `#result`, `#success?`,
+    # `#failure?`, etc. so the caller can branch on the inner outcome:
+    #
+    #   def execute
+    #     other = call_service(OtherService, foo: 1)
+    #     return if failure?
+    #     other.result + 1
+    #   end
+    #
+    # `call_service` does **not** rescue exceptions raised by the inner
+    # service's `#execute` or by `Assistant.notifier`; those propagate
+    # to the caller, matching the base `Service#run` contract. To run
+    # an inner service that may raise, wrap the call in a `begin/rescue`
+    # and use `add_log(level: :error, …)` to record the failure.
+    #
+    # Raises `ArgumentError` if `klass` is not an `Assistant::Service`
+    # subclass — the check happens before any instance is constructed.
+    def call_service(klass, **inputs)
+      unless klass.is_a?(Class) && klass <= Assistant::Service
+        raise ArgumentError, "call_service expects an Assistant::Service subclass, got #{klass.inspect}"
+      end
+
+      inner = klass.new(**inputs)
+      inner.run
+      merge_logs(inner.logs)
+      inner
+    end
+
     private
 
     # Build the success-path result hash and fire the terminal

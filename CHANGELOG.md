@@ -10,6 +10,27 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- `Assistant::Service#input_snapshot` — returns a frozen `Data`
+  instance whose members are the declared input names (via
+  `Service.input` / `Service.inputs`), in declaration order, with
+  values read from `@inputs` after `apply_input_defaults` has run. The
+  snapshot therefore reflects post-`default:` and post-`allow_nil:`
+  values, matching what the per-input getters expose. Only declared
+  inputs appear; extra keyword arguments accepted by `#initialize`
+  (which live in `@inputs` but have no `input :foo` declaration) are
+  intentionally excluded so the snapshot's shape mirrors the public
+  DSL. A declared input with no default and no caller-supplied value
+  surfaces as `nil`. The returned `Data` is structurally immutable
+  (no member reassignment); member values that are themselves mutable
+  (e.g. an `Array`) keep their normal mutability — the snapshot does
+  not deep-freeze. Each call returns a fresh `Data` instance backed
+  by a per-subclass `Data` class memoised on
+  `Service.input_snapshot_class` (rebuilt transparently if the
+  subclass declares more inputs after the first snapshot call).
+  Useful for passing a read-only view of inputs to helpers,
+  collaborators, or test assertions without exposing the mutable
+  `@inputs` hash.
+
 - `Assistant::Service#call_service(klass, **inputs)` — instance-level
   helper for composing services. Constructs an instance of `klass`
   (asserted to be an `Assistant::Service` subclass; raises

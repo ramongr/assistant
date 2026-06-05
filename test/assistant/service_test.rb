@@ -530,5 +530,173 @@ module Assistant
                       service_executed service_executed],
                    events.map(&:first)
     end
+
+    # ---- M-S4: input_snapshot ----
+
+    def test_input_snapshot_returns_data_instance_with_declared_members
+      klass = Class.new(Assistant::Service) do
+        input :name, type: String, required: true
+        input :age,  type: Integer
+      end
+
+      snapshot = klass.new(name: 'Ada', age: 37).input_snapshot
+
+      assert_kind_of Data, snapshot
+      assert_equal 'Ada', snapshot.name
+      assert_equal 37, snapshot.age
+    end
+
+    def test_input_snapshot_preserves_declaration_order
+      klass = Class.new(Assistant::Service) do
+        input :z, type: Integer
+        input :a, type: Integer
+        input :m, type: Integer
+      end
+
+      snapshot = klass.new(z: 1, a: 2, m: 3).input_snapshot
+
+      assert_equal %i[z a m], snapshot.members
+    end
+
+    def test_input_snapshot_is_structurally_immutable
+      klass = Class.new(Assistant::Service) do
+        input :n, type: Integer
+      end
+
+      snapshot = klass.new(n: 1).input_snapshot
+
+      assert_predicate snapshot, :frozen?
+      assert_raises(NoMethodError) { snapshot.n = 2 }
+    end
+
+    def test_input_snapshot_reflects_m1_defaults
+      klass = Class.new(Assistant::Service) do
+        input :limit, type: Integer, default: 25
+        input :now,   type: Time,    default: -> { Time.utc(2024, 1, 1) }
+      end
+
+      snapshot = klass.new.input_snapshot
+
+      assert_equal 25, snapshot.limit
+      assert_equal Time.utc(2024, 1, 1), snapshot.now
+    end
+
+    def test_input_snapshot_with_m2_allow_nil_keeps_explicit_nil
+      klass = Class.new(Assistant::Service) do
+        input :note, type: String, allow_nil: true
+      end
+
+      snapshot = klass.new(note: nil).input_snapshot
+
+      assert_nil snapshot.note
+    end
+
+    def test_input_snapshot_with_m1_default_and_m2_allow_nil_explicit_nil_skips_default
+      # M1's shipped semantics (see CHANGELOG M1 entry): with
+      # `allow_nil: true`, an explicit `nil` from the caller is
+      # honoured and the default is skipped. The snapshot reflects
+      # that post-`apply_input_defaults` value.
+      klass = Class.new(Assistant::Service) do
+        input :note, type: String, default: 'hi', allow_nil: true
+      end
+
+      assert_nil klass.new(note: nil).input_snapshot.note
+      assert_equal 'hi', klass.new.input_snapshot.note
+    end
+
+    def test_input_snapshot_excludes_undeclared_kwargs
+      klass = Class.new(Assistant::Service) do
+        input :declared, type: String
+      end
+
+      snapshot = klass.new(declared: 'yes', undeclared: 'no').input_snapshot
+
+      assert_equal %i[declared], snapshot.members
+      refute_respond_to snapshot, :undeclared
+    end
+
+    def test_input_snapshot_for_service_with_no_inputs_is_empty_data
+      snapshot = Assistant::Service.new.input_snapshot
+
+      assert_kind_of Data, snapshot
+      assert_empty snapshot.members
+    end
+
+    def test_input_snapshot_missing_required_input_appears_as_nil
+      # Snapshot can be called from validate or anywhere; it does not
+      # require successful #run. A missing required input simply
+      # surfaces as nil, matching the per-input getter behaviour.
+      klass = Class.new(Assistant::Service) do
+        input :name, type: String, required: true
+      end
+
+      snapshot = klass.new.input_snapshot
+
+      assert_nil snapshot.name
+    end
+
+    def test_input_snapshot_class_is_memoised_per_subclass
+      klass = Class.new(Assistant::Service) do
+        input :n, type: Integer
+      end
+
+      assert_same klass.input_snapshot_class, klass.input_snapshot_class
+    end
+
+    def test_input_snapshot_class_differs_between_subclasses
+      one = Class.new(Assistant::Service) { input :a, type: Integer }
+      two = Class.new(Assistant::Service) { input :b, type: Integer }
+
+      refute_same one.input_snapshot_class, two.input_snapshot_class
+    end
+
+    def test_input_snapshot_class_rebuilds_when_definitions_change
+      klass = Class.new(Assistant::Service)
+      klass.input :a, type: Integer
+      first = klass.input_snapshot_class
+
+      klass.input :b, type: Integer
+      second = klass.input_snapshot_class
+
+      refute_same first, second
+      assert_equal %i[a b], second.members
+    end
+
+    def test_input_snapshot_returns_fresh_instance_each_call
+      klass = Class.new(Assistant::Service) do
+        input :n, type: Integer
+      end
+      svc = klass.new(n: 1)
+
+      first = svc.input_snapshot
+      second = svc.input_snapshot
+
+      refute_same first, second
+      assert_equal first, second
+    end
+
+    def test_input_snapshot_values_share_object_identity_with_inputs
+      # Data is structurally immutable but does not deep-freeze members;
+      # a mutable input value is the same object in the snapshot.
+      mutable = [1, 2, 3]
+      klass = Class.new(Assistant::Service) do
+        input :xs, type: Array
+      end
+
+      snapshot = klass.new(xs: mutable).input_snapshot
+
+      assert_same mutable, snapshot.xs
+    end
+
+    def test_input_snapshot_callable_from_inside_execute
+      klass = Class.new(Assistant::Service) do
+        input :n, type: Integer, required: true
+        def execute = input_snapshot.n * 10
+      end
+
+      outcome = klass.run(n: 4)
+
+      assert_equal 40, outcome[:result]
+    end
   end
 end

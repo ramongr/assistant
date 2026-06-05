@@ -691,7 +691,7 @@ documented to avoid surprise.
   read-only snapshot of inputs they can pass around safely.
 - **API sketch**: `Service#input_snapshot -> Data.define(*declared_input_names).new(...)`.
 - **Risk**: medium — interacts with M1 (defaults) and M2 (allow_nil).
-- **Status**: `[ ]`.
+- **Status**: `[x]`.
 
 ---
 

@@ -6,7 +6,7 @@ module Assistant::InputBuilder
   class AccessorsTest < Minitest::Test
     def test_single_input_defines_getter_and_checker
       klass = Class.new(Assistant::Service) do
-        input name: :one, type: Integer
+        input :one, type: Integer
         def execute = one
       end
 
@@ -17,7 +17,7 @@ module Assistant::InputBuilder
 
     def test_checker_returns_false_for_whitespace_only_string
       klass = Class.new(Assistant::Service) do
-        input name: :note, type: String
+        input :note, type: String
         def execute = note? ? note : :blank
       end
 
@@ -28,7 +28,7 @@ module Assistant::InputBuilder
 
     def test_checker_returns_true_for_non_blank_string
       klass = Class.new(Assistant::Service) do
-        input name: :note, type: String
+        input :note, type: String
         def execute = note? ? note : :blank
       end
 
@@ -39,7 +39,7 @@ module Assistant::InputBuilder
 
     def test_checker_returns_false_for_nil_and_false_values
       klass = Class.new(Assistant::Service) do
-        input name: :flag, type: [TrueClass, FalseClass]
+        input :flag, type: [TrueClass, FalseClass]
         def execute = flag?
       end
 
@@ -49,7 +49,7 @@ module Assistant::InputBuilder
 
     def test_checker_uses_empty_for_collection_inputs
       klass = Class.new(Assistant::Service) do
-        input name: :tags, type: Array
+        input :tags, type: Array
         def execute = tags? ? tags : :empty
       end
 

@@ -119,7 +119,7 @@ module Assistant
 
     def test_internal_logging_call_sites_construct_valid_log_items
       service = Class.new(Assistant::Service) do
-        input name: :token, type: String, required: true, if: ->(value) { value.start_with?('sk-') }
+        input :token, type: String, required: true, if: ->(value) { value.start_with?('sk-') }
 
         def validate
           log_item_info(source: :validate, detail: :started, message: 'started')

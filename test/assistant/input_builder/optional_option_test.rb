@@ -8,7 +8,7 @@ module Assistant::InputBuilder
 
     def test_optional_true_runs_cleanly_when_key_absent
       klass = Class.new(Assistant::Service) do
-        input name: :nickname, type: String, optional: true
+        input :nickname, type: String, optional: true
         def execute = nickname || :missing
       end
 
@@ -21,7 +21,7 @@ module Assistant::InputBuilder
 
     def test_optional_true_alone_does_not_generate_require_validator
       klass = Class.new(Assistant::Service) do
-        input name: :nickname, type: String, optional: true
+        input :nickname, type: String, optional: true
       end
 
       refute_includes klass.instance_methods, :valid_required_nickname?
@@ -30,7 +30,7 @@ module Assistant::InputBuilder
 
     def test_optional_false_is_equivalent_to_required_true
       klass = Class.new(Assistant::Service) do
-        input name: :email, type: String, optional: false
+        input :email, type: String, optional: false
         def execute = email
       end
 
@@ -45,7 +45,7 @@ module Assistant::InputBuilder
     def test_required_true_and_optional_true_together_raise_at_class_definition
       error = assert_raises(ArgumentError) do
         Class.new(Assistant::Service) do
-          input name: :foo, type: String, required: true, optional: true
+          input :foo, type: String, required: true, optional: true
         end
       end
 
@@ -55,7 +55,7 @@ module Assistant::InputBuilder
     def test_non_boolean_optional_raises_at_class_definition
       error = assert_raises(ArgumentError) do
         Class.new(Assistant::Service) do
-          input name: :foo, type: String, optional: :sometimes
+          input :foo, type: String, optional: :sometimes
         end
       end
 
@@ -64,7 +64,7 @@ module Assistant::InputBuilder
 
     def test_optional_true_with_default_applies_default_when_key_absent
       klass = Class.new(Assistant::Service) do
-        input name: :limit, type: Integer, optional: true, default: 25
+        input :limit, type: Integer, optional: true, default: 25
         def execute = limit
       end
 
@@ -76,7 +76,7 @@ module Assistant::InputBuilder
 
     def test_optional_true_with_allow_nil_accepts_explicit_nil
       klass = Class.new(Assistant::Service) do
-        input name: :note, type: String, optional: true, allow_nil: true
+        input :note, type: String, optional: true, allow_nil: true
         def execute = note
       end
 
@@ -89,7 +89,7 @@ module Assistant::InputBuilder
 
     def test_optional_flag_is_retained_in_input_definitions
       klass = Class.new(Assistant::Service) do
-        input name: :nickname, type: String, optional: true
+        input :nickname, type: String, optional: true
       end
 
       assert(klass.input_definitions[:nickname][:optional])

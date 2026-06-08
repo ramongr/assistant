@@ -11,8 +11,8 @@ module Assistant
 
     def test_renderer_emits_marker_class_header_and_getter_predicate_pairs
       service = define_service do
-        input name: :name, type: String
-        input name: :amount, type: Integer
+        input :name, type: String
+        input :amount, type: Integer
       end
 
       expected = <<~RBS
@@ -33,7 +33,7 @@ module Assistant
 
     def test_renderer_unions_multi_type_inputs_inside_parens
       service = define_service do
-        input name: :amount, type: [Integer, Float]
+        input :amount, type: [Integer, Float]
       end
 
       assert_includes RbsGenerator::Renderer.render(service), 'def amount: () -> (Integer | Float)'
@@ -41,8 +41,8 @@ module Assistant
 
     def test_renderer_appends_question_mark_for_allow_nil_inputs
       service = define_service do
-        input name: :note, type: String, allow_nil: true
-        input name: :score, type: [Integer, Float], allow_nil: true
+        input :note, type: String, allow_nil: true
+        input :score, type: [Integer, Float], allow_nil: true
       end
 
       output = RbsGenerator::Renderer.render(service)
@@ -92,7 +92,7 @@ module Assistant
     end
 
     def test_writer_is_idempotent_when_contents_match
-      service = define_service { input name: :name, type: String }
+      service = define_service { input :name, type: String }
       contents = RbsGenerator::Renderer.render(service)
 
       Dir.mktmpdir do |dir|
@@ -104,7 +104,7 @@ module Assistant
     end
 
     def test_writer_refuses_to_overwrite_files_without_the_marker
-      service = define_service { input name: :name, type: String }
+      service = define_service { input :name, type: String }
 
       Dir.mktmpdir do |dir|
         target = seed_handwritten_rbs(dir, service)
@@ -125,10 +125,10 @@ module Assistant
     def test_cli_loads_input_paths_and_writes_one_rbs_per_service
       Dir.mktmpdir do |dir|
         write_fixture_service(dir, 'cli_alpha_service.rb', 'CliAlphaService', <<~RUBY)
-          input name: :name, type: String
+          input :name, type: String
         RUBY
         write_fixture_service(dir, 'nested/cli_beta_service.rb', 'CliBetaService', <<~RUBY)
-          input name: :amount, type: [Integer, Float]
+          input :amount, type: [Integer, Float]
         RUBY
 
         sig_dir = File.join(dir, 'sig')
@@ -174,7 +174,7 @@ module Assistant
       RbsGenAcme.const_set(:Billing, Module.new) unless RbsGenAcme.const_defined?(:Billing, false)
       return RbsGenAcme::Billing::Charge if RbsGenAcme::Billing.const_defined?(:Charge, false)
 
-      svc = Class.new(Assistant::Service) { input name: :amount, type: Integer }
+      svc = Class.new(Assistant::Service) { input :amount, type: Integer }
       RbsGenAcme::Billing.const_set(:Charge, svc)
       svc
     end

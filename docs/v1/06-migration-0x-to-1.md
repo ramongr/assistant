@@ -11,11 +11,9 @@ three is mechanical and `git grep`-able.
 Bump the constraint in your `Gemfile` to `gem 'assistant', '~> 1.0'`,
 then run the following three mechanical rewrites across your code:
 
-1. **Inputs are keyword-only (B3, M12)**: rewrite every
-   `input :foo, type: X` to `input name: :foo, type: X`, every
-   `inputs %i[a b], type: X` to `inputs names: %i[a b], type: X`,
-   and every `merge_logs(other.logs)` to
-   `merge_logs(logs: other.logs)`.
+1. **`LogList#merge_logs` is keyword-only (B3, M12)**: rewrite every
+   `merge_logs(other.logs)` to `merge_logs(logs: other.logs)`.
+   `Service.input` / `Service.inputs` are unchanged.
 2. **`LogItem.new` raises on invalid attrs (B1, M10)**: audit any
    direct `LogItem.new(...)` call sites you have; the gem's own call
    sites are already correct. Test fixtures that exercised the old
@@ -31,7 +29,7 @@ further changes are needed:
 
 - You only call `Service.run(...)` and read `:result`, `:status`,
   `:warnings`, `:errors` from the returned hash.
-- You declare inputs with `input name: :foo, type: T` and optionally
+- You declare inputs with `input :foo, type: T` and optionally
   `required: true` and/or `if: ->(v) { ... }`.
 - You override `#execute` and (optionally) `#validate`.
 - You log via `add_log(level:, source:, detail:, message:)` with valid
@@ -80,59 +78,64 @@ Two behavioural changes ship in 1.0 that may require code changes:
 - See M9 in [`02-features.md`](./02-features.md) and the entry in
   `docs/deprecations.md`.
 
-### B3. Keyword-only method signatures across the gem
+### B3. `LogList#merge_logs` and internal helpers are keyword-only
 
-- **Before** (0.1.0): the DSL took the attribute name as a positional
-  argument, while every option was a keyword:
+- **Before** (0.1.0): `LogList#merge_logs` and every internal
+  `Assistant::InputBuilder` helper took their leading name / list
+  argument positionally:
   ```ruby
-  input  :role,        type: String, required: true
-  inputs %i[a b c],    type: Integer
   log_list.merge_logs(other.logs)
   ```
-- **After** (1.0.0): every public and internal method is keyword-only.
-  The attribute name is now passed as `name:` / `names:`, and
-  `LogList#merge_logs` takes `logs:`:
+- **After** (1.0.0): `merge_logs` takes `logs:`. The headline DSL
+  entry points `Service.input` and `Service.inputs` are
+  **deliberately exempt** from M12 — `input :foo, type: X` reads
+  better as a class-body declaration than `input name: :foo, type: X`,
+  so their leading positional name stays:
   ```ruby
-  input  name:  :role,        type: String, required: true
-  inputs names: %i[a b c],    type: Integer
-  log_list.merge_logs(logs: other.logs)
+  input :role,        type: String, required: true   # unchanged
+  inputs %i[a b c],   type: Integer                  # unchanged
+  log_list.merge_logs(logs: other.logs)              # was: merge_logs(other.logs)
   ```
 - **Affected signatures**:
-  - `Service.input(attr_name, type:, **)` →
-    `Service.input(name:, type:, **)`.
-  - `Service.inputs(attr_names, type:, **)` →
-    `Service.inputs(names:, type:, **)`.
+  - `Service.input(attr_name, type:, **)` — **unchanged** (exempt).
+  - `Service.inputs(attr_names, type:, **)` — **unchanged** (exempt).
   - `LogList#merge_logs(other_logs)` →
     `LogList#merge_logs(logs:)`.
   - All `InputBuilder` helpers
     (`input_getter_meth`, `input_checker_meth`,
     `input_type_validator_meth`, `input_require_validator_meth`,
     `input_require_conditional_meth`, `type_validator_body`,
-    `type_mismatch_message_builder`) take their first argument as
-    `name:` (or `names:`/`types:` where appropriate). These are
-    documented as internal but are technically public on the class.
+    `type_mismatch_message_builder`, and the M13-split
+    `process_default_option`, `validate_default!`,
+    `warn_on_mutable_default`, `process_optional_option`,
+    `validate_optional!`, `register_input_definition`) take their
+    first argument as `name:` (or `names:`/`types:` where
+    appropriate). These are documented as internal but are
+    technically public on the class.
   - `LogItem#initialize`, `LogList#add_log`,
     `LogList#log_item_error_initialize`, `LogList#log_item_*`
     shorthands, `Service.run`, and `Service#initialize` were already
     keyword-only in 0.1.0 and are unchanged.
-- **Migration**: hard break, no runtime shim. The change is purely
-  mechanical and `git grep`-able. Recipe:
+- **Migration**: hard break, no runtime shim. For most users this is
+  a single rewrite in any code that composes log lists across
+  services (e.g. an outer service merging an inner service's logs
+  without going through `Service#call_service`, which handles the
+  keyword for you):
   ```sh
-  # In each of your service files, rewrite:
-  #   input :foo, ...      ->  input name: :foo, ...
-  #   inputs %i[a b], ...  ->  inputs names: %i[a b], ...
-  #
-  # And anywhere you compose log lists:
+  # Anywhere you compose log lists:
   #   foo.merge_logs(bar.logs)  ->  foo.merge_logs(logs: bar.logs)
   ```
-  The old positional form raises `ArgumentError: missing keyword: :name`
-  immediately at class-definition time, so every miss is caught on the
-  first load — there are no silent runtime regressions.
-- **Rationale**: see M12 in [`02-features.md`](./02-features.md). Mixed
-  positional + keyword signatures complicate the RBS surface and the
-  M11 RBS generator template; pure-keyword signatures also leave room
-  to add further options to `input` without shuffling the positional
-  slot.
+  The old positional form raises `ArgumentError: ... required
+  keyword: logs` immediately on first call, so every miss is caught
+  loudly — there are no silent runtime regressions.
+- **Rationale**: see M12 in [`02-features.md`](./02-features.md). The
+  internal helpers go keyword-only so that the RBS surface stays
+  consistent and so new options can be added without shuffling a
+  positional slot. The two public DSL entry points
+  (`Service.input` / `Service.inputs`) keep their positional name
+  because in a class body the name is the natural subject of the
+  declaration and `input :foo, …` reads better than
+  `input name: :foo, …`.
 
 ### Recipe: `bin/assistant-rbs` for Steep users
 
@@ -153,8 +156,8 @@ The generator is **Experimental** in 1.0; the output format may evolve in
 | Symbol                                          | 0.1.0                                                | 1.0.0                                                                                  | Action required                                |
 |-------------------------------------------------|------------------------------------------------------|----------------------------------------------------------------------------------------|------------------------------------------------|
 | `Assistant::VERSION`                            | `'0.1.0'` (`lib/assistant/version.rb:4`)             | `'1.0.0'`                                                                              | None.                                          |
-| `Service.input`                                 | `name`, `type:`, `required:`, `if:`                   | `name:` is now a **keyword** (M12); adds `default:` (M1), `allow_nil:` (M2), `type:` accepts an array (M3), `optional:` (M7) | **Required**: `input :foo, type: X` → `input name: :foo, type: X`. See B3. |
-| `Service.inputs`                                | `names`, `type:`, `**options`                        | `names:` is now a **keyword** (M12)                                                    | **Required**: `inputs %i[a b], type: X` → `inputs names: %i[a b], type: X`. See B3. |
+| `Service.input`                                 | `name`, `type:`, `required:`, `if:`                   | adds `default:` (M1), `allow_nil:` (M2), `type:` accepts an array (M3), `optional:` (M7); leading `attr_name` stays **positional** (exempt from M12) | None — `input :foo, type: X` keeps working. |
+| `Service.inputs`                                | `names`, `type:`, `**options`                        | leading `attr_names` stays **positional** (exempt from M12)                            | None — `inputs %i[a b], type: X` keeps working. |
 | `Service#run` result hash                       | `{ result:, status:, warnings: }` / `{ errors:, result: nil, status: :with_errors }` | unchanged                                                          | None.                                          |
 | `Service#status` enum                           | `:ok`, `:with_warnings`, `:with_errors`              | unchanged                                                                              | None.                                          |
 | `Service#logs`                                  | not exposed; `instance_variable_get(:@logs)` only    | `attr_reader :logs` (M4)                                                               | Optional: replace any IVar peeks with `#logs`. |
@@ -205,7 +208,7 @@ These are not required but become simpler with 1.0:
    end
 
    # after
-   input name: :limit, type: Integer, default: 25
+   input :limit, type: Integer, default: 25
    ```
 
 4. Replace explicit `nil`-tolerance with `allow_nil:`:
@@ -219,7 +222,7 @@ These are not required but become simpler with 1.0:
    end
 
    # after
-   input name: :note, type: String, allow_nil: true
+   input :note, type: String, allow_nil: true
    ```
 
 5. Replace one-of type guards with multi-type:
@@ -229,7 +232,7 @@ These are not required but become simpler with 1.0:
    input :amount, type: Numeric
 
    # after — narrower, more explicit
-   input name: :amount, type: [Integer, Float]
+   input :amount, type: [Integer, Float]
    ```
 
 ## What was **not** changed in 1.0

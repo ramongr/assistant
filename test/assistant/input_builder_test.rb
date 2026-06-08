@@ -40,37 +40,12 @@ module Assistant
 
     def test_service_can_use_the_dsl_end_to_end
       klass = Class.new(Assistant::Service) do
-        input name: :limit, type: Integer, required: true, default: 5
+        input :limit, type: Integer, required: true, default: 5
         def execute = limit * 2
       end
 
       assert_equal 10, klass.run[:result]
       assert_equal 20, klass.run(limit: 10)[:result]
-    end
-
-    # M12: hard break. The old positional form of `Service.input`
-    # raises `ArgumentError` at class-definition time, so every miss
-    # is caught on first load. Ruby phrases the error as
-    # "wrong number of arguments (given 1, expected 0; required
-    # keywords: name, type)" since the positional `:foo` is an extra
-    # argument and `name:` is unsatisfied.
-    def test_input_raises_argument_error_when_called_positionally
-      err = assert_raises(ArgumentError) do
-        Class.new(Assistant::Service) { input :foo, type: String }
-      end
-
-      assert_match(/required keyword/, err.message)
-      assert_match(/name/, err.message)
-    end
-
-    # M12: same hard break for the plural form.
-    def test_inputs_raises_argument_error_when_called_positionally
-      err = assert_raises(ArgumentError) do
-        Class.new(Assistant::Service) { inputs %i[a b], type: String }
-      end
-
-      assert_match(/required keyword/, err.message)
-      assert_match(/names/, err.message)
     end
   end
 end

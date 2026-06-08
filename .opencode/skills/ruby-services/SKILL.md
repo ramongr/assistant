@@ -36,7 +36,7 @@ guidance.
 
 ## Inputs
 
-- Declare service inputs with `input name: :name, type: SomeClass` and existing DSL
+- Declare service inputs with `input :name, type: SomeClass` and existing DSL
   options such as `required:`, `optional:`, `default:`, `allow_nil:`, and `if:`.
 - Prefer `default: -> { [] }` or `default: -> { {} }` for mutable defaults.
 - Use `allow_nil: true` only when explicit `nil` is a valid service value.

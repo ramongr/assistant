@@ -1,8 +1,12 @@
 # Type signatures for `lib/assistant/input_builder/dsl.rb`. The public
 # `#input`/`#inputs` DSL surface; see docs/v1/01-api-surface.md.
+#
+# Note: `#input` and `#inputs` deliberately keep their leading
+# positional `attr_name`/`attr_names` parameter; every other M12 helper
+# is keyword-only.
 
 module Assistant::InputBuilder::Dsl
-  def inputs: (names: Array[Symbol], type: untyped, **untyped) -> Array[Symbol]
+  def inputs: (Array[Symbol] attr_names, type: untyped, **untyped) -> Array[Symbol]
 
-  def input: (name: Symbol, type: untyped, **untyped) -> untyped
+  def input: (Symbol attr_name, type: untyped, **untyped) -> untyped
 end

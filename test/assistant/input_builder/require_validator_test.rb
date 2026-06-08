@@ -16,7 +16,7 @@ module Assistant::InputBuilder
 
     def test_conditional_requirement_errors_when_missing
       klass = Class.new(Assistant::Service) do
-        input name: :token, type: String, required: true, if: ->(val) { val.start_with?('sk-') }
+        input :token, type: String, required: true, if: ->(val) { val.start_with?('sk-') }
         def execute = token
       end
 
@@ -28,7 +28,7 @@ module Assistant::InputBuilder
 
     def test_conditional_requirement_errors_when_predicate_false
       klass = Class.new(Assistant::Service) do
-        input name: :token, type: String, required: true, if: ->(val) { val.start_with?('sk-') }
+        input :token, type: String, required: true, if: ->(val) { val.start_with?('sk-') }
         def execute = token
       end
 
@@ -43,7 +43,7 @@ module Assistant::InputBuilder
 
     def test_conditional_requirement_succeeds_when_predicate_true
       klass = Class.new(Assistant::Service) do
-        input name: :token, type: String, required: true, if: ->(val) { val.start_with?('sk-') }
+        input :token, type: String, required: true, if: ->(val) { val.start_with?('sk-') }
         def execute = token
       end
 
@@ -57,7 +57,7 @@ module Assistant::InputBuilder
 
     def test_allow_nil_true_with_required_accepts_nil_without_error
       klass = Class.new(Assistant::Service) do
-        input name: :note, type: String, required: true, allow_nil: true
+        input :note, type: String, required: true, allow_nil: true
         def execute = note
       end
 
@@ -69,7 +69,7 @@ module Assistant::InputBuilder
 
     def test_allow_nil_false_with_required_treats_nil_as_missing
       klass = Class.new(Assistant::Service) do
-        input name: :note, type: String, required: true
+        input :note, type: String, required: true
         def execute = note
       end
 
@@ -98,7 +98,7 @@ module Assistant::InputBuilder
 
     def test_required_input_generates_canonical_required_predicate
       klass = Class.new(Assistant::Service) do
-        input name: :email, type: String, required: true
+        input :email, type: String, required: true
       end
 
       assert_includes klass.instance_methods, :valid_required_email?
@@ -106,7 +106,7 @@ module Assistant::InputBuilder
 
     def test_required_conditional_input_generates_canonical_conditional_predicate
       klass = Class.new(Assistant::Service) do
-        input name: :token, type: String, required: true, if: ->(v) { v.start_with?('sk-') }
+        input :token, type: String, required: true, if: ->(v) { v.start_with?('sk-') }
       end
 
       assert_includes klass.instance_methods, :valid_required_conditional_token?
@@ -114,7 +114,7 @@ module Assistant::InputBuilder
 
     def test_optional_input_generates_neither_canonical_nor_deprecated_predicate
       klass = Class.new(Assistant::Service) do
-        input name: :nickname, type: String
+        input :nickname, type: String
       end
 
       refute_includes klass.instance_methods, :valid_required_nickname?
@@ -125,7 +125,7 @@ module Assistant::InputBuilder
 
     def test_deprecated_alias_is_still_generated_alongside_canonical
       klass = Class.new(Assistant::Service) do
-        input name: :email, type: String, required: true
+        input :email, type: String, required: true
       end
 
       assert_includes klass.instance_methods, :valid_require_email?
@@ -134,7 +134,7 @@ module Assistant::InputBuilder
 
     def test_deprecated_alias_returns_the_same_value_as_canonical
       klass = Class.new(Assistant::Service) do
-        input name: :email, type: String, required: true
+        input :email, type: String, required: true
       end
 
       missing = klass.new
@@ -152,7 +152,7 @@ module Assistant::InputBuilder
 
     def test_deprecated_alias_warns_once_per_call_site_with_canonical_pointer
       klass = Class.new(Assistant::Service) do
-        input name: :email, type: String, required: true
+        input :email, type: String, required: true
       end
       instance = klass.new(email: 'x@y')
 
@@ -168,7 +168,7 @@ module Assistant::InputBuilder
 
     def test_deprecated_alias_warns_again_from_a_distinct_call_site
       klass = Class.new(Assistant::Service) do
-        input name: :email, type: String, required: true
+        input :email, type: String, required: true
       end
       instance = klass.new(email: 'x@y')
 
@@ -182,7 +182,7 @@ module Assistant::InputBuilder
 
     def test_deprecated_conditional_alias_warns_and_delegates
       klass = Class.new(Assistant::Service) do
-        input name: :token, type: String, required: true, if: ->(v) { v.start_with?('sk-') }
+        input :token, type: String, required: true, if: ->(v) { v.start_with?('sk-') }
       end
       instance = klass.new(token: 'sk-ok')
 
@@ -196,8 +196,8 @@ module Assistant::InputBuilder
 
     def test_service_run_does_not_emit_deprecation_warnings_for_internal_validation
       klass = Class.new(Assistant::Service) do
-        input name: :email, type: String, required: true
-        input name: :token, type: String, required: true, if: ->(v) { v.start_with?('sk-') }
+        input :email, type: String, required: true
+        input :token, type: String, required: true, if: ->(v) { v.start_with?('sk-') }
         def execute = :ok
       end
 

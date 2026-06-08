@@ -10,19 +10,25 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed (Breaking)
 
-- **M12**: `Service.input` / `Service.inputs` / `LogList#merge_logs`
-  and every internal `Assistant::InputBuilder` helper now take their
-  name parameter as a keyword argument (`name:` / `names:` / `logs:`)
-  instead of a leading positional. Hard break, no runtime shim:
-  - `Service.input(:foo, type: String)` → `Service.input(name: :foo, type: String)`
-  - `Service.inputs(%i[a b], type: Integer)` → `Service.inputs(names: %i[a b], type: Integer)`
+- **M12**: `LogList#merge_logs` and every internal
+  `Assistant::InputBuilder` helper now take their name / list
+  parameter as a keyword argument (`logs:` / `name:` / `names:`)
+  instead of a leading positional. The two public DSL entry points
+  `Service.input` and `Service.inputs` are **deliberately exempt** —
+  `input :foo, type: X` reads better as a class-body declaration than
+  `input name: :foo, type: X`, so their leading positional `attr_name`
+  / `attr_names` stays. Hard break for the rest, no runtime shim:
+  - `Service.input(:foo, type: String)` — **unchanged**
+  - `Service.inputs(%i[a b], type: Integer)` — **unchanged**
   - `host.merge_logs(other.logs)` → `host.merge_logs(logs: other.logs)`
-  The old positional form raises `ArgumentError` at class-definition
-  time ("wrong number of arguments ... required keyword: name/names/logs"),
-  so every miss is caught on first load. Migration is mechanical and
-  `git grep`-able; see [`docs/v1/06-migration-0x-to-1.md`](docs/v1/06-migration-0x-to-1.md)
-  for the sed recipe. The full helper sweep also touches the M13-split
-  per-concern modules: `process_default_option`, `validate_default!`,
+  The old positional `merge_logs` raises `ArgumentError` at call time
+  ("wrong number of arguments ... required keyword: logs"). For users
+  who don't compose log lists directly (i.e. who only use
+  `Service#call_service` for service composition), no source change is
+  required. Migration is mechanical and `git grep`-able; see
+  [`docs/v1/06-migration-0x-to-1.md`](docs/v1/06-migration-0x-to-1.md).
+  The full helper sweep also touches the M13-split per-concern
+  modules: `process_default_option`, `validate_default!`,
   `warn_on_mutable_default`, `process_optional_option`,
   `validate_optional!`, `register_input_definition`, `input_getter_meth`,
   `input_checker_meth`, `input_type_validator_meth`, `type_validator_body`,
@@ -31,8 +37,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   `RequireValidator#define_required_(conditional_)?validator` helpers
   are all keyword-only. Internal-only `Service#input_supplied?` keeps
   its positional shape (private, not part of the documented surface).
-  RBS signatures across `lib/assistant/input_builder/*.rbs` and
-  `lib/assistant/log_list.rbs` updated to match.
+  RBS signatures across `lib/assistant/input_builder/*.rbs` (other than
+  `dsl.rbs`) and `lib/assistant/log_list.rbs` updated to match.
 
 ### Added
 

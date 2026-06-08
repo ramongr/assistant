@@ -116,7 +116,7 @@ Today `lib/assistant/service.rbs` is an empty class declaration
 - [ ] Add a **required** CI job `steep check`. The per-class generated
       output from M11 is exercised via a fixture under `test/fixtures/`
       with a Steep target that must stay green.
-- [ ] Document the limitation that `Service.input(name: :foo, ...)`-generated
+- [ ] Document the limitation that `Service.input(:foo, ...)`-generated
       methods cannot be expressed precisely in RBS by hand on the gem
       side; users generate per-class sigs with `bin/assistant-rbs` (M11).
       Surface this in `docs/guides/inputs.md` per D2 in

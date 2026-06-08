@@ -13,7 +13,7 @@ module Assistant::LogList
     ?trace: untyped
   ) -> Array[Assistant::LogItem]
 
-  def merge_logs: (Array[Assistant::LogItem] other_logs) -> Array[Assistant::LogItem]
+  def merge_logs: (logs: Array[Assistant::LogItem]) -> Array[Assistant::LogItem]
 
   def log_item_error_initialize: (
     attr_name: Symbol | String,

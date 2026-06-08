@@ -30,8 +30,8 @@ module Assistant
     end
 
     def test_infos_returns_only_info_level_logs
-      @host.merge_logs(build_log_items(3, level: :info))
-      @host.merge_logs(build_log_items(3, level: :warning))
+      @host.merge_logs(logs: build_log_items(3, level: :info))
+      @host.merge_logs(logs: build_log_items(3, level: :warning))
 
       assert_equal 3, @host.infos.size
     end
@@ -59,7 +59,7 @@ module Assistant
         Assistant::LogItem.new(level: :info, source: :s, detail: :d1, message: 'm1'),
         Assistant::LogItem.new(level: :error, source: :s, detail: :d2, message: 'm2')
       ]
-      @host.merge_logs(foreign)
+      @host.merge_logs(logs: foreign)
 
       assert_equal foreign, @host.instance_variable_get(:@logs)
       assert_equal 1, @host.errors.size
@@ -119,6 +119,20 @@ module Assistant
       @host.log_item_error(source: :execute, detail: :boom, message: 'x', trace: trace)
 
       assert_equal trace, @host.errors.first.trace
+    end
+
+    # M12: hard break. Calling `merge_logs` with a positional array
+    # raises `ArgumentError` -- there is no runtime shim. Ruby phrases
+    # the error as "wrong number of arguments (given 1, expected 0;
+    # required keyword: logs)" since the positional array is an extra
+    # argument and `logs:` is unsatisfied.
+    def test_merge_logs_raises_argument_error_when_called_positionally
+      err = assert_raises(ArgumentError) do
+        @host.merge_logs([])
+      end
+
+      assert_match(/required keyword/, err.message)
+      assert_match(/logs/, err.message)
     end
   end
 end

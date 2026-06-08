@@ -63,8 +63,8 @@ module Assistant::InputBuilder
       klass = Class.new do
         extend Assistant::InputBuilder::Accessors
 
-        input_getter_meth(:val)
-        input_checker_meth(:val)
+        input_getter_meth(name: :val)
+        input_checker_meth(name: :val)
         def initialize(val:) = @inputs = { val: }
       end
 

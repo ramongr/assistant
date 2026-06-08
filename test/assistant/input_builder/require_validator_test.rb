@@ -86,9 +86,9 @@ module Assistant::InputBuilder
         extend Assistant::InputBuilder::RequireValidator
         extend Assistant::InputBuilder::Accessors
 
-        input_getter_meth(:foo)
-        input_checker_meth(:foo)
-        input_require_validator_meth(:foo, required: true)
+        input_getter_meth(name: :foo)
+        input_checker_meth(name: :foo)
+        input_require_validator_meth(name: :foo, required: true)
       end
 
       assert_includes klass.instance_methods, :valid_required_foo?

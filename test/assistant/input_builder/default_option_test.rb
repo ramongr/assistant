@@ -171,7 +171,7 @@ module Assistant::InputBuilder
       bare = Class.new { extend Assistant::InputBuilder::DefaultOption }
 
       error = assert_raises(ArgumentError) do
-        bare.validate_default!(:foo, 'hi'.method(:upcase))
+        bare.validate_default!(name: :foo, default: 'hi'.method(:upcase))
       end
 
       assert_match(/must be a literal or a zero-arity Proc/, error.message)
@@ -181,7 +181,7 @@ module Assistant::InputBuilder
       bare = Class.new { extend Assistant::InputBuilder::DefaultOption }
 
       error = assert_raises(ArgumentError) do
-        bare.validate_default!(:foo, ->(x) { x })
+        bare.validate_default!(name: :foo, default: ->(x) { x })
       end
 
       assert_match(/must be a zero-arity Proc, got arity 1/, error.message)
@@ -190,20 +190,20 @@ module Assistant::InputBuilder
     def test_validate_default_bang_accepts_literals_and_zero_arity_procs
       bare = Class.new { extend Assistant::InputBuilder::DefaultOption }
 
-      assert_nil bare.validate_default!(:foo, 42)
-      assert_nil bare.validate_default!(:foo, 'literal')
-      assert_nil bare.validate_default!(:foo, -> { 1 })
-      assert_nil bare.validate_default!(:foo, proc { 1 })
+      assert_nil bare.validate_default!(name: :foo, default: 42)
+      assert_nil bare.validate_default!(name: :foo, default: 'literal')
+      assert_nil bare.validate_default!(name: :foo, default: -> { 1 })
+      assert_nil bare.validate_default!(name: :foo, default: proc { 1 })
     end
 
     def test_warn_on_mutable_default_is_silent_for_safe_values
       bare = Class.new { extend Assistant::InputBuilder::DefaultOption }
 
       output = capture_io_warn do
-        bare.warn_on_mutable_default(:foo, 42)
-        bare.warn_on_mutable_default(:foo, [].freeze)
-        bare.warn_on_mutable_default(:foo, {}.freeze)
-        bare.warn_on_mutable_default(:foo, -> { [] })
+        bare.warn_on_mutable_default(name: :foo, default: 42)
+        bare.warn_on_mutable_default(name: :foo, default: [].freeze)
+        bare.warn_on_mutable_default(name: :foo, default: {}.freeze)
+        bare.warn_on_mutable_default(name: :foo, default: -> { [] })
       end
 
       assert_empty output

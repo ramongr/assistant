@@ -8,15 +8,15 @@ require 'assistant/refinements/string_blankness'
 module Assistant::InputBuilder::Accessors
   using Assistant::Refinements::StringBlankness
 
-  def input_getter_meth(attr_name)
-    define_method(attr_name) do
-      @inputs[attr_name]
+  def input_getter_meth(name:)
+    define_method(name) do
+      @inputs[name]
     end
   end
 
-  def input_checker_meth(attr_name)
-    define_method("#{attr_name}?") do
-      val = @inputs[attr_name]
+  def input_checker_meth(name:)
+    define_method("#{name}?") do
+      val = @inputs[name]
       return false if val.nil? || val == false
       return !val.whitespace? if val.is_a?(String)
 

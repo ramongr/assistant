@@ -36,7 +36,7 @@ module Assistant::InputBuilder
       bare = Class.new { extend Assistant::InputBuilder::Registry }
 
       assert_empty bare.input_definitions
-      bare.register_input_definition(:foo, String, { required: true })
+      bare.register_input_definition(name: :foo, type: String, options: { required: true })
 
       assert_equal({ type: String, required: true }, bare.input_definitions[:foo])
     end

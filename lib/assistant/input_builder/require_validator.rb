@@ -32,44 +32,44 @@ module Assistant::InputBuilder::RequireValidator
     DEPRECATION_WARNED.clear
   end
 
-  def input_require_validator_meth(attr_name, **)
-    canonical = :"valid_required_#{attr_name}?"
-    define_required_validator(canonical, attr_name, **)
-    define_deprecated_alias(:"valid_require_#{attr_name}?", canonical)
+  def input_require_validator_meth(name:, **)
+    canonical = :"valid_required_#{name}?"
+    define_required_validator(canonical:, name:, **)
+    define_deprecated_alias(:"valid_require_#{name}?", canonical)
   end
 
-  def input_require_conditional_meth(attr_name, **)
-    canonical = :"valid_required_conditional_#{attr_name}?"
-    define_required_conditional_validator(canonical, attr_name, **)
-    define_deprecated_alias(:"valid_require_conditional_#{attr_name}?", canonical)
+  def input_require_conditional_meth(name:, **)
+    canonical = :"valid_required_conditional_#{name}?"
+    define_required_conditional_validator(canonical:, name:, **)
+    define_deprecated_alias(:"valid_require_conditional_#{name}?", canonical)
   end
 
   private
 
-  def define_required_validator(canonical, attr_name, **options)
+  def define_required_validator(canonical:, name:, **options)
     allow_nil = options.fetch(:allow_nil, false) == true
 
     define_method(canonical) do |log = true|
       # M2: explicit nil counts as "supplied" when allow_nil: true is set.
-      return true if allow_nil && @inputs.key?(attr_name)
-      return true if options[:required] == true && send("#{attr_name}?") == true
+      return true if allow_nil && @inputs.key?(name)
+      return true if options[:required] == true && send("#{name}?") == true
 
       log && send(
-        :log_item_error_initialize, attr_name:, message: "Service is missing argument with name #{attr_name}"
+        :log_item_error_initialize, attr_name: name, message: "Service is missing argument with name #{name}"
       )
       false
     end
   end
 
-  def define_required_conditional_validator(canonical, attr_name, **options)
+  def define_required_conditional_validator(canonical:, name:, **options)
     define_method(canonical) do
-      return false if send(:"valid_required_#{attr_name}?", false) == false
-      return true if options[:if].call(send(attr_name))
+      return false if send(:"valid_required_#{name}?", false) == false
+      return true if options[:if].call(send(name))
 
       send(
         :log_item_error_initialize,
-        attr_name:,
-        message: "Service argument conditional requirement not met properly for #{attr_name}"
+        attr_name: name,
+        message: "Service argument conditional requirement not met properly for #{name}"
       )
       false
     end

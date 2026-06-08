@@ -146,14 +146,14 @@ module Assistant::InputBuilder
 
     def test_type_mismatch_message_builder_single_type
       bare = Class.new { extend Assistant::InputBuilder::TypeValidator }
-      msg  = bare.type_mismatch_message_builder(:limit, [Integer]).call(String)
+      msg  = bare.type_mismatch_message_builder(name: :limit, types: [Integer]).call(String)
 
       assert_equal 'Service argument with name limit is not a Integer but String', msg
     end
 
     def test_type_mismatch_message_builder_multi_type
       bare = Class.new { extend Assistant::InputBuilder::TypeValidator }
-      msg  = bare.type_mismatch_message_builder(:amount, [Integer, Float]).call(String)
+      msg  = bare.type_mismatch_message_builder(name: :amount, types: [Integer, Float]).call(String)
 
       assert_equal 'Service argument with name amount is not one of [Integer, Float] but String', msg
     end

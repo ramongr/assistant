@@ -9,7 +9,7 @@ module Assistant::InputBuilder::Registry
     @input_definitions ||= {}
   end
 
-  def register_input_definition(attr_name, type, options)
-    input_definitions[attr_name] = { type:, **options }.freeze
+  def register_input_definition(name:, type:, options:)
+    input_definitions[name] = { type:, **options }.freeze
   end
 end

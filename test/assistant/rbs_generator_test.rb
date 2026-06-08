@@ -69,7 +69,7 @@ module Assistant
         def self.name = 'BadType'
       end
       # Bypass the DSL guard so we can verify the renderer's own check.
-      service.send(:register_input_definition, :foo, 'String', {})
+      service.send(:register_input_definition, name: :foo, type: 'String', options: {})
 
       assert_raises(RuntimeError) { RbsGenerator::Renderer.render(service) }
     end

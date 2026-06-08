@@ -101,7 +101,7 @@ module Assistant::InputBuilder
       bare = Class.new { extend Assistant::InputBuilder::OptionalOption }
 
       error = assert_raises(ArgumentError) do
-        bare.validate_optional!(:foo, { optional: :sometimes })
+        bare.validate_optional!(name: :foo, options: { optional: :sometimes })
       end
 
       assert_match(/optional: for input :foo must be true or false/, error.message)
@@ -111,7 +111,7 @@ module Assistant::InputBuilder
       bare = Class.new { extend Assistant::InputBuilder::OptionalOption }
 
       error = assert_raises(ArgumentError) do
-        bare.validate_optional!(:foo, { optional: true, required: true })
+        bare.validate_optional!(name: :foo, options: { optional: true, required: true })
       end
 
       assert_match(/cannot be both required: true and optional: true/, error.message)
@@ -120,8 +120,8 @@ module Assistant::InputBuilder
     def test_validate_optional_bang_returns_nil_on_valid_options
       bare = Class.new { extend Assistant::InputBuilder::OptionalOption }
 
-      assert_nil bare.validate_optional!(:foo, { optional: true })
-      assert_nil bare.validate_optional!(:foo, { optional: false })
+      assert_nil bare.validate_optional!(name: :foo, options: { optional: true })
+      assert_nil bare.validate_optional!(name: :foo, options: { optional: false })
     end
 
     def test_apply_optional_option_translates_false_to_required_true

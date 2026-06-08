@@ -112,7 +112,7 @@ module Assistant
 
       inner = klass.new(**inputs)
       inner.run
-      merge_logs(inner.logs)
+      merge_logs(logs: inner.logs)
       inner
     end
 

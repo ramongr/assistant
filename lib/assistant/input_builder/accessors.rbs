@@ -4,7 +4,7 @@
 # return whatever `define_method` returns (a Symbol).
 
 module Assistant::InputBuilder::Accessors
-  def input_getter_meth: (Symbol attr_name) -> Symbol
+  def input_getter_meth: (name: Symbol) -> Symbol
 
-  def input_checker_meth: (Symbol attr_name) -> Symbol
+  def input_checker_meth: (name: Symbol) -> Symbol
 end

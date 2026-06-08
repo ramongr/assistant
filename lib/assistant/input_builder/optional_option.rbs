@@ -2,9 +2,9 @@
 # (M7). Validates the `optional:` flag and normalises the option hash.
 
 module Assistant::InputBuilder::OptionalOption
-  def process_optional_option: (Symbol attr_name, Hash[Symbol, untyped] options) -> Hash[Symbol, untyped]
+  def process_optional_option: (name: Symbol, options: Hash[Symbol, untyped]) -> Hash[Symbol, untyped]
 
-  def validate_optional!: (Symbol attr_name, Hash[Symbol, untyped] options) -> void
+  def validate_optional!: (name: Symbol, options: Hash[Symbol, untyped]) -> void
 
   def apply_optional_option: (Hash[Symbol, untyped] options) -> Hash[Symbol, untyped]
 end

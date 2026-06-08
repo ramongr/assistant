@@ -6,8 +6,8 @@ module Assistant::LogList
     @logs << Assistant::LogItem.new(level:, source:, detail:, message:, trace:)
   end
 
-  def merge_logs(other_logs)
-    @logs.concat(other_logs)
+  def merge_logs(logs:)
+    @logs.concat(logs)
   end
 
   # Convenience used by InputBuilder-generated validators to record an

@@ -295,7 +295,7 @@ documented to avoid surprise.
 - **API sketch**:
   ```ruby
   input :nickname, type: String, optional: true   # explicit; same runtime
-                                                  # behaviour as omitting the flag
+                                                        # behaviour as omitting the flag
 
   input :email, type: String, required: true      # unchanged
 
@@ -460,7 +460,7 @@ documented to avoid surprise.
 - **Owner**: _TBD_.
 - **Status**: `[x]`.
 
-### M12. Keyword arguments for every public and internal method
+### M12. Keyword arguments for every public and internal method (except `input`/`inputs` name)
 
 - **Rationale**: 0.1.0 is inconsistent about its calling convention. The
   headline DSL (`Service.input`, `Service.inputs`) takes the attribute
@@ -474,6 +474,15 @@ documented to avoid surprise.
   slot is a permanent wart. 1.0.0 is the only chance to land this
   without a deprecation cycle (per Q-decision: 0.x EOL on 1.0.0 release
   date), so it becomes a Must.
+
+  **Exemption (settled during M12 implementation)**: the two
+  user-facing DSL entry points `Service.input` and `Service.inputs`
+  keep their leading positional `attr_name` / `attr_names` parameter.
+  In a class body, `input :foo, type: String` reads better than
+  `input name: :foo, type: String` — the name *is* the subject of the
+  declaration and a positional slot is the natural place for it. Every
+  other method covered by M12 (LogList, every InputBuilder helper)
+  still becomes keyword-only.
 - **API sketch**:
   ```ruby
   # Before (0.1.0)
@@ -482,17 +491,18 @@ documented to avoid surprise.
     inputs %i[a b c],    type: Integer, required: true
   end
 
-  # After (1.0.0)
+  # After (1.0.0) — DSL unchanged at the call site
   class CreateUser < Assistant::Service
-    input  name:  :role,        type: String, default: 'member'
-    inputs names: %i[a b c],    type: Integer, required: true
+    input  :role,        type: String, default: 'member'
+    inputs %i[a b c],    type: Integer, required: true
   end
+
+  # What does change for callers: merge_logs is now keyword-only
+  host.merge_logs(logs: inner.logs)   # was: merge_logs(inner.logs)
   ```
   Signature changes:
-  - `Service.input(attr_name, type:, **)` →
-    `Service.input(name:, type:, **)`.
-  - `Service.inputs(attr_names, type:, **)` →
-    `Service.inputs(names:, type:, **)`.
+  - `Service.input(attr_name, type:, **)` — **unchanged** (exempt).
+  - `Service.inputs(attr_names, type:, **)` — **unchanged** (exempt).
   - `LogList#merge_logs(other_logs)` →
     `LogList#merge_logs(logs:)`.
   - All `InputBuilder` helpers
@@ -504,35 +514,36 @@ documented to avoid surprise.
     `type_validator_body(attr_name, types, allow_nil, message_builder)`,
     `type_mismatch_message_builder(attr_name, types)`) become
     fully keyword: `(name:)`, `(name:, type:, **options)`,
-    `(name:, types:, allow_nil:, message_builder:)`, etc.
+    `(name:, types:, allow_nil:, message_builder:)`, etc. The M13-split
+    M1/M7/Registry helpers (`process_default_option`, `validate_default!`,
+    `warn_on_mutable_default`, `process_optional_option`,
+    `validate_optional!`, `register_input_definition`) also become
+    keyword-only for surface consistency.
   - `LogItem#initialize`, `LogList#add_log`,
     `LogList#log_item_error_initialize`, `LogList#log_item_*` shorthands
     (added in M5), `Service.run`, and `Service#initialize` are already
     keyword-only and do not change.
-- **Migration**: hard break. The 0.x → 1.0 migration guide
-  ([`06-migration-0x-to-1.md`](./06-migration-0x-to-1.md)) gets a
-  dedicated section with a `sed`-style recipe:
+- **Migration**: hard break for `merge_logs` and the internal helpers;
+  the DSL itself is source-compatible. The 0.x → 1.0 migration guide
+  ([`06-migration-0x-to-1.md`](./06-migration-0x-to-1.md)) covers the
+  `merge_logs` rewrite, which is `git grep`-able and trivially
+  scriptable:
   ```sh
-  # In a service file, rewrite every:
-  #   input :foo, ...
+  # In any code composing log lists, rewrite every:
+  #   foo.merge_logs(bar.logs)
   # to:
-  #   input name: :foo, ...
-  # and every:
-  #   inputs %i[a b c], ...
-  # to:
-  #   inputs names: %i[a b c], ...
+  #   foo.merge_logs(logs: bar.logs)
   ```
-  No runtime shim accepting the old positional form will be shipped —
-  this is the same hard-break policy used for M9 (`valid_require_*?`
-  removed in 2.0 after a deprecation cycle that we cannot run for M12
-  since the change is purely shape, not behaviour). The migration guide
-  notes that the change is `git grep`-able and trivially scriptable.
+  No runtime shim accepting the old positional `merge_logs` form will
+  be shipped — this is the same hard-break policy used for M9
+  (`valid_require_*?` removed in 2.0 after a deprecation cycle that we
+  cannot run for M12 since the change is purely shape, not behaviour).
 - **Ordering**: lands **last** among the Must-list mechanical changes,
   after M1–M11 and the four promoted Should items (M-S1..M-S4).
   Reasons:
-  - It touches every test file in the suite (every `Class.new(Assistant::Service)`
-    fixture uses `input :foo, type: …`), so rebasing it on top of all
-    other input-related work avoids merge churn during M1/M2/M3/M7.
+  - It rewrites every internal call site through the InputBuilder
+    helpers, so landing it after M13 (the per-concern split) avoids
+    needing to re-do the rename across the new module boundaries.
   - It must come before M11 (RBS generator) so the generator emits sigs
     against the final method shapes; otherwise the generator template
     would need a rewrite.
@@ -540,17 +551,18 @@ documented to avoid surprise.
     use the new form throughout.
 - **Test plan**:
   - Every existing test in `test/assistant/{service,input_builder,log_list,log_item}_test.rb`
-    is rewritten in the same PR to use the new keyword form; this is the
-    test that the change actually compiles and runs. Suite must remain
-    green with the same assertion count (no behaviour drift).
-  - New regression test in `test/assistant/input_builder_test.rb`:
-    calling `Service.input(:foo, type: String)` (old positional form)
-    raises `ArgumentError: missing keyword: :name`, asserting that no
-    accidental shim slipped in.
-  - New regression test for `LogList#merge_logs(other_logs)` raising
-    `ArgumentError: missing keyword: :logs`.
-- **Risk**: low semantically (no behaviour change), high mechanically
-  (every user file breaks). Mitigated by:
+    is rewritten in the same PR to use the new keyword form **for the
+    internal helpers and `merge_logs`**; `input :foo, type: …` call
+    sites do not change. Suite must remain green with no behaviour
+    drift.
+  - New regression test for `LogList#merge_logs([])` (positional)
+    raising `ArgumentError: ... required keyword: logs`. No regression
+    tests are needed for `Service.input` / `Service.inputs` since the
+    exemption keeps the old positional form working.
+- **Risk**: low semantically (no behaviour change), medium mechanically
+  (callers of `merge_logs` and library-internal callers of the
+  InputBuilder helpers break; `Service.input`/`Service.inputs` call
+  sites are source-compatible). Mitigated by:
   - Single, well-scoped PR that does only the rename — no behaviour
     edits, no opportunistic refactors. Reviewers can read it as a pure
     signature change.
@@ -561,16 +573,16 @@ documented to avoid surprise.
 - **Docs touchpoint**:
   - [`01-api-surface.md`](./01-api-surface.md) — update every signature in
     the API surface table; add a "Changes vs. 0.1.0" entry: _"All
-    methods are keyword-only. `Service.input`/`Service.inputs` now take
-    `name:`/`names:` as a keyword."_
-  - [`06-migration-0x-to-1.md`](./06-migration-0x-to-1.md) — new
-    "Keyword-only method signatures" section with the sed recipe and an
-    explicit list of every renamed signature.
+    methods are keyword-only **except** `Service.input` / `Service.inputs`,
+    which keep their leading positional name for class-body
+    readability."_
+  - [`06-migration-0x-to-1.md`](./06-migration-0x-to-1.md) — covers the
+    `merge_logs` rewrite (the only user-visible required change).
   - [`03-documentation.md`](./03-documentation.md) — D2 (`guides/inputs.md`)
     and the README quickstart examples updated to the new form during
     Phase 4.
 - **Owner**: _TBD_.
-- **Status**: `[ ]`.
+- **Status**: `[x]`.
 
 ### M13. Split `Assistant::InputBuilder` into per-concern submodules
 

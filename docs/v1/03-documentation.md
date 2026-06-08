@@ -8,7 +8,7 @@ contains `TODO` placeholders. v1 must ship a complete, navigable set of docs.
 
 ### D1. Top-level `README.md` rewrite
 
-- [ ] Replace the body with:
+- [x] Replace the body with:
   - One-paragraph elevator pitch (matches `00-overview.md`).
   - Status badges (CI, Gem version, downloads, license, Ruby versions).
   - Install instructions (`bundle add assistant` and `gem install assistant`).
@@ -20,10 +20,15 @@ contains `TODO` placeholders. v1 must ship a complete, navigable set of docs.
   - Link to `docs/getting-started.md` and `docs/api-reference.md`.
   - "Roadmap" section linking to `docs/v1/README.md`.
   - Keep the existing License + Code of Conduct sections.
-- [ ] Remove every `TODO:` placeholder (`README.md:5`, `README.md:25`).
-- [ ] Replace `https://github.com/[USERNAME]/assistant` with
+- [x] Remove every `TODO:` placeholder (`README.md:5`, `README.md:25`).
+- [x] Replace `https://github.com/[USERNAME]/assistant` with
       `https://github.com/ramongr/assistant` (`README.md:35`,
       `README.md:43`).
+
+> Documentation index links point at `docs/v1/01-api-surface.md` and the
+> existing planning docs until D2/D3 land the user-facing
+> `docs/getting-started.md` and `docs/api-reference.md` siblings. The
+> README will be re-linked as part of the D2 PR.
 
 ### D2. New user-facing pages under `docs/` (siblings of `docs/v1/`)
 

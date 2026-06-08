@@ -42,6 +42,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- **D1**: rewrote the top-level `README.md`. Replaced the bundler-template
+  `TODO:` placeholders and `[USERNAME]/assistant` URLs with an elevator
+  pitch, status badges (CI, gem version, downloads, Ruby version,
+  license), `bundle add` / `gem install` instructions, a runnable
+  60-second `CreateUser` example covering required inputs, defaults,
+  `allow_nil:`, `validate`, and the `log_item_warning` /
+  `log_item_error` shorthands, a "why another service-object gem?"
+  comparison against Interactor and dry-transaction, a documentation
+  index pointing at `docs/v1/01-api-surface.md`, the migration guide,
+  deprecations, examples, the changelog, and the roadmap, plus a
+  refreshed Development section listing `rake test`, `rubocop`, and
+  `steep check`. (D1, v1 plan)
+
 - `Assistant::Service#input_snapshot` — returns a frozen `Data`
   instance whose members are the declared input names (via
   `Service.input` / `Service.inputs`), in declaration order, with

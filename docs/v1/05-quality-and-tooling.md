@@ -51,10 +51,12 @@ Configuration lives in `.rubocop.yml` and `.rubocop_todo.yml`.
       `Assistant::InputBuilder` and `Assistant::Refinements` are
       predeclared in `lib/assistant.rb` so multi-segment files load
       without ordering hazards.
-- [ ] Drop the temporary `Metrics/ModuleLength: Max: 150` override
+- [x] Drop the temporary `Metrics/ModuleLength: Max: 150` override
       (added for M7) once M13 ships and `lib/assistant/input_builder.rb`
       is split into per-concern submodules. See
-      [`02-features.md`](./02-features.md) M13.
+      [`02-features.md`](./02-features.md) M13. Removed alongside M13
+      (PR #143, `01d82b1`); `.rubocop.yml` now has no `Metrics/ModuleLength`
+      override.
 
 ## Brakeman + Fasterer
 

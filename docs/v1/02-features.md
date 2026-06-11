@@ -186,7 +186,7 @@ even with `allow_nil: true`" interaction (point 8); it must be loudly
 documented to avoid surprise.
 
 - **Owner**: _TBD_.
-- **Status**: `[ ]`.
+- **Status**: `[x]` — shipped in PR #137 (`53b1678`).
 
 ### M2. `input(..., allow_nil:)`
 
@@ -204,7 +204,7 @@ documented to avoid surprise.
 - **Risk**: low–medium. Must not change behaviour when `allow_nil:` is
   omitted (back-compat).
 - **Owner**: _TBD_.
-- **Status**: `[ ]`.
+- **Status**: `[x]` — shipped in PR #136 (`38b2897`).
 
 ### M3. `input(..., type: [A, B])`
 
@@ -221,7 +221,7 @@ documented to avoid surprise.
 - **Risk**: low. The type-check call site is a single line in
   `lib/assistant/input_builder.rb:73`.
 - **Owner**: _TBD_.
-- **Status**: `[ ]`.
+- **Status**: `[x]` — shipped in PR #135 (`42bd89d`).
 
 ### M4. Public `Service#logs` reader
 
@@ -257,7 +257,7 @@ documented to avoid surprise.
   per level; assert the resulting `LogItem` is shaped correctly.
 - **Risk**: low. Pure additions on `LogList`.
 - **Owner**: _TBD_.
-- **Status**: `[ ]`.
+- **Status**: `[x]` — shipped in PR #134 (`a318a24`).
 
 #### Open follow-ups (out of scope for M5, tracked for 1.x)
 
@@ -632,7 +632,7 @@ documented to avoid surprise.
   whole module to just `accessors.rb`; existing checker tests cover
   the whitespace path.
 - **Owner**: _TBD_.
-- **Status**: `[ ]`.
+- **Status**: `[x]` — shipped in PR #143 (`01d82b1`).
 
 ---
 

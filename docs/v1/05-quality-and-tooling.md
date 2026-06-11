@@ -15,9 +15,9 @@ Today the suite is Minitest under `test/` (per the 0.1.0 migration noted in
 
 ### Goals for 1.0
 
-- [ ] Add SimpleCov to the dev dependencies and require it from
+- [x] Add SimpleCov to the dev dependencies and require it from
       `test/test_helper.rb` before `require "assistant"`.
-- [ ] Configure SimpleCov:
+- [x] Configure SimpleCov:
   - Track lines and branches.
   - **Target** (soft gate; report only): line ≥98%, branch ≥95%. CI
     surfaces the numbers in the job summary but does **not** fail when
@@ -25,9 +25,9 @@ Today the suite is Minitest under `test/` (per the 0.1.0 migration noted in
     [`07-risks-and-open-questions.md`](./07-risks-and-open-questions.md)
     decision.
   - Output to `coverage/`; gitignore the directory.
-- [ ] Add a CI step that publishes the SimpleCov HTML as an artifact for
+- [x] Add a CI step that publishes the SimpleCov HTML as an artifact for
       easy inspection on PRs.
-- [ ] Add a CI step that prints line/branch percentages to the GitHub
+- [x] Add a CI step that prints line/branch percentages to the GitHub
       Actions job summary (`$GITHUB_STEP_SUMMARY`).
 - [ ] Add `test/docs/` for example-block tests required by
       [`03-documentation.md`](./03-documentation.md) D5 acceptance criteria.
@@ -134,9 +134,11 @@ Current matrix (`.github/workflows/ci.yml:21`): `['3.4', '4.0']`.
 - [ ] Keep `fail-fast: false` so a single Ruby's flake doesn't mask others.
 - [ ] Run RuboCop on the highest matrix entry only (current behaviour;
       `.github/workflows/ci.yml:38`).
-- [ ] Add a `coverage` job that runs the test suite once with SimpleCov and
+- [x] Add a `coverage` job that runs the test suite once with SimpleCov and
       uploads the artifact (soft gate).
-- [ ] Add a **required** `steep` job per the section above.
+- [x] Add a **required** `steep` job per the section above. Already
+      live in `.github/workflows/ci.yml`; required by branch protection
+      via the `Steep` check.
 
 ## Bundler / dependency hygiene
 

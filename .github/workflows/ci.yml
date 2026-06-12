@@ -51,3 +51,45 @@ jobs:
           bundler-cache: true
       - name: Run Steep
         run: bundle exec steep check --jobs=1
+
+  coverage:
+    name: Coverage (SimpleCov)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '4.0'
+          bundler-cache: true
+      - name: Run tests with SimpleCov
+        run: bundle exec rake test
+      - name: Append coverage summary
+        if: always()
+        run: |
+          ruby -rjson -e '
+            path = "coverage/.last_run.json"
+            unless File.exist?(path)
+              warn "no coverage/.last_run.json produced"
+              exit 0
+            end
+            data = JSON.parse(File.read(path))
+            line = data.dig("result", "line")
+            branch = data.dig("result", "branch")
+            File.open(ENV.fetch("GITHUB_STEP_SUMMARY"), "a") do |f|
+              f.puts "## SimpleCov coverage"
+              f.puts
+              f.puts "| Metric | Coverage | Soft target |"
+              f.puts "| ------ | -------- | ----------- |"
+              f.puts "| Line   | #{line}% | >= 98% |"
+              f.puts "| Branch | #{branch}% | >= 95% |"
+              f.puts
+              f.puts "Reported only; not enforced in CI. See docs/v1/05-quality-and-tooling.md."
+            end
+          '
+      - name: Upload coverage HTML artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-html
+          path: coverage/
+          if-no-files-found: warn

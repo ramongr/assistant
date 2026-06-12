@@ -152,9 +152,11 @@ Current matrix (`.github/workflows/ci.yml:21`): `['3.4', '4.0']`.
 ## Bundler / dependency hygiene
 
 - [ ] Keep `bundler ~> 4.0` as a dev dep (`assistant.gemspec:37`).
-- [ ] Keep zero runtime gem dependencies; add a CI assertion that
+- [x] Keep zero runtime gem dependencies; add a CI assertion that
       `Gem::Specification.load("assistant.gemspec").runtime_dependencies` is
-      empty.
+      empty. New `runtime-deps` job in `.github/workflows/ci.yml` runs the
+      one-liner on every push/PR and fails loudly if a runtime dep is ever
+      introduced.
 - [ ] Re-run `bundle update` and ensure `Gemfile.lock` checksums stay
       reproducible (already enabled via `CHECKSUMS:` block in
       `Gemfile.lock`).

@@ -36,10 +36,17 @@ Today the suite is Minitest under `test/` (per the 0.1.0 migration noted in
 
 Configuration lives in `.rubocop.yml` and `.rubocop_todo.yml`.
 
-- [ ] Confirm `TargetRubyVersion: 3.4` matches the gemspec
-      (`assistant.gemspec:20`) and CI floor.
-- [ ] Inspect `.rubocop_todo.yml` and either fix or explicitly re-disable
-      every offense; aim for an empty TODO at 1.0.0.
+- [x] Confirm `TargetRubyVersion: 3.4` matches the gemspec
+      (`assistant.gemspec:20`) and CI floor. All three are aligned:
+      `.rubocop.yml` sets `TargetRubyVersion: 3.4`, the gemspec sets
+      `required_ruby_version = '>= 3.4'`, and the CI matrix floor in
+      `.github/workflows/ci.yml` is `'3.4'`.
+- [x] Inspect `.rubocop_todo.yml` and either fix or explicitly re-disable
+      every offense; aim for an empty TODO at 1.0.0. The TODO file held
+      zero overrides (only the autogen header from RuboCop 1.57.2 in
+      2023); deleted in this change, and the corresponding
+      `inherit_from:` directive was removed from `.rubocop.yml`.
+      `bundle exec rubocop` stays clean on 40 files.
 - [ ] Keep the existing `rubocop-minitest`, `rubocop-performance`,
       `rubocop-rake` extensions (per `Gemfile.lock`).
 - [x] Adopt `rubocop-style-compact_nesting` (added with M13). Enforces

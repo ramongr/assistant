@@ -7,8 +7,6 @@ GEM
   remote: https://rubygems.org/
   specs:
     ast (2.4.3)
-    brakeman (8.0.4)
-      racc
     byebug (13.0.0)
       reline (>= 0.6.0)
     colorize (1.1.0)
@@ -116,7 +114,6 @@ PLATFORMS
 
 DEPENDENCIES
   assistant!
-  brakeman (~> 8.0)
   bundler (~> 4.0)
   byebug (~> 13.0)
   colorize (~> 1.1)
@@ -133,7 +130,6 @@ DEPENDENCIES
 CHECKSUMS
   assistant (0.1.0)
   ast (2.4.3) sha256=954615157c1d6a382bc27d690d973195e79db7f55e9765ac7c481c60bdb4d383
-  brakeman (8.0.4) sha256=7bf921fa9638544835df9aa7b3e720a9a72c0267f34f92135955edd80d4dcf6f
   bundler (4.0.11) sha256=5bcec0fb78302e48d02ee46f10ee6e6942be647ba5b44a6d1ddfda9a240ce785
   byebug (13.0.0) sha256=d2263efe751941ca520fa29744b71972d39cbc41839496706f5d9b22e92ae05d
   colorize (1.1.0) sha256=30b5237f0603f6662ab8d1fc2bd4a96142b806c6415d79e45ef5fdc6a0cfc837

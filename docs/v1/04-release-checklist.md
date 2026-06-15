@@ -60,9 +60,7 @@
 bin/setup
 bundle exec rake test
 bundle exec rubocop --parallel
-bundle exec brakeman --no-pager --quiet
-bundle exec fasterer
-bundle exec rake ci          # aggregate task added in plan 05
+bundle exec rake ci          # aggregate task: test + rubocop + steep
 gem build assistant.gemspec
 gem install ./assistant-1.0.0.rc1.gem
 ruby -e 'require "assistant"; p Assistant::VERSION'

@@ -58,49 +58,51 @@ Configuration lives in `.rubocop.yml` and `.rubocop_todo.yml`.
       (PR #143, `01d82b1`); `.rubocop.yml` now has no `Metrics/ModuleLength`
       override.
 
-## Brakeman + Fasterer
+## Static analysis (Brakeman / Fasterer)
 
-Both are dev dependencies but only RuboCop runs in CI today
-(`.github/workflows/ci.yml:31`).
+Both gems were considered as additional CI checks during planning. Both were
+**dropped for 1.0** after empirical evaluation; the dev dependencies were
+removed alongside this decision.
 
-- [ ] Add a CI step `bundle exec brakeman --no-pager --quiet` (allowed to
-      fail for the first PR; promoted to required once green).
-- [ ] Add a CI step `bundle exec fasterer` (same allowed-failure pattern
-      first).
-- [ ] Wire both into a new `rake ci` aggregate task so contributors get a
-      one-shot local equivalent of CI.
+- [x] Brakeman — **not planned for 1.0.** Brakeman is a Rails-specific
+      static analyzer (controllers / models / templates / SQL sinks). The
+      gem has no Rails surface, so Brakeman refuses to run without
+      `--force` and, with `--force`, reports `0 warnings` because there is
+      nothing for it to inspect. Re-evaluate if the gem ever grows a Rails
+      integration. Dev dep removed (was `brakeman ~> 8.0`).
+- [x] Fasterer — **not planned for 1.0.** Fasterer surfaces micro-optimisation
+      hints that overlap with `rubocop-performance` (already enabled) and
+      tends toward noise on a small, well-typed surface. Re-evaluate if a
+      hot path shows up in benchmarking. Never added to dev deps.
+- [x] Wire a new `rake ci` aggregate task so contributors get a one-shot
+      local equivalent of CI. Implemented in `Rakefile`; runs
+      `test` → `rubocop` → `steep`.
 
-### Proposed `Rakefile` aggregate
+### `Rakefile` aggregate (shipped)
+
+The Rakefile defines a `ci` task that mirrors the individual CI jobs:
 
 ```ruby
-# Rakefile
-require 'rake/testtask'
-Rake::TestTask.new(:test) do |t|
-  t.libs << 'test'
-  t.libs << 'lib'
-  t.test_files = FileList['test/**/*_test.rb']
+# Rakefile (excerpt)
+begin
+  require 'rubocop/rake_task'
+  RuboCop::RakeTask.new
+rescue LoadError
+  # rubocop is a development-only dependency
 end
 
-desc 'Run the full local CI pipeline'
-task ci: %i[test rubocop brakeman fasterer]
-
-require 'rubocop/rake_task'
-RuboCop::RakeTask.new
-
-task :brakeman do
-  sh 'bundle exec brakeman --no-pager --quiet'
+desc 'Run Steep type-check (matches the required CI job)'
+task :steep do
+  sh 'bundle exec steep check --jobs=1'
 end
 
-task :fasterer do
-  sh 'bundle exec fasterer'
-end
-
-task default: :test
+desc 'Run the full local CI pipeline: test + rubocop + steep'
+task ci: %i[test rubocop steep]
 ```
 
-(The current `Rakefile` is short; this snippet supersedes it. Sequencing into
-implementation lives in [`02-features.md`](./02-features.md) cross-cutting
-acceptance criteria; the snippet is documentation only.)
+CI keeps the per-tool jobs (`test`, `rubocop`, `steep`, `coverage`) for
+faster feedback and parallel execution; `rake ci` is the contributor-facing
+local equivalent. See `Rakefile` and [`ci.yml`](../../.github/workflows/ci.yml).
 
 ## RBS / Steep
 
@@ -160,7 +162,8 @@ Current matrix (`.github/workflows/ci.yml:21`): `['3.4', '4.0']`.
 
 ## Acceptance criteria
 
-- [ ] `bundle exec rake ci` exits 0 locally and in CI.
+- [x] `bundle exec rake ci` exits 0 locally (test + rubocop + steep).
+      CI exercises each tool in a dedicated job for parallelism.
 - [ ] Coverage reported (soft gate; ≥98% line / ≥95% branch is the
       target but not enforced in CI).
 - [ ] No new runtime dependencies have been introduced.

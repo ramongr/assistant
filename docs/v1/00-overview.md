@@ -60,7 +60,7 @@ A "v1.0.0" tag may be cut once **all** of the following are true:
 - [ ] `README.md` no longer contains any `TODO:` from the bundler template.
 - [ ] Every public method has a YARD comment and a corresponding RBS signature.
 - [ ] CI is green on Ruby 3.4 and the latest stable Ruby on `main`.
-- [ ] `bundle exec rake ci` (test + rubocop + brakeman + fasterer) is green
+- [ ] `bundle exec rake ci` (test + rubocop + steep) is green
       locally and in CI.
 - [ ] SimpleCov reports ≥95% line / ≥90% branch coverage.
 - [ ] `CHANGELOG.md` has a complete `[1.0.0]` section with migration notes.

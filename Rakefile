@@ -39,37 +39,18 @@ end
 desc 'Run the full local CI pipeline: test + rubocop + steep + yard'
 task ci: %i[test rubocop steep yard]
 
-# WEBrick servlet for `rake docs:serve`. Mirrors GitHub Pages' SPA
-# fallback: when the requested file doesn't exist (history-mode routing
-# hits a non-file path), serve `docs/404.html` (a verbatim copy of
-# `docs/index.html`) with HTTP 404 so Docsify can pick up the route on
-# the client. Defined at the top level so RuboCop's
-# `Rake/MethodDefinitionInTask` cop stays happy.
-class DocsSpaServlet < WEBrick::HTTPServlet::FileHandler
-  # rubocop:disable Naming/MethodName -- WEBrick API requires `do_GET`.
-  def do_GET(req, res)
-    super
-  rescue WEBrick::HTTPStatus::NotFound
-    res.status = 404
-    res.content_type = 'text/html'
-    res.body = File.read(File.join(@root, '404.html'))
-  end
-  # rubocop:enable Naming/MethodName
-end
-
 namespace :docs do
   desc 'Serve the Docsify site on http://127.0.0.1:4000/assistant/ (Ctrl-C to stop)'
   task :serve do
-    # Docsify runs in history-mode routing (`routerMode: 'history'`), so
-    # unknown URLs like `/assistant/guides/inputs` must serve the SPA
-    # shell instead of 404ing. We mount `docs/` at `/assistant/` (matching
-    # the GitHub Pages base path) and fall back to `docs/404.html` via
-    # `DocsSpaServlet`.
+    # Docsify runs in hash-mode routing, so every navigable URL resolves to
+    # `docs/index.html` (no SPA-fallback servlet required). We mount `docs/`
+    # at `/assistant/` over WEBrick so local URLs match the production base
+    # path verbatim.
     root  = File.expand_path('docs', __dir__)
     mount = '/assistant'
 
     server = WEBrick::HTTPServer.new(Port: 4000, BindAddress: '127.0.0.1')
-    server.mount(mount, DocsSpaServlet, root, FancyIndexing: false)
+    server.mount(mount, WEBrick::HTTPServlet::FileHandler, root, FancyIndexing: false)
     server.mount_proc('/') do |_req, res|
       res.set_redirect(WEBrick::HTTPStatus::Found, "#{mount}/")
     end

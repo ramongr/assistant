@@ -51,15 +51,26 @@
 
 ## Pre-release: source updates
 
-- [ ] Bump `Assistant::VERSION` to `'1.0.0'` in `lib/assistant/version.rb:4`.
-- [ ] Update `bin/version` (if it touches the constant) to keep it green.
-- [ ] Move all `[Unreleased]` entries in `CHANGELOG.md` under a new
+- [x] Bump `Assistant::VERSION` to `'1.0.0'` in `lib/assistant/version.rb:4`.
+      Bumped to `'1.0.0.rc1'` for the RC cut; the `1.0.0` bump rides
+      the follow-up release commit after the RC smoke passes.
+- [x] Update `bin/version` (if it touches the constant) to keep it green.
+      `bin/version` reads `Assistant::VERSION` at runtime; no edit
+      required and the `bin-smoke` CI job (added in PR #173)
+      keeps it honest.
+- [x] Move all `[Unreleased]` entries in `CHANGELOG.md` under a new
       `## [1.0.0] - YYYY-MM-DD` heading and add a `## [Unreleased]` empty
-      section above it.
-- [ ] In `CHANGELOG.md`, add a "Migration" subsection under `[1.0.0]`
+      section above it. Done for the RC: entries promoted to
+      `## [1.0.0.rc1] - 2026-06-15`; an empty `## [Unreleased]` sits
+      above it. The release PR retitles to `## [1.0.0]` with the tag
+      date.
+- [x] In `CHANGELOG.md`, add a "Migration" subsection under `[1.0.0]`
       summarizing [`06-migration-0x-to-1.md`](./06-migration-0x-to-1.md).
-- [ ] Tag the EOL of `0.x` in `SECURITY.md` (created in
+- [x] Tag the EOL of `0.x` in `SECURITY.md` (created in
       [`03-documentation.md`](./03-documentation.md)).
+      Already in place at
+      [`SECURITY.md:9-17`](../../SECURITY.md): "0.x — End of life on
+      the `1.0.0` release. No further fixes."
 
 ## Local pre-flight (run before pushing the tag)
 

@@ -182,21 +182,29 @@ Each example PR ships **all three** of:
 ## Acceptance criteria
 
 - [x] `bundle exec jekyll build --strict_front_matter` passes locally and in CI.
-- [ ] `https://ramongr.github.io/assistant/` returns 200 and renders the
-      full nav.
+- [x] `https://ramongr.github.io/assistant/` returns 200 and renders the
+      full nav (live since the Jekyll migration in PR #180).
 - [x] Every page in the **Site map** exists (placeholder is acceptable
       after P2; real content after the matching Pn).
 - [ ] Every code block tagged ```` ```ruby ```` in `docs/getting-started.md`,
       `docs/guides/*.md`, and `docs/examples/*.md` either is rendered
       verbatim from a script under `examples/` **or** is mirrored by an
       integration test under `test/docs/` / `test/examples/` (the D2
-      acceptance criterion, extended to the example pages).
+      acceptance criterion, extended to the example pages). Open until D5
+      ships the runnable examples.
 - [ ] Search box returns sensible results for "input", "warnings",
       "call_service", "notifier", "RBS".
-- [x] Dark-mode toggle works (built into just-the-docs); no
-      theme-specific custom CSS in v1.
+- [x] Dark-mode toggle works. Shipped as a custom button wired through
+      `_includes/head_custom.html` + `_includes/nav_footer_custom.html`
+      with `localStorage` persistence on top of just-the-docs's built-in
+      `jtd.setTheme()` API (the bundled toggle in 0.12 doesn't surface a
+      visible control on `color_scheme: light`).
 - [x] Repo-edit-this-page link on every page points at the right file on
       `main` (driven by `_config.yml` `gh_edit_*` settings).
+- [x] Site polish bundle: copy-code button (`enable_copy_code_button`),
+      named callouts (`note`/`tip`/`warning`/`important`), Mermaid loader
+      pinned to `10.9.1`, baseurl-aware favicons (SVG + 32px + 180px
+      apple-touch), and a 1200×630 OG / Twitter card image. See PR #182.
 
 ## Out of scope (deferred)
 
@@ -206,8 +214,9 @@ Each example PR ships **all three** of:
 - A blog / changelog feed beyond the rendered `CHANGELOG.md`.
 - Translated docs.
 - Analytics / cookie consent.
-- Custom theme branding (logo, favicon, palette tweaks) — left for a
-  follow-up once the content is in place.
+- Custom theme branding — partially landed in the site-polish PR (favicons,
+  OG image, accent color `#7253ed`); remaining tweaks (logo wordmark,
+  larger palette) still deferred.
 
 ## Cross-references
 

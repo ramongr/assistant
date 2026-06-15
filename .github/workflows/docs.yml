@@ -41,7 +41,13 @@ jobs:
           ruby-version: '3.4'
           bundler-cache: true
       - name: Build site
-        run: bundle exec jekyll build --strict_front_matter --baseurl "/assistant"
+        # `2>` filters sass-embedded `darken()` deprecation noise from
+        # just-the-docs 0.12 (upstream issue; cosmetic only). Build
+        # status still surfaces via `pipefail`.
+        shell: bash
+        run: |
+          set -o pipefail
+          bundle exec jekyll build --strict_front_matter --baseurl "/assistant" 2> >(grep -v -E 'darken\(\)|sass-embedded|repetitive deprecation' >&2)
       - name: Upload site artifact
         uses: actions/upload-pages-artifact@v3
         with:

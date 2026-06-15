@@ -10,6 +10,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- **GitHub Pages — site polish bundle**: dark-mode toggle button
+  (wired through `docs/_includes/head_custom.html` +
+  `docs/_includes/nav_footer_custom.html` with `localStorage`
+  persistence on top of just-the-docs's `jtd.setTheme()` API),
+  `enable_copy_code_button` for every code block, named callouts
+  (`note`/`tip`/`warning`/`important`) via `callouts:` in
+  [`_config.yml`](_config.yml), Mermaid loader pinned to `10.9.1`,
+  baseurl-aware favicons (SVG, 32-px PNG, 180-px apple-touch) and a
+  1200×630 OG / Twitter card image under
+  [`docs/assets/images/`](docs/assets/images/), and a custom
+  `_includes/footer_custom.html`. Also rewrites the install snippet on
+  the Home page so the visible default pins the `1.0.0.rc1`
+  pre-release explicitly (the `~> 1.0` snippet kicks in once the
+  stable tag ships), and filters the upstream sass `darken()`
+  deprecation noise out of the Docs CI log (real build errors still
+  surface via `set -o pipefail`).
+
 - **GitHub Pages — P2 scaffolding (Jekyll + just-the-docs)**: stood up
   the parallel docs site per
   [`docs/v1/08-github-pages.md`](docs/v1/08-github-pages.md). Ships

@@ -16,9 +16,36 @@ repository: ramongr/assistant
 source: docs
 destination: _site
 
-# Theme
+# Theme. `color_scheme` is the default; visitors can flip light/dark via the
+# toggle wired in `_includes/nav_footer_custom.html` (uses jtd.setTheme).
 theme: just-the-docs
 color_scheme: light
+
+# Code blocks get a copy-to-clipboard button (HTTPS-only; degrades silently
+# when window.navigator.clipboard is unavailable).
+enable_copy_code_button: true
+
+# Mermaid diagrams (`mermaid` fenced code blocks). Pinned to a known-good
+# version from https://cdn.jsdelivr.net/npm/mermaid/.
+mermaid:
+  version: '10.9.1'
+
+# Callout styles. Used in guides via the standard kramdown attribute
+# syntax: `{: .note }`, `{: .warning }`, etc.
+callouts_level: quiet
+callouts:
+  note:
+    title: Note
+    color: blue
+  tip:
+    title: Tip
+    color: green
+  warning:
+    title: Warning
+    color: yellow
+  important:
+    title: Important
+    color: red
 
 # Search
 search_enabled: true
@@ -54,6 +81,10 @@ gh_edit_view_mode: tree
 
 back_to_top: true
 back_to_top_text: Back to top
+
+# Favicon (resolved at runtime via the baseurl-aware <link> tag in
+# `_includes/head_custom.html` — relative paths in this option would be
+# emitted without baseurl on project pages).
 
 # Build settings
 markdown: kramdown

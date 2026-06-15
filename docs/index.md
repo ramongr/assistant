@@ -20,13 +20,21 @@ API, and zero runtime gem dependencies.
 
 ## Install
 
+Assistant 1.0 is currently in release-candidate. Pin the RC explicitly:
+
 ```ruby
 # Gemfile
-gem 'assistant', '~> 1.0'
+gem 'assistant', '1.0.0.rc1'
 ```
 
 ```sh
 bundle install
+```
+
+Once `1.0.0` ships, use the standard pessimistic pin:
+
+```ruby
+gem 'assistant', '~> 1.0'
 ```
 
 Ruby 3.4 or newer is required.

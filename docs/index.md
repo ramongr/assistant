@@ -108,8 +108,6 @@ The same call returns `:with_warnings` if `#execute` logged any warnings, and
 | [RBS and types](guides/rbs-and-types.md) | Hand-curated sidecars + `bin/assistant-rbs`. |
 | [API reference](api-reference.md) | Every Frozen symbol in 1.0, deep-link friendly. |
 | [Examples](examples/rails-service.md) | Wiring patterns — Rails, CLI, Sidekiq, callbacks, notifier, RBS. |
-| [Roadmap](roadmap.md) | What's planned, what shipped, parallel deliverables. |
-| [Changelog](changelog.md) | Release history and migration notes. |
 | [Deprecations](deprecations.md) | What's flagged for removal in 2.0. |
 
 ---

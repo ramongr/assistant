@@ -61,6 +61,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+- **GitHub Pages — drop Roadmap and Changelog from the public nav**:
+  the sidebar (`docs/_sidebar.md`) and the "Where to next" table
+  on the landing page (`docs/index.md`) both used to list
+  Roadmap and Changelog as primary destinations. Both are
+  contributor-facing artefacts — the roadmap tracks internal
+  milestone planning, and the changelog is the verbatim
+  `Keep a Changelog` history used for releases — neither tells a
+  reader how to use the gem. Removed both entries from the sidebar
+  and from the landing-page table. The pages themselves still live
+  under `docs/roadmap.md` and `docs/changelog.md` and remain
+  reachable by direct URL (the self-link in `roadmap.md` and the
+  release-process tooling in `docs/v1/*` still resolve), they're
+  just no longer surfaced as navigation.
+
 - **GitHub Pages — drop internal milestone tags from public copy**:
   the user-facing docs (api reference, deprecations, roadmap,
   every guide page) used to suffix headings and prose with

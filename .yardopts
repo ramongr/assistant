@@ -5,6 +5,8 @@
 --protected
 lib/**/*.rb
 -
+docs/getting-started.md
+docs/api-reference.md
 CHANGELOG.md
 CONTRIBUTING.md
 SECURITY.md

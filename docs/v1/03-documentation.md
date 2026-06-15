@@ -32,15 +32,15 @@ contains `TODO` placeholders. v1 must ship a complete, navigable set of docs.
 
 ### D2. New user-facing pages under `docs/` (siblings of `docs/v1/`)
 
-| File                                  | Contents                                                                  |
-|---------------------------------------|---------------------------------------------------------------------------|
-| `docs/getting-started.md`             | Install, first service, running it, reading the result hash, status enum. |
-| `docs/guides/inputs.md`               | `input` / `inputs`, type checks, `required:`, `optional:`, `if:`, `default:`, `allow_nil:`, multi-type; "Using `bin/assistant-rbs`" subsection (M11) explaining the per-class RBS generator and R1's metaprogramming limitation. |
-| `docs/guides/validation.md`           | `validate` hook, when to log warnings vs errors, conditional requirements. Note that `LogItem.new` is now strict (M10). |
-| `docs/guides/logging-and-results.md`  | `LogItem` shape and **strict construction** (M10), levels, `add_log`, `merge_logs`, the `log_item_info/warning/error` shorthands (M5), `#logs` / `#warnings` / `#errors`, result hash. |
-| `docs/guides/composing-services.md`   | Manual composition today; `call_service` (M-S2); error/warning propagation rules; using callbacks (M-S1) and the instrumentation notifier (M-S3); reading `#input_snapshot` (M-S4). |
-| `docs/api-reference.md`               | Curated, hand-written reference of every Frozen symbol from `01-api-surface.md`. Auto-generation deferred. |
-| `docs/deprecations.md`                | Created as part of M9; first entry documents the `valid_require_*?` → `valid_required_*?` deprecation. |
+| File                                  | Status | Contents                                                                  |
+|---------------------------------------|--------|---------------------------------------------------------------------------|
+| `docs/getting-started.md`             | [x] shipped | Install, first service, running it, reading the result hash, status enum. |
+| `docs/guides/inputs.md`               | [ ] follow-up PR | `input` / `inputs`, type checks, `required:`, `optional:`, `if:`, `default:`, `allow_nil:`, multi-type; "Using `bin/assistant-rbs`" subsection (M11) explaining the per-class RBS generator and R1's metaprogramming limitation. |
+| `docs/guides/validation.md`           | [ ] follow-up PR | `validate` hook, when to log warnings vs errors, conditional requirements. Note that `LogItem.new` is now strict (M10). |
+| `docs/guides/logging-and-results.md`  | [ ] follow-up PR | `LogItem` shape and **strict construction** (M10), levels, `add_log`, `merge_logs`, the `log_item_info/warning/error` shorthands (M5), `#logs` / `#warnings` / `#errors`, result hash. |
+| `docs/guides/composing-services.md`   | [ ] follow-up PR | Manual composition today; `call_service` (M-S2); error/warning propagation rules; using callbacks (M-S1) and the instrumentation notifier (M-S3); reading `#input_snapshot` (M-S4). |
+| `docs/api-reference.md`               | [x] shipped | Curated, hand-written reference of every Frozen symbol from `01-api-surface.md`. Auto-generation deferred. |
+| `docs/deprecations.md`                | [x] shipped (M9) | Created as part of M9; first entry documents the `valid_require_*?` → `valid_required_*?` deprecation. |
 
 Each guide includes:
 

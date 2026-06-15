@@ -38,19 +38,15 @@ events.map(&:first)
 # => [:service_started, :service_validated, :service_failed]
 ```
 
-Payload shape for every event includes `service:` (the class), `id:`
-(per-run UUID), `started_at:`, plus event-specific keys (`duration_ms:`
-on `:service_executed` and `:service_failed`, `errors:` on
-`:service_failed`). See the
-[full payload table](../api-reference.md#instrumentation-notifier) for
-the exhaustive list.
+Payload shape for every event is exactly two keys: `service_class:`
+(the `Assistant::Service` subclass) and `duration_s:` (a `Float`
+seconds since `#run` started). The event set and its payload contract
+are **Frozen** for 1.0 — see the
+[full payload table](../api-reference.md#instrumentation-notifier).
 
 > **Warning** — Notifier callables are rescued from `StandardError`;
 > any exception they raise is `warn`-ed but doesn't fail the service.
 > Don't put control flow in the notifier.
 
-{: .note }
-> A runnable `examples/instrumentation_notifier/` script + integration
-> test ships in
-> [P11](https://github.com/ramongr/assistant/blob/main/docs/v1/08-github-pages.md#p6p12-examples-one-pr-per-example)
-> of the GitHub Pages plan.
+> Source: [`examples/instrumentation_notifier/`](https://github.com/ramongr/assistant/tree/main/examples/instrumentation_notifier) ·
+> Test: [`test/examples/instrumentation_notifier_example_test.rb`](https://github.com/ramongr/assistant/blob/main/test/examples/instrumentation_notifier_example_test.rb)

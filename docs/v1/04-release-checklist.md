@@ -89,11 +89,19 @@ dependency.
 
 ## Pre-release: RC tag
 
-- [ ] Bump `Assistant::VERSION` to `'1.0.0.rc1'` on a release branch.
-- [ ] Push the branch, open the PR, get CI green.
-- [ ] Tag `v1.0.0.rc1`, push the tag — `.github/workflows/release.yml` will
-      build, publish to RubyGems, and create a GitHub Release.
-- [ ] Smoke-test in a brand-new Ruby 3.4 project:
+- [x] Bump `Assistant::VERSION` to `'1.0.0.rc1'` on a release branch.
+      Shipped in PR #176 (`b599b26`).
+- [x] Push the branch, open the PR, get CI green. PR #176 squash-merged
+      to `main` (`6aa9947`) with all 7 CI checks green.
+- [x] Tag `v1.0.0.rc1`, push the tag — `.github/workflows/release.yml` will
+      build, publish to RubyGems, and create a GitHub Release. Tag pushed
+      from `main` at `0d2ee42`; release run
+      [27554209442](https://github.com/ramongr/assistant/actions/runs/27554209442)
+      succeeded (tests pre-publish, build gem, push to RubyGems via OIDC,
+      create GitHub Release with the gem artifact). Release page was
+      flipped to `prerelease: true` manually since `softprops/action-gh-release`
+      doesn't auto-detect Ruby's `.rcN` suffix.
+- [x] Smoke-test in a brand-new Ruby 3.4 project:
   ```sh
   mkdir /tmp/assistant-rc1 && cd /tmp/assistant-rc1
   bundle init
@@ -101,6 +109,12 @@ dependency.
   ruby -r assistant -e 'class S < Assistant::Service; def execute = :ok; end; p S.run'
   bundle exec assistant-rbs . --output sig    # verify CLI works
   ```
+  All commands exited 0 on Ruby 3.4.9: `S.run` returned
+  `{result: :ok, status: :ok, warnings: []}`; `Assistant::VERSION` resolved
+  to `"1.0.0.rc1"`; `assistant-rbs` produced no output on the empty source
+  tree (exit 0). Verified `runtime_dependencies == []` on the installed
+  gem, plus `documentation_uri` / `bug_tracker_uri` / `summary` match the
+  polished gemspec from PR #172.
 - [ ] **No fixed soak period** — tag `v1.0.0` as soon as the smoke-test
       passes and CI on the RC tag is green. If bugs surface post-RC, cut
       additional `rcN` tags until clean.

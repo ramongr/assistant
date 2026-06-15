@@ -73,6 +73,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- **D2** (entry pages): shipped `docs/getting-started.md` and
+  `docs/api-reference.md`. `docs/getting-started.md` walks from
+  `gem install` to a working `CreateUser` service across three runs
+  (one `:ok`, one `:with_warnings`, one `:with_errors`) and links out
+  to the four follow-up guides. `docs/api-reference.md` is the
+  hand-written, curated reference for every Frozen symbol on
+  `Assistant`, `Assistant::Service`, `Assistant::LogItem`,
+  `Assistant::LogList`, the execute callbacks, `#call_service`,
+  the notifier, `#input_snapshot`, and the `assistant-rbs` CLI;
+  `docs/v1/01-api-surface.md` remains the source of truth for
+  stability labels. `README.md` documentation index and the
+  `.yardopts` extra-files list now include both new pages. The four
+  topic guides (`inputs.md`, `validation.md`, `logging-and-results.md`,
+  `composing-services.md`) ship in a follow-up D2 PR alongside
+  `test/docs/` example tests.
 - **D3**: every public Frozen symbol enumerated in
   [`docs/v1/01-api-surface.md`](docs/v1/01-api-surface.md) now carries
   YARD documentation (`@param`, `@return`, `@raise`, `@example` where

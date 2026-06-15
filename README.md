@@ -90,8 +90,12 @@ a per-class generator (`bin/assistant-rbs`) out of the box.
 
 ## Documentation
 
-- **API reference** — [`docs/v1/01-api-surface.md`](docs/v1/01-api-surface.md)
-  enumerates every public symbol with its stability label.
+- **Getting started** — [`docs/getting-started.md`](docs/getting-started.md)
+  walks from `gem install` to a first working service.
+- **API reference** — [`docs/api-reference.md`](docs/api-reference.md)
+  is the hand-written, curated reference for every Frozen symbol; the
+  source of truth for stability labels stays in
+  [`docs/v1/01-api-surface.md`](docs/v1/01-api-surface.md).
 - **Feature catalogue and rationale** —
   [`docs/v1/02-features.md`](docs/v1/02-features.md).
 - **Upgrading from 0.x** —
@@ -100,10 +104,11 @@ a per-class generator (`bin/assistant-rbs`) out of the box.
 - **Runnable sample** — [`examples/greeter.rb`](examples/greeter.rb).
 - **Changelog** — [`CHANGELOG.md`](CHANGELOG.md).
 
-Longer user-facing guides (`docs/getting-started.md`,
-`docs/guides/*.md`) are tracked in
-[`docs/v1/03-documentation.md`](docs/v1/03-documentation.md) and land in
-follow-up PRs.
+The deeper guides (`docs/guides/inputs.md`,
+`docs/guides/validation.md`, `docs/guides/logging-and-results.md`,
+`docs/guides/composing-services.md`) are tracked in
+[`docs/v1/03-documentation.md`](docs/v1/03-documentation.md) and land
+in follow-up PRs.
 
 ## Roadmap
 

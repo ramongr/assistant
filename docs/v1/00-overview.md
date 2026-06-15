@@ -32,8 +32,11 @@ with at most a small, documented set of code-mods.
 - Rails generators or Railtie integration.
 - Async or concurrent execution primitives.
 - A plug-in marketplace, schema DSL, or pluggable serializer story.
-- A documentation site (Jekyll/Docusaurus). Markdown in `docs/` is enough for
-  1.0.
+- A documentation site as a **1.0 gate**. A GitHub Pages site built with
+  mkdocs-material is being assembled as a parallel deliverable tracked
+  in [`08-github-pages.md`](./08-github-pages.md); it does not block
+  the `v1.0.0` tag and the README links at the in-repo Markdown until
+  the site is live.
 
 ## Personas and primary use cases
 

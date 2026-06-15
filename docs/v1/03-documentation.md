@@ -78,14 +78,30 @@ Each guide includes:
 
 ### D5. Examples
 
-- [ ] `examples/rails_service/` — a minimal Rails-shaped controller that
-      calls a service and pattern-matches on the result hash. No actual Rails
-      dependency; just a runnable Ruby file with a fake controller class to
-      demonstrate the pattern.
-- [ ] `examples/cli_handler/` — a Ruby script that wires `OptionParser` to a
-      service and uses `#status` to set the exit code.
+The example set is the runnable backing for the GitHub Pages
+**Examples gallery** (see [`08-github-pages.md`](./08-github-pages.md)).
+Each example is shipped in its own PR (`P6`–`P12` on that plan) and
+includes all three of: a runnable script under `examples/<slug>/` with
+its own `README.md`, a site page under `docs/examples/<slug>.md` that
+embeds the script verbatim via mkdocs `pymdownx.snippets`, and a
+regression test under `test/examples/<slug>_example_test.rb`.
+
+| Slug                       | Demonstrates                                                                                  |
+|----------------------------|------------------------------------------------------------------------------------------------|
+| `rails_service`            | Rails-shaped controller; `case service.run in { result:, status: :ok }`.                       |
+| `cli_handler`              | `OptionParser`-driven script; exit code derived from `#status`.                                |
+| `sidekiq_worker`           | Background worker that runs a service; idempotent; warnings vs errors separated.               |
+| `composing_services`       | Outer service composes two inner services via `call_service`; log timeline merging.            |
+| `execute_callbacks`        | `before_execute` audit logger; `around_execute` timing wrapper; failure-path behavior.         |
+| `instrumentation_notifier` | `Assistant.notifier=` wired to a fake `ActiveSupport::Notifications`-shaped sink.              |
+| `rbs_generator`            | Service definition → `bin/assistant-rbs --output sig` → Steep proving the per-input return type. |
+
 - [ ] Each example has its own `README.md` linking back to
-      `docs/getting-started.md`.
+      `docs/getting-started.md` and to its rendered site page.
+- [ ] The legacy `examples/greeter.rb` (used by the M11 Steep fixture)
+      stays where it is and is **not** restructured into an example
+      directory; it pre-dates this catalogue and serves a different
+      purpose (generator regression).
 
 ## Acceptance criteria
 
@@ -103,7 +119,11 @@ Each guide includes:
 
 ## Out of scope for v1 docs
 
-- A docs site generator (Jekyll / Docusaurus / mkdocs).
 - Translated docs.
 - Auto-generated API reference from YARD; the curated `api-reference.md` is
   enough for 1.0.
+
+A GitHub Pages site (mkdocs-material) **is** in scope as a parallel
+deliverable tracked in [`08-github-pages.md`](./08-github-pages.md). It
+does not block the 1.0 tag; the README links at the in-repo Markdown
+until the site is live.

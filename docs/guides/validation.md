@@ -121,7 +121,7 @@ The `if:` predicate is called with the *input's own value*. The
 validator requires the input to be present **and** the predicate to
 be truthy — so the canonical use is "I need this to be present
 *when* some other condition holds". See
-[`inputs.md`](./inputs.md#if--conditional-requirement) for the
+[`inputs.md`](./inputs.md#if-conditional-requirement) for the
 inverse pattern.
 
 ## `LogItem.new` raises in 1.0 (M10)

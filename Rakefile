@@ -38,4 +38,21 @@ end
 desc 'Run the full local CI pipeline: test + rubocop + steep + yard'
 task ci: %i[test rubocop steep yard]
 
+namespace :docs do
+  desc 'Install the mkdocs toolchain pinned in requirements-docs.txt'
+  task :install do
+    sh 'python3 -m pip install --user -r requirements-docs.txt'
+  end
+
+  desc 'Build the mkdocs site into ./site (mirrors the CI Pages build)'
+  task :build do
+    sh 'python3 -m mkdocs build --strict'
+  end
+
+  desc 'Serve the mkdocs site on http://127.0.0.1:8000 with live reload'
+  task :serve do
+    sh 'python3 -m mkdocs serve'
+  end
+end
+
 task default: :test

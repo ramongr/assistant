@@ -10,6 +10,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
+- **GitHub Pages — light-mode inline `code` is readable**: the
+  light theme passed `highlightColor: '#ffd166'` Naples Yellow to
+  docsify-darklight-theme. That property controls the **text color
+  of inline `<code>` tags** in markdown (the plugin's CSS sets
+  `.markdown-section code { color: var(--highlightColor) }`), which
+  renders on the `#ffffff` code background at **1.43:1** contrast —
+  essentially invisible. Every inline `code` snippet across the
+  docs site was unreadable in light mode. Swapped to `#2f4f5a`
+  Steel Teal Dark (matching the link accent), giving **8.30:1** on
+  white — comfortably AAA. Dark mode is unchanged; `#ffd166`
+  remains the dark-theme primary accent (12:1 on `#22223b`) and
+  the dark-cover gradient endpoint. Naples Yellow is no longer
+  referenced anywhere in the light-theme palette.
+
 - **GitHub Pages — light-mode accent passes WCAG AAA**: the
   previous light-mode primary accent `#4d7c8a` Steel Teal cleared
   WCAG AA-large (3:1) but only reached 4.07:1 on the `#f4f2f3`

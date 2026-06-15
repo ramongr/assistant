@@ -45,8 +45,5 @@ Notes:
   logs join the outer timeline. Calling `.run` directly silently
   discards them.
 
-{: .note }
-> A runnable `examples/composing_services/` script + integration test
-> ships in
-> [P9](https://github.com/ramongr/assistant/blob/main/docs/v1/08-github-pages.md#p6p12-examples-one-pr-per-example)
-> of the GitHub Pages plan.
+> Source: [`examples/composing_services/`](https://github.com/ramongr/assistant/tree/main/examples/composing_services) ·
+> Test: [`test/examples/composing_services_example_test.rb`](https://github.com/ramongr/assistant/blob/main/test/examples/composing_services_example_test.rb)

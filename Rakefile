@@ -23,7 +23,19 @@ task :steep do
   sh 'bundle exec steep check --jobs=1'
 end
 
-desc 'Run the full local CI pipeline: test + rubocop + steep'
-task ci: %i[test rubocop steep]
+desc 'YARD: build docs into doc/ and enforce 100% public-method coverage'
+task :yard do
+  sh 'bundle exec yard doc --quiet'
+  stats = `bundle exec yard stats --list-undoc 2>&1`
+  match = stats.match(/([\d.]+)% documented/)
+  abort "yard: could not parse stats output:\n#{stats}" unless match
+
+  percentage = match[1].to_f
+  abort "yard: only #{format('%.2f', percentage)}% documented; full output:\n#{stats}" if percentage < 100.0
+  puts "yard: #{format('%.2f', percentage)}% documented"
+end
+
+desc 'Run the full local CI pipeline: test + rubocop + steep + yard'
+task ci: %i[test rubocop steep yard]
 
 task default: :test

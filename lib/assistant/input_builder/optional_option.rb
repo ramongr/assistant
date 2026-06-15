@@ -5,6 +5,14 @@
 # `optional: false`). Mirrors `DefaultOption`'s shape so the `#input`
 # call site stays one line per option family.
 module Assistant::InputBuilder::OptionalOption
+  # Validate the `optional:` keyword for an input and return the
+  # canonical option hash. `optional: false` is translated into
+  # `required: true` so downstream validators see a single flag.
+  #
+  # @param name    [Symbol] input name
+  # @param options [Hash]   options hash from the `#input` call
+  # @return [Hash] the (possibly translated) options hash
+  # @raise [ArgumentError] when `optional:` is non-boolean or contradicts `required: true`
   def process_optional_option(name:, options:)
     validate_optional!(name:, options:)
     apply_optional_option(options)

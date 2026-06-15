@@ -18,6 +18,14 @@ module Assistant::InputBuilder::RequireValidator
   DEPRECATION_WARNED = Set.new
   private_constant :DEPRECATION_WARNED
 
+  # Emit the M9 one-shot deprecation warning for a `valid_require_*?`
+  # call. Deduped per `[canonical, caller path, caller lineno]` so the
+  # same call site never warns twice in one process.
+  #
+  # @param deprecated_name [Symbol] e.g. `:valid_require_name?`
+  # @param canonical_name  [Symbol] e.g. `:valid_required_name?`
+  # @param caller_location [Thread::Backtrace::Location]
+  # @return [void]
   def self.warn_deprecated(deprecated_name, canonical_name, caller_location)
     key = [canonical_name, caller_location.path, caller_location.lineno]
     return if DEPRECATION_WARNED.include?(key)
@@ -28,16 +36,28 @@ module Assistant::InputBuilder::RequireValidator
 
   # Test-only hook: clears the per-call-site dedupe set so a single
   # test process can exercise multiple "first warn" scenarios.
+  #
+  # @return [void]
   def self.__reset_deprecation_warnings__
     DEPRECATION_WARNED.clear
   end
 
+  # Define `#valid_required_<name>?` on the host class plus the
+  # deprecated `#valid_require_<name>?` alias.
+  #
+  # @param name [Symbol] input name
+  # @return [void]
   def input_require_validator_meth(name:, **)
     canonical = :"valid_required_#{name}?"
     define_required_validator(canonical:, name:, **)
     define_deprecated_alias(:"valid_require_#{name}?", canonical)
   end
 
+  # Define `#valid_required_conditional_<name>?` on the host class
+  # plus the deprecated `#valid_require_conditional_<name>?` alias.
+  #
+  # @param name [Symbol] input name
+  # @return [void]
   def input_require_conditional_meth(name:, **)
     canonical = :"valid_required_conditional_#{name}?"
     define_required_conditional_validator(canonical:, name:, **)

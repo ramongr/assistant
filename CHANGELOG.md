@@ -42,6 +42,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- **D3**: every public Frozen symbol enumerated in
+  [`docs/v1/01-api-surface.md`](docs/v1/01-api-surface.md) now carries
+  YARD documentation (`@param`, `@return`, `@raise`, `@example` where
+  meaningful). Internal helpers are documented too, so
+  `bundle exec yard stats --list-undoc` reports **100%** documented
+  public methods (52 / 52, plus 7 / 7 attributes and 9 / 9 constants).
+  Shipped together with a top-level `.yardopts` (markdown markup,
+  `lib/**/*.rb` as the source, README + repo-hygiene files as extra
+  files), the new `yard` development dependency in `assistant.gemspec`,
+  and a `rake yard` task that builds the site into `doc/` and exits
+  non-zero if coverage drops below 100%. `rake ci` now runs
+  `test + rubocop + steep + yard`.
 - **D4**: shipped the repository-hygiene files called for in
   [`docs/v1/03-documentation.md`](docs/v1/03-documentation.md). New
   `CONTRIBUTING.md` documents the clone / `bin/setup` flow, the local

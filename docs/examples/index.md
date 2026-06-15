@@ -1,3 +1,10 @@
+---
+title: Examples
+nav_order: 5
+has_children: true
+permalink: /examples/
+---
+
 # Examples
 
 > **Status:** gallery scaffolding — each entry below ships with a

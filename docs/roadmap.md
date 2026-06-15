@@ -1,3 +1,8 @@
+---
+title: Roadmap
+nav_order: 6
+---
+
 # Roadmap
 
 The full 1.0 plan lives in
@@ -24,5 +29,5 @@ index ties them together.
   [`1.0.0.rc1`](changelog.md) and the migration recipe is finalised.
 - Every "Must" milestone (M1–M13) and every promoted "Should"
   (M-S1–M-S4) has shipped to `main`.
-- The mkdocs site you're reading now is P2 of the GitHub Pages plan;
+- The Jekyll site you're reading now is P2 of the GitHub Pages plan;
   later phases land the remaining guide / example content.

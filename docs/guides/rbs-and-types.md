@@ -1,3 +1,9 @@
+---
+title: RBS and types
+parent: Guides
+nav_order: 5
+---
+
 # RBS and types
 
 > **Status:** placeholder — full content lands in

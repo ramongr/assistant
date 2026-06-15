@@ -1,3 +1,9 @@
+---
+title: Rails service
+parent: Examples
+nav_order: 1
+---
+
 # Rails service
 
 > **Status:** placeholder — ships in
@@ -7,5 +13,5 @@
 A Rails-shaped controller calling a service and pattern-matching on the result hash.
 
 When the runnable script under `examples/rails_service/` lands, this
-page will include it verbatim via mkdocs `pymdownx.snippets` so the
+page will include it verbatim via Jekyll `include_relative` so the
 prose stays in lockstep with the code.

@@ -1,3 +1,10 @@
+---
+title: Home
+layout: home
+nav_order: 0
+permalink: /
+---
+
 # Assistant
 
 **Tiny, dependency-free soft-fail service objects for Ruby.**

@@ -1,3 +1,9 @@
+---
+title: Execute callbacks
+parent: Examples
+nav_order: 5
+---
+
 # Execute callbacks
 
 > **Status:** placeholder — ships in
@@ -7,5 +13,5 @@
 `before_execute` audit logger plus an `around_execute` timing wrapper, including failure cases.
 
 When the runnable script under `examples/execute_callbacks/` lands, this
-page will include it verbatim via mkdocs `pymdownx.snippets` so the
+page will include it verbatim via Jekyll `include_relative` so the
 prose stays in lockstep with the code.

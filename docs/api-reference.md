@@ -1,3 +1,8 @@
+---
+title: API reference
+nav_order: 3
+---
+
 <!-- markdownlint-disable MD013 MD024 -->
 # API reference
 

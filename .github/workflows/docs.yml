@@ -6,15 +6,17 @@ on:
     branches: [main]
     paths:
       - docs/**
-      - mkdocs.yml
-      - requirements-docs.txt
+      - _config.yml
+      - Gemfile
+      - Gemfile.lock
       - .github/workflows/docs.yml
   pull_request:
     branches: [main]
     paths:
       - docs/**
-      - mkdocs.yml
-      - requirements-docs.txt
+      - _config.yml
+      - Gemfile
+      - Gemfile.lock
       - .github/workflows/docs.yml
   workflow_dispatch:
 
@@ -27,23 +29,23 @@ concurrency:
 
 jobs:
   build:
-    name: mkdocs build --strict
+    name: jekyll build --strict_front_matter
     runs-on: ubuntu-latest
+    env:
+      BUNDLE_WITH: docs
+      JEKYLL_ENV: production
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - uses: ruby/setup-ruby@v1
         with:
-          python-version: '3.12'
-          cache: pip
-          cache-dependency-path: requirements-docs.txt
-      - name: Install docs toolchain
-        run: pip install -r requirements-docs.txt
+          ruby-version: '3.4'
+          bundler-cache: true
       - name: Build site
-        run: mkdocs build --strict
+        run: bundle exec jekyll build --strict_front_matter --baseurl "/assistant"
       - name: Upload site artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: site
+          path: _site
 
   deploy:
     name: Deploy to GitHub Pages

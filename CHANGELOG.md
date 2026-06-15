@@ -10,20 +10,32 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-- **GitHub Pages — P2 scaffolding**: stood up the parallel mkdocs site
-  per [`docs/v1/08-github-pages.md`](docs/v1/08-github-pages.md). Ships
-  `mkdocs.yml` with the Material theme + indigo palette + light/dark
-  toggle + nav tree, a pinned `requirements-docs.txt` (`mkdocs`,
-  `mkdocs-material`, `mkdocs-material-extensions`,
-  `pymdown-extensions`, `Pygments`), the `.github/workflows/docs.yml`
-  CI workflow (PR builds `mkdocs build --strict`; pushes to `main`
-  deploy via `actions/deploy-pages`), `docs:install` / `docs:build` /
-  `docs:serve` Rake tasks, the `docs/index.md` landing page, and
-  placeholder stubs for `docs/guides/rbs-and-types.md`,
-  `docs/examples/{index,rails-service,cli-handler,sidekiq-worker,composing-services,execute-callbacks,instrumentation-notifier,rbs-generator}.md`,
-  `docs/roadmap.md`, and `docs/changelog.md`. Repository owner must
-  enable Pages source = "GitHub Actions" once in repo settings for the
-  first deploy to publish.
+- **GitHub Pages — P2 scaffolding (Jekyll + just-the-docs)**: stood up
+  the parallel docs site per
+  [`docs/v1/08-github-pages.md`](docs/v1/08-github-pages.md). Ships
+  `_config.yml` (just-the-docs theme, Lunr search, dark-mode toggle,
+  `gh_edit_link`, `jekyll-seo-tag` + `jekyll-relative-links` plugins),
+  an optional `:docs` Bundler group in [`Gemfile`](Gemfile) pinning
+  `jekyll ~> 4.3`, `just-the-docs ~> 0.10`, and
+  `jekyll-relative-links ~> 0.7`, the
+  [`.github/workflows/docs.yml`](.github/workflows/docs.yml) workflow
+  (PR builds `bundle exec jekyll build --strict_front_matter`; pushes
+  to `main` deploy via `actions/deploy-pages@v4`), `docs:install` /
+  `docs:build` / `docs:serve` Rake tasks driving the Jekyll
+  toolchain, per-page front matter on every site page (Home, Getting
+  started, Guides + 5 sub-pages, API reference, Deprecations, Examples
+  + 7 sub-pages, Roadmap, Changelog), and a new `docs/guides/index.md`
+  landing for the Guides section. The site builds locally with `rake
+  docs:build` and deploys to `https://ramongr.github.io/assistant/` on
+  every push to `main`. Pages source = `GitHub Actions` was enabled in
+  repo settings after the original mkdocs PR (#177) merged; no further
+  manual step is needed for the Jekyll cut-over.
+
+  _This entry supersedes the original mkdocs-based P2 scaffolding —
+  the mkdocs stack lived for one PR before being replaced with Jekyll
+  to match the gem's primary toolchain, drop the Python build
+  dependency, and avoid the `Pygments==2.19.1` pin that worked around
+  a 2.20.0 `HtmlFormatter` regression._
 
 ## [1.0.0.rc1] - 2026-06-15
 

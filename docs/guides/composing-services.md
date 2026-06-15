@@ -1,3 +1,9 @@
+---
+title: Composing services
+parent: Guides
+nav_order: 4
+---
+
 <!-- markdownlint-disable MD013 MD024 -->
 # Composing services
 

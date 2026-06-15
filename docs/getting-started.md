@@ -120,6 +120,17 @@ The `:status` value is exhaustively one of `:ok`, `:with_warnings`,
 `:with_errors`. No new status values can be introduced in 1.x without a
 deprecation cycle.
 
+At a glance, that decision is just:
+
+```mermaid
+flowchart LR
+    Run([Service.run]) --> Errors{errors logged?}
+    Errors -- Yes --> WithErrors[":with_errors<br/>(result is nil)"]
+    Errors -- No --> Warnings{warnings logged?}
+    Warnings -- Yes --> WithWarnings[":with_warnings<br/>(result is set)"]
+    Warnings -- No --> Ok[":ok<br/>(result is set)"]
+```
+
 ## What's next
 
 - The same example, but with optional / multi-type inputs and a

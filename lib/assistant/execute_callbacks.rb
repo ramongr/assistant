@@ -14,22 +14,31 @@
 #
 # See docs/v1/02-features.md M-S1 and docs/v1/01-api-surface.md.
 module Assistant::ExecuteCallbacks
+  # The exhaustive set of hook types this module manages.
+  # @return [Array<Symbol>]
   HOOK_TYPES = %i[before_execute after_execute around_execute].freeze
 
+  # @return [Array<UnboundMethod>] hooks registered via {#before_execute}, in declaration order
   def before_execute_hooks
     @before_execute_hooks ||= []
   end
 
+  # @return [Array<UnboundMethod>] hooks registered via {#after_execute}, in declaration order
   def after_execute_hooks
     @after_execute_hooks ||= []
   end
 
+  # @return [Array<UnboundMethod>] hooks registered via {#around_execute}, in declaration order
   def around_execute_hooks
     @around_execute_hooks ||= []
   end
 
   # Register a block to run after validation and before `#execute`.
   # `self` inside the block is the service instance.
+  #
+  # @yield runs in the context of the service instance after validation, before `#execute`
+  # @raise [ArgumentError] when no block is given
+  # @return [Array<UnboundMethod>] the updated {#before_execute_hooks} chain
   def before_execute(&block)
     raise ArgumentError, 'before_execute requires a block' unless block
 
@@ -39,6 +48,10 @@ module Assistant::ExecuteCallbacks
   # Register a block to run after `#execute` returns. `self` inside the
   # block is the service instance; the execute result is passed as the
   # single positional argument.
+  #
+  # @yieldparam execute_result [Object] return value of `#execute`
+  # @raise [ArgumentError] when no block is given
+  # @return [Array<UnboundMethod>] the updated {#after_execute_hooks} chain
   def after_execute(&block)
     raise ArgumentError, 'after_execute requires a block' unless block
 
@@ -50,6 +63,11 @@ module Assistant::ExecuteCallbacks
   # inner stack (the next around hook, or `#execute` for the innermost
   # layer). Declaration order wraps: the first declared hook is the
   # outermost layer.
+  #
+  # @yield runs in the context of the service instance, wrapping the inner stack
+  # @yieldparam blk [Proc] the continuation; call `yield` (or `blk.call`) to invoke the inner layer
+  # @raise [ArgumentError] when no block is given
+  # @return [Array<UnboundMethod>] the updated {#around_execute_hooks} chain
   def around_execute(&block)
     raise ArgumentError, 'around_execute requires a block' unless block
 
@@ -59,6 +77,9 @@ module Assistant::ExecuteCallbacks
   # Snapshot parent hooks into the subclass at definition time. The
   # snapshot is a `dup` so the subclass owns its own array and further
   # additions on either side never bleed across the hierarchy.
+  #
+  # @param subclass [Class] freshly defined subclass
+  # @return [void]
   def inherited(subclass)
     super
     subclass.instance_variable_set(:@before_execute_hooks, before_execute_hooks.dup)

@@ -4,6 +4,13 @@
 # providers, warn on shared mutable literals. Pure side-effects, no
 # interaction with the per-class definitions registry.
 module Assistant::InputBuilder::DefaultOption
+  # Run the class-time gate for an input's `default:` provider:
+  # reject illegal providers, warn on shared mutable literals.
+  #
+  # @param name    [Symbol] input name
+  # @param default [Object, Proc] the literal value or zero-arity Proc
+  # @return [void]
+  # @raise [ArgumentError] when `default` is callable but not a zero-arity Proc
   def process_default_option(name:, default:)
     validate_default!(name:, default:)
     warn_on_mutable_default(name:, default:)

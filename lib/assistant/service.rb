@@ -8,17 +8,36 @@ module Assistant
   # Core Service base class. Subclasses declare inputs via the
   # InputBuilder DSL, optionally register before/after/around execute
   # hooks via ExecuteCallbacks, and implement `#execute`.
+  #
+  # @example Minimal service
+  #   class Greet < Assistant::Service
+  #     input :name, type: String, required: true
+  #
+  #     def execute
+  #       "Hello, #{name}!"
+  #     end
+  #   end
+  #
+  #   Greet.run(name: 'Ada')
+  #   # => { result: "Hello, Ada!", status: :ok, warnings: [] }
   class Service # rubocop:disable Metrics/ClassLength
     include Assistant::LogList
 
     # Public reader for the full log timeline (info + warning + error), in
     # insertion order. See docs/v1/02-features.md M4.
+    #
+    # @return [Array<Assistant::LogItem>]
     attr_reader :logs
 
     class << self
       include Assistant::InputBuilder
       include Assistant::ExecuteCallbacks
 
+      # Convenience: build a service with the given keyword arguments
+      # and immediately invoke `#run`, returning the result hash.
+      # Equivalent to `new(**inputs).run`.
+      #
+      # @return [Hash] the result payload — see {Service#run}
       def run(**)
         new(**).run
       end
@@ -28,6 +47,8 @@ module Assistant
       # transparently rebuilt if `input_definitions` changes (e.g. a
       # late `input :foo` after the first snapshot call). Used by
       # `Service#input_snapshot`; users normally never touch it.
+      #
+      # @return [Class] a `Data.define` subclass
       def input_snapshot_class
         keys = input_definitions.keys
         return @input_snapshot_class if @input_snapshot_class && @input_snapshot_class_keys == keys
@@ -37,12 +58,25 @@ module Assistant
       end
     end
 
+    # @param args [Hash] keyword arguments matching the declared inputs.
+    #   Unknown keys are accepted but excluded from {#input_snapshot}.
     def initialize(**args)
       @inputs = args
       apply_input_defaults
       @logs = []
     end
 
+    # Execute the validation + execute pipeline once and return the
+    # result payload. Idempotent: calling `#run` a second time returns
+    # an updated payload based on the memoised `#result`, but `#execute`
+    # itself runs only once (M-S1 hook chain is gated by {#result}'s
+    # `||=`).
+    #
+    # @return [Hash{Symbol => Object}] either
+    #   - `{ result: Object, status: :ok | :with_warnings, warnings: Array<LogItem> }`
+    #     on success, or
+    #   - `{ errors: Array<LogItem>, result: nil, status: :with_errors }`
+    #     when any error has been logged before or during validation.
     def run
       @run_started_at = Process.clock_gettime(Process::CLOCK_MONOTONIC)
       notify(:service_started)
@@ -60,18 +94,28 @@ module Assistant
       errors.empty? ? executed_payload : failed_payload
     end
 
+    # Memoised return value of {#execute}, threaded through the
+    # registered before/around/after execute hooks (M-S1).
+    #
+    # @return [Object] whatever the subclass's `#execute` returned
     def result
       @result ||= run_execute_with_callbacks
     end
 
+    # @return [Boolean] true when no `:error` entries have been logged
     def success?
       errors.empty?
     end
 
+    # @return [Boolean] true when at least one `:error` entry has been logged
     def failure?
       errors.any?
     end
 
+    # Terminal status for the success path. Failure runs use
+    # `:with_errors` directly in the result payload (see {#run}).
+    #
+    # @return [Symbol] `:ok` when there are no warnings, otherwise `:with_warnings`
     def status
       warnings.empty? ? :ok : :with_warnings
     end
@@ -91,6 +135,7 @@ module Assistant
     # The returned inner instance exposes `#result`, `#success?`,
     # `#failure?`, etc. so the caller can branch on the inner outcome:
     #
+    # @example
     #   def execute
     #     other = call_service(OtherService, foo: 1)
     #     return if failure?
@@ -103,8 +148,10 @@ module Assistant
     # an inner service that may raise, wrap the call in a `begin/rescue`
     # and use `add_log(level: :error, …)` to record the failure.
     #
-    # Raises `ArgumentError` if `klass` is not an `Assistant::Service`
-    # subclass — the check happens before any instance is constructed.
+    # @param klass  [Class<Assistant::Service>] the inner service class
+    # @param inputs [Hash] keyword arguments forwarded to `klass.new`
+    # @return [Assistant::Service] the inner service instance, already run
+    # @raise [ArgumentError] if `klass` is not a subclass of {Assistant::Service}
     def call_service(klass, **inputs)
       unless klass.is_a?(Class) && klass <= Assistant::Service
         raise ArgumentError, "call_service expects an Assistant::Service subclass, got #{klass.inspect}"
@@ -123,6 +170,7 @@ module Assistant
     # `apply_input_defaults` has run, so callers see the same values
     # the per-input getters expose.
     #
+    # @example
     #   class Greet < Assistant::Service
     #     input :name, type: String, required: true
     #     input :loud, type: TrueClass, default: false
@@ -144,6 +192,8 @@ module Assistant
     # A declared input with no default and no caller-supplied value
     # appears with a `nil` member value, mirroring the behaviour of
     # the per-input getter.
+    #
+    # @return [Data] read-only view over `input_definitions.keys`
     def input_snapshot
       keys = self.class.input_definitions.keys
       self.class.input_snapshot_class.new(**keys.to_h { |name| [name, @inputs[name]] })

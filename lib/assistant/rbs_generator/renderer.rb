@@ -4,6 +4,17 @@
 # function; does no I/O.
 module Assistant::RbsGenerator::Renderer
   class << self
+    # Render a `.rbs` source string for the given `Service` subclass.
+    # Module-prefix segments of the class name are wrapped in nested
+    # `module ... end` blocks; the trailing segment becomes the
+    # `class X < Assistant::Service` declaration. The body lists one
+    # `def name: () -> Type` and `def name?: () -> bool` per declared
+    # input.
+    #
+    # @param service_class [Class<Assistant::Service>]
+    # @return [String] the rendered `.rbs` source, ending with a newline
+    # @raise [RuntimeError] when `service_class` is anonymous or declares
+    #   an input with a non-Class / anonymous `type:`
     def render(service_class)
       name = service_class.name or raise 'anonymous Service class cannot be rendered'
       segments = name.split('::')

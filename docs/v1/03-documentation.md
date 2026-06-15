@@ -51,16 +51,23 @@ Each guide includes:
 
 ### D3. YARD doc comments on all public methods
 
-- [ ] Add `# @param`, `# @return`, `# @example` to every Frozen symbol in
-      [`01-api-surface.md`](./01-api-surface.md).
-- [ ] Add `.yardopts` configured to:
+- [x] Add `# @param`, `# @return`, `# @example` to every Frozen symbol in
+      [`01-api-surface.md`](./01-api-surface.md) — shipped. Documentation
+      also covers the `Internal`-labelled InputBuilder submodules and
+      `RbsGenerator::*` so `yard stats` reports 100% across the whole
+      `lib/` tree.
+- [x] Add `.yardopts` configured to:
   - Source: `lib/**/*.rb`.
-  - Markdown extra files: `README.md docs/**/*.md`.
-  - Output: `doc/` (already gitignored if not, ensure so).
-- [ ] Verify `bundle exec yard stats --list-undoc` reports 100% documented
-      public methods.
-- [ ] **Do not** add `yard` to runtime deps; add to development deps in
-      `assistant.gemspec`.
+  - Markdown extra files: `README.md`, `CHANGELOG.md`, `CONTRIBUTING.md`,
+    `SECURITY.md`, `CODE_OF_CONDUCT.md` (D2 user-facing guides will be
+    appended when they land).
+  - Output: `doc/` (gitignored at `/.gitignore:5`).
+- [x] Verify `bundle exec yard stats --list-undoc` reports 100% documented
+      public methods — enforced going forward by the new `rake yard`
+      task (called from `rake ci`) which exits non-zero on regression.
+- [x] **Do not** add `yard` to runtime deps; add to development deps in
+      `assistant.gemspec` — added at `assistant.gemspec:50`
+      (`yard ~> 0.9`).
 
 ### D4. Repository hygiene files
 

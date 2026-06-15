@@ -3,6 +3,12 @@
 # Generators for the per-input `valid_type_<name>?` validator (M3:
 # multi-type accepted; M2: `allow_nil:` short-circuits the check).
 module Assistant::InputBuilder::TypeValidator
+  # Define `#valid_type_<name>?` on the host class.
+  #
+  # @param name    [Symbol] input name
+  # @param type    [Class, Array<Class>] declared type(s); `Array(type)` is unioned
+  # @param options [Hash]   remaining `#input` keyword options (reads `:allow_nil`)
+  # @return [void]
   def input_type_validator_meth(name:, type:, **options)
     allow_nil = options.fetch(:allow_nil, false) == true
     types = Array(type)

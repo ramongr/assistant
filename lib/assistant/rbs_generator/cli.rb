@@ -6,6 +6,8 @@ module Assistant::RbsGenerator
   # Command-line entry point. Parses argv, loads the input files,
   # discovers Service subclasses, renders, writes.
   class Cli
+    # Usage banner printed by `--help`.
+    # @return [String]
     USAGE = <<~USAGE
       Usage: assistant-rbs [PATH...] [--output DIR] [--quiet]
 
@@ -18,6 +20,12 @@ module Assistant::RbsGenerator
     USAGE
 
     class << self
+      # Convenience wrapper that builds a `Cli` and runs it.
+      #
+      # @param argv   [Array<String>] command-line arguments
+      # @param stdout [IO] output stream for non-error messages
+      # @param stderr [IO] output stream for warnings and errors
+      # @return [Integer] process exit status (0 on success)
       def run(argv, stdout: $stdout, stderr: $stderr)
         new(argv, stdout:, stderr:).run
       end

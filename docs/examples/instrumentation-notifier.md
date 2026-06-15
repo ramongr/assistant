@@ -4,7 +4,7 @@
 `Assistant.notifier=` accepts any object responding to `#call(event,
 payload)`. Set it once at boot to wire every service into your
 existing instrumentation pipeline — see the [Composing services
-guide](../guides/composing-services.md#instrumentation-notifier-m-s3)
+guide](../guides/composing-services.md#instrumentation-notifier)
 for the contract and the
 [API reference](../api-reference.md#instrumentation-notifier) for the
 event list.

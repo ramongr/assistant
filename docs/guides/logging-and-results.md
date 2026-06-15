@@ -6,7 +6,7 @@
 > add entries, `#logs` / `#infos` / `#warnings` / `#errors` to read
 > them, and the result hash returned by `.run` to consume the
 > service from outside. `LogItem.new` raises `ArgumentError` for
-> invalid attributes (M10) — prefer the helpers.
+> invalid attributes — prefer the helpers.
 
 This guide covers the data model, the writer helpers, the reader
 predicates, and the shape of the result hash. See the
@@ -26,7 +26,7 @@ fields:
 | `message`  | `String`                       | Human-readable text.                                           |
 | `trace`    | `Array<String>` or `nil`       | Optional backtrace captured at construction.                   |
 
-Constraints (enforced strictly in 1.0 — M10):
+Constraints (enforced strictly in 1.0):
 
 - `source != detail`.
 - `source` and `detail` must each be non-empty.
@@ -40,7 +40,7 @@ Assistant::LogItem::VALID_LEVELS
 
 ## Writing log entries
 
-The three shorthand helpers (M5) are the recommended call sites
+The three shorthand helpers are the recommended call sites
 inside `#validate` and `#execute`:
 
 ```ruby
@@ -156,7 +156,7 @@ def execute
 end
 ```
 
-> **M12.** `#merge_logs` is keyword-only in 1.0. Passing positional
+> **Keyword-only.** `#merge_logs` is keyword-only in 1.0. Passing positional
 > arguments raises `ArgumentError`. The
 > [migration guide](https://github.com/ramongr/assistant/blob/main/docs/v1/06-migration-0x-to-1.md) covers the
 > mechanical rewrite.
@@ -175,14 +175,14 @@ service.errors.first.item
 ## Common pitfalls
 
 - **Pushing onto `@logs` directly.** Don't — always go through the
-  helpers so the M10 strict construction runs and so future
+  helpers so the strict construction runs and so future
   middleware (e.g. an instrumentation hook around `#add_log`) can
   see the entry.
 - **Using `LogItem.new` with `source == detail`.** Raises
   `ArgumentError`. Pick distinct symbols.
 - **Treating `#infos` as part of the contract.** They're for
   introspection only; the result hash never includes them.
-- **Calling `merge_logs(other.logs)` (positional).** M12 requires
+- **Calling `merge_logs(other.logs)` (positional).** 1.0 requires
   the keyword form: `merge_logs(logs: other.logs)`.
 
 ## See also
@@ -193,4 +193,4 @@ service.errors.first.item
   merges inner logs into the outer timeline.
 - [API reference: LogItem](../api-reference.md#assistantlogitem).
 - [API reference: LogList](../api-reference.md#assistantloglist).
-- [Migration guide](https://github.com/ramongr/assistant/blob/main/docs/v1/06-migration-0x-to-1.md) for M10 + M12.
+- [Migration guide](https://github.com/ramongr/assistant/blob/main/docs/v1/06-migration-0x-to-1.md) for the 1.0 breaking changes.

@@ -11,14 +11,14 @@ The deprecation policy is one full minor cycle: anything marked here in
 
 | Symbol                                                  | Replacement                                                       | Deprecated in | Removed in |
 |---------------------------------------------------------|-------------------------------------------------------------------|---------------|------------|
-| `Assistant::Service#valid_require_<name>?`              | `Assistant::Service#valid_required_<name>?`                       | `1.0.0` (M9)  | `2.0.0`    |
-| `Assistant::Service#valid_require_conditional_<name>?`  | `Assistant::Service#valid_required_conditional_<name>?`           | `1.0.0` (M9)  | `2.0.0`    |
+| `Assistant::Service#valid_require_<name>?`              | `Assistant::Service#valid_required_<name>?`                       | `1.0.0`       | `2.0.0`    |
+| `Assistant::Service#valid_require_conditional_<name>?`  | `Assistant::Service#valid_required_conditional_<name>?`           | `1.0.0`       | `2.0.0`    |
 
 ---
 
 ## `valid_require_<name>?` → `valid_required_<name>?`
 
-**Deprecated in**: `1.0.0` (M9). **Removed in**: `2.0.0`.
+**Deprecated in**: `1.0.0`. **Removed in**: `2.0.0`.
 
 ### What changed
 
@@ -77,5 +77,5 @@ was decided in favour of Option B: the new names read better, match
 standard English, and are easier to grep for. The old names live one
 minor cycle to give downstream services an upgrade window.
 
-See [`docs/v1/02-features.md`](https://github.com/ramongr/assistant/blob/main/docs/v1/02-features.md) **M9** for the
+See [`docs/v1/02-features.md`](https://github.com/ramongr/assistant/blob/main/docs/v1/02-features.md) for the
 implementation plan and acceptance criteria.

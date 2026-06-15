@@ -30,4 +30,3 @@
 - **Links**
   - [GitHub](https://github.com/ramongr/assistant)
   - [RubyGems](https://rubygems.org/gems/assistant)
-  - [YARD docs](https://rubydoc.info/gems/assistant)

@@ -10,6 +10,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
+- **GitHub Pages — render Mermaid diagrams**: the
+  `docsify-mermaid@2` plugin was loaded from the package root
+  (`//cdn.jsdelivr.net/npm/docsify-mermaid@2`), which jsDelivr
+  resolves to an ES-module source file (`src/index.js`). The browser
+  refused to execute it as a classic script, the plugin never
+  registered, and every fenced ```` ```mermaid ```` block on the
+  site (landing page, getting started, api reference, validation
+  guide, GitHub Pages spec) rendered as raw flowchart text inside a
+  `<pre><code>` instead of as a diagram. Pinned to the UMD bundle
+  at `/dist/docsify-mermaid.js` (5 KB, no `import` statements);
+  diagrams now render on every page.
+
 - **GitHub Pages — revert to hash routing**: clean URLs from the
   history-mode experiment (`routerMode: 'history'` + `basePath:`)
   returned HTTP 404 on GitHub Pages even though the `docs/404.html`
@@ -23,6 +35,46 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+- **GitHub Pages — drop internal milestone tags from public copy**:
+  the user-facing docs (api reference, deprecations, roadmap,
+  every guide page) used to suffix headings and prose with
+  internal roadmap identifiers like `(M3)`, `(M-S1)`, or `(M10)`.
+  Those tags are meaningful only to contributors who built the v1
+  plan; to readers they're noise. Stripped them from 9 pages,
+  renamed 8 headings to drop the suffix (e.g.
+  `## default: (M1)` → `## default:`, `## Execute callbacks (M-S1)`
+  → `## Execute callbacks`), and updated the 3 inbound anchor
+  links accordingly. The internal `docs/v1/*` working docs (not in
+  the sidebar, but reachable by direct URL) are left as-is — they
+  are the milestone-tracking working set.
+
+- **GitHub Pages — light-mode link color + nav cleanup**: the light
+  theme now uses `#4d7c8a` Steel Teal as the primary accent (links,
+  Docsify `themeColor`, browser address bar) instead of `#ffd166`
+  Naples Yellow, which failed AA contrast against the `#f4f2f3`
+  background. Yellow is reassigned to `highlightColor` so it still
+  highlights the active sidebar entry and search matches. Dark mode
+  is unchanged — yellow stays the primary accent against the
+  Space Cadet background. Also dropped the `[YARD docs]` sidebar
+  link (the gem ships RBS, not YARD-rendered Ruby source, so the
+  link pointed at an empty rubydoc.info page).
+
+- **GitHub Pages — regenerate favicon + apple-touch-icon from new
+  brand SVG**: rasterized `docs/_media/home-logo.svg` (Space Cadet
+  rounded square with a Naples Yellow `A` glyph) into
+  `docs/_media/favicon.png` (32×32) and
+  `docs/_media/apple-touch-icon.png` (180×180), replacing the legacy
+  PNGs that still carried the old `#009ffd` Vivid Sky Blue accent.
+  `docs/_media/repo-card.png` (1200×630 OG card) has no SVG source
+  in the tree and still needs external regeneration.
+
+- **GitHub Pages — small content polish**: dropped a stale "Jekyll
+  site" reference in `docs/roadmap.md` (we've been on Docsify since
+  PR #187) and scrubbed an internal `(M-D2.1)` post-mortem tag from
+  the `docs/index.html` / `docs/404.html` JavaScript comment block
+  about hash routing. Public-facing wording only — no behavior
+  change.
+
 - **GitHub Pages — brand palette refresh**: swap the secondary
   accent / highlight / primary accent to
   [`22223b-a07178-4d7c8a-f4f2f3-ffd166`](https://coolors.co/22223b-a07178-4d7c8a-f4f2f3-ffd166).
@@ -30,9 +82,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   (secondary), `#4d7c8a` Steel Teal (highlight), `#f4f2f3` Cultured
   (light bg), `#ffd166` Naples Yellow (primary accent, replaces the
   former Vivid Sky Blue `#009ffd`). Applied to `docs/index.html`,
-  `docs/404.html`, and `docs/_media/home-logo.svg`. The PNG assets
-  (`favicon.png`, `apple-touch-icon.png`, `repo-card.png`) still
-  carry the old blue accent and need to be regenerated separately.
+  `docs/404.html`, and `docs/_media/home-logo.svg`. The
+  `favicon.png` and `apple-touch-icon.png` are regenerated from the
+  refreshed SVG further down in this Unreleased section; the
+  `repo-card.png` (1200×630 OG card) still carries the old blue
+  accent and needs external regeneration.
 
 - **GitHub Pages — swap stack from Jekyll to Docsify**: replace the
   Jekyll + just-the-docs site (shipped in PR #180) with a Docsify

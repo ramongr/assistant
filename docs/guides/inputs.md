@@ -34,7 +34,7 @@ Three things to notice:
 1. **`input` and `inputs` take a leading positional name** (`:email`,
    `%i[street city]`). Every other DSL option is a keyword argument.
    This is the only place in the gem where a positional argument
-   survives the M12 keyword-only sweep — see
+   survives the keyword-only DSL — see
    [`api-reference.md`](../api-reference.md#class-methods).
 2. **The constructor is keyword-only.** You call
    `CreateUser.run(email: 'a@b.com', name: 'Alice')`, never
@@ -72,7 +72,7 @@ TouchEmail.run(email: 42)
 #                       message: "Service argument with name email is not a String but Integer">] }
 ```
 
-### Multi-type inputs (M3)
+### Multi-type inputs
 
 Pass an array of classes when more than one is acceptable:
 
@@ -120,7 +120,7 @@ The deprecated 0.x name `#valid_require_<name>?` still works in 1.x —
 calls emit a one-time `Kernel.warn` per call site and delegate to the
 canonical predicate. See [`docs/deprecations.md`](../deprecations.md).
 
-## `default:` (M1)
+## `default:`
 
 Provide a fallback when the caller omits an input. Pass a callable
 (method, lambda, or proc) to compute the default lazily — `assistant`
@@ -149,7 +149,7 @@ input :token, type: String, default: -> { SecureRandom.uuid }
 A `default:` provider that takes arguments raises `ArgumentError` at
 class-definition time.
 
-## `allow_nil:` (M2)
+## `allow_nil:`
 
 By default, `nil` for a typed input logs a type-mismatch error.
 `allow_nil: true` makes `nil` a legal value:
@@ -171,7 +171,7 @@ TouchAge.run(age: 30).fetch(:result)   # => 30
 Combine with `default:` to express "optional integer that defaults to
 nil and may be set to nil explicitly".
 
-## `optional: true` (M7)
+## `optional: true`
 
 `optional: true` is a shorthand for "skip the presence check entirely;
 do not generate `#valid_required_name?`". It is mutually exclusive
@@ -272,7 +272,7 @@ generic `.rbs` for `Service` can't know that your `CreateUser#email`
 returns `String`. That's R1 in
 [`docs/v1/05-quality-and-tooling.md`](https://github.com/ramongr/assistant/blob/main/docs/v1/05-quality-and-tooling.md).
 
-The bundled `assistant-rbs` CLI (M11) closes the gap by emitting
+The bundled `assistant-rbs` CLI closes the gap by emitting
 per-class `.rbs` files. Run it once after editing your services:
 
 ```sh

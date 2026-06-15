@@ -11,8 +11,8 @@
 > collaborator.
 
 This guide covers the four composition surfaces shipped in 1.0:
-service-to-service calls (M-S2), execute callbacks (M-S1), the
-instrumentation notifier (M-S3), and the input snapshot (M-S4).
+service-to-service calls, execute callbacks, the instrumentation
+notifier, and the input snapshot.
 
 ## `#call_service`: nest one service inside another
 
@@ -61,7 +61,7 @@ Notes:
 - `call_service` always calls `inner.run`, so calling it twice would
   re-execute the inner service.
 
-## Execute callbacks (M-S1)
+## Execute callbacks
 
 Three class-level DSL methods register callbacks around `#execute`.
 Hooks are evaluated in the context of the service instance.
@@ -106,7 +106,7 @@ Behavior:
 - **Missing block:** registering a hook without a block raises
   `ArgumentError` at class-definition time.
 
-## Instrumentation notifier (M-S3)
+## Instrumentation notifier
 
 Assign a callable to `Assistant.notifier =` to receive a fixed set
 of events for **every** service execution:
@@ -147,7 +147,7 @@ To disable instrumentation entirely, restore the default no-op:
 Assistant.notifier = Assistant::DEFAULT_NOTIFIER
 ```
 
-## `#input_snapshot` (M-S4)
+## `#input_snapshot`
 
 `#input_snapshot` returns a read-only `Data` view of the service's
 declared inputs (post-`default:` / post-`allow_nil:`). It's the

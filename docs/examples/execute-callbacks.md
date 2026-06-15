@@ -2,7 +2,7 @@
 {: .no_toc }
 
 `before_execute` / `after_execute` / `around_execute` fire around the
-`#execute` body — see the [Composing services guide](../guides/composing-services.md#execute-callbacks-m-s1)
+`#execute` body — see the [Composing services guide](../guides/composing-services.md#execute-callbacks)
 for the full contract.
 
 An audit logger and a wall-time wrapper, combined:

@@ -10,6 +10,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- **GitHub Pages — Mermaid diagrams**: render the result-status
+  decision flow on [`docs/getting-started.md`](docs/getting-started.md)
+  and [`docs/api-reference.md`](docs/api-reference.md), plus the full
+  per-request lifecycle (defaults → declarative validators → `#validate`
+  → execute → notifier hooks) on
+  [`docs/guides/validation.md`](docs/guides/validation.md). Uses the
+  Mermaid loader enabled in the site-polish bundle (just-the-docs
+  auto-injects the ESM importer once `mermaid:` is set in
+  [`_config.yml`](_config.yml)).
+
 - **GitHub Pages — site polish bundle**: dark-mode toggle button
   (wired through `docs/_includes/head_custom.html` +
   `docs/_includes/nav_footer_custom.html` with `localStorage`

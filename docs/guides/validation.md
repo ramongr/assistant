@@ -34,6 +34,30 @@ and `valid_type_*?` method that matches by naming convention before
 calling your `#validate`. Failures are logged as error-level
 `LogItem`s and short-circuit `#execute`.
 
+The full per-request lifecycle:
+
+```mermaid
+flowchart TD
+    Run([Service#run]) --> NotifyStart[notifier: :service_started]
+    NotifyStart --> Defaults[apply_input_defaults]
+    Defaults --> Declarative[Run every<br/>valid_required_*?, valid_required_conditional_*?,<br/>valid_type_*?]
+    Declarative --> Validate[Call your #validate]
+    Validate --> NotifyValidated[notifier: :service_validated]
+    NotifyValidated --> Errors{Any errors logged?}
+    Errors -- Yes --> Skip[Skip #execute]
+    Skip --> Failed[Return :with_errors payload]
+    Failed --> NotifyFailed[notifier: :service_failed]
+    Errors -- No --> Execute[Call #execute<br/>through callback chain]
+    Execute --> NotifyExecuted[notifier: :service_executed]
+    NotifyExecuted --> Result{Errors logged<br/>during execute?}
+    Result -- Yes --> Failed
+    Result -- No --> Ok[Return :ok or :with_warnings payload]
+```
+
+The notifier hooks fire even when validation short-circuits; see
+[Composing services](./composing-services.md#instrumentation-notifier-m-s3)
+for how to subscribe.
+
 ## Adding your own checks with `#validate`
 
 Override `#validate` to log domain-specific errors:

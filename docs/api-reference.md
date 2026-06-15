@@ -130,6 +130,22 @@ hash shapes:
 The status enum is exhaustively `:ok`, `:with_warnings`, `:with_errors`.
 No new status values may be added in 1.x without a deprecation cycle.
 
+The status flag is derived purely from what the service logged during
+`#run`:
+
+```mermaid
+flowchart TD
+    Start([Service#run]) --> Errors{Any LogItem with<br/>level: :error?}
+    Errors -- Yes --> Failed["{ result: nil,<br/>status: :with_errors,<br/>errors: [...] }"]
+    Errors -- No --> Warnings{Any LogItem with<br/>level: :warning?}
+    Warnings -- Yes --> WithWarnings["{ result: ...,<br/>status: :with_warnings,<br/>warnings: [...] }"]
+    Warnings -- No --> Ok["{ result: ...,<br/>status: :ok,<br/>warnings: [] }"]
+```
+
+`#execute` is **skipped** entirely when any declarative or custom
+`#validate` check has already logged an error — see the
+[Validation guide](guides/validation.md) for the full lifecycle.
+
 ---
 
 ## `Assistant::LogItem`

@@ -5,7 +5,7 @@
 the gem is added to a `Gemfile`) scans a source tree for
 `Assistant::Service` subclasses and emits per-class RBS sidecar
 signatures into a target directory. See the
-[Using `bin/assistant-rbs` for Steep users](../guides/inputs.md#using-binassistant-rbs-for-steep-users)
+[Using `bin/assistant-rbs` for Steep users](../guides/inputs.md#using-assistant-rbs-for-steep-users)
 section of the Inputs guide for the design rationale (and the R1
 limitation it works around).
 

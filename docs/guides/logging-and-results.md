@@ -191,6 +191,6 @@ service.errors.first.item
   conditional checks, `#validate` mechanics.
 - [Composing services](./composing-services.md) — how `#call_service`
   merges inner logs into the outer timeline.
-- [API reference: LogItem](../api-reference.md#assistantlogitem).
-- [API reference: LogList](../api-reference.md#assistantloglist).
+- [API reference: LogItem](../api-reference.md#assistant-logitem).
+- [API reference: LogList](../api-reference.md#assistant-loglist).
 - [Migration guide](https://github.com/ramongr/assistant/blob/main/docs/v1/06-migration-0x-to-1.md) for the 1.0 breaking changes.

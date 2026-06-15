@@ -40,7 +40,5 @@ result-shape contract and the
 [API reference](../api-reference.md#result-shape) for the full status
 enum.
 
-{: .note }
-> A runnable `examples/rails_service/` script + integration test ships
-> in [P6](https://github.com/ramongr/assistant/blob/main/docs/v1/08-github-pages.md#p6p12-examples-one-pr-per-example)
-> of the GitHub Pages plan.
+> Source: [`examples/rails_service/`](https://github.com/ramongr/assistant/tree/main/examples/rails_service) ·
+> Test: [`test/examples/rails_service_example_test.rb`](https://github.com/ramongr/assistant/blob/main/test/examples/rails_service_example_test.rb)

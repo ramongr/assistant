@@ -11,4 +11,4 @@ pymdown-extensions==10.12
 # pymdownx.highlight passes filename=None (raises AttributeError in
 # html.escape). Fixed upstream after we pinned; keep this floor until
 # pymdown-extensions / mkdocs-material adjust their call sites.
-Pygments==2.19.1
+Pygments==2.20.0

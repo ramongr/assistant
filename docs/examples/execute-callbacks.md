@@ -1,5 +1,4 @@
 # Execute callbacks
-{: .no_toc }
 
 `before_execute` / `after_execute` / `around_execute` fire around the
 `#execute` body — see the [Composing services guide](../guides/composing-services.md#execute-callbacks)

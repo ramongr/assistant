@@ -1,5 +1,4 @@
 # Composing services
-{: .no_toc }
 
 `#call_service` runs a sibling service from inside `#execute` and
 merges its log timeline into the outer service automatically — see the

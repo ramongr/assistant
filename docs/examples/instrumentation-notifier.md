@@ -1,5 +1,4 @@
 # Instrumentation notifier
-{: .no_toc }
 
 `Assistant.notifier=` accepts any object responding to `#call(event,
 payload)`. Set it once at boot to wire every service into your
@@ -46,10 +45,9 @@ on `:service_executed` and `:service_failed`, `errors:` on
 [full payload table](../api-reference.md#instrumentation-notifier) for
 the exhaustive list.
 
-{: .warning }
-> Notifier callables are rescued from `StandardError`; any exception
-> they raise is `warn`-ed but doesn't fail the service. Don't put
-> control flow in the notifier.
+> **Warning** — Notifier callables are rescued from `StandardError`;
+> any exception they raise is `warn`-ed but doesn't fail the service.
+> Don't put control flow in the notifier.
 
 {: .note }
 > A runnable `examples/instrumentation_notifier/` script + integration

@@ -1,5 +1,4 @@
 # Sidekiq worker
-{: .no_toc }
 
 A Sidekiq worker that runs a service idempotently and routes warnings
 and errors to separate sinks:

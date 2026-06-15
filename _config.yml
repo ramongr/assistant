@@ -93,6 +93,18 @@ kramdown:
   input: GFM
   hard_wrap: false
 
+# Apply just-the-docs's `default` layout to every page that doesn't
+# declare its own (the homepage uses `layout: home`, which is also a
+# just-the-docs layout). Without this defaults block, pages with no
+# `layout:` front matter render as raw <h1>... HTML with no sidebar,
+# header, search, or footer — every internal page in the site looks
+# unstyled and links don't work.
+defaults:
+  - scope:
+      path: ""
+    values:
+      layout: default
+
 # Files Jekyll should ignore. Paths are relative to `source:` (docs/),
 # so `v1` skips docs/v1/ — the v1 planning corpus authored for GitHub's
 # Markdown renderer (relative links into ../ and across plan files). It

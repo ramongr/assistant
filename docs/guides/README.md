@@ -9,7 +9,7 @@ tests under `test/docs/<guide>_examples_test.rb`, and ends with a
   `default:`, `allow_nil:`, `optional:`, `if:` conditional requirement,
   and the `assistant-rbs` Steep recipe.
 - [Validation](./validation.md) — auto-checks, `#validate`, warnings
-  vs errors, conditional requirements, strict `LogItem.new` (M10).
+  vs errors, conditional requirements, strict `LogItem.new`.
 - [Logging and results](./logging-and-results.md) — `LogItem`,
   levels, `log_item_*` shorthands, `merge_logs`, the result hash.
 - [Composing services](./composing-services.md) — `call_service`,

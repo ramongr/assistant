@@ -18,7 +18,7 @@ conditional patterns.
 For every `Service.input :name, type: T, required: ..., if: ...`,
 the gem generates and runs:
 
-- `#valid_type_name?` — type check (or multi-type with M3 union).
+- `#valid_type_name?` — type check (also handles multi-type unions).
 - `#valid_required_name?` — presence check, when `required: true`.
 - `#valid_required_conditional_name?` — presence + predicate, when
   `required: true` *and* `if:` are both supplied.
@@ -49,7 +49,7 @@ flowchart TD
 ```
 
 The notifier hooks fire even when validation short-circuits; see
-[Composing services](./composing-services.md#instrumentation-notifier-m-s3)
+[Composing services](./composing-services.md#instrumentation-notifier)
 for how to subscribe.
 
 ## Adding your own checks with `#validate`
@@ -148,7 +148,7 @@ be truthy — so the canonical use is "I need this to be present
 [`inputs.md`](./inputs.md#if-conditional-requirement) for the
 inverse pattern.
 
-## `LogItem.new` raises in 1.0 (M10)
+## `LogItem.new` raises in 1.0
 
 Constructing a `LogItem` directly with invalid attributes now raises
 `ArgumentError`. The `#valid?` family is kept for introspection but
@@ -182,7 +182,7 @@ catalogue.
   Unexpected exceptions propagate (the gem catches exceptions only
   in `before_execute` / `around_execute` / `after_execute` hooks).
 - **Building `LogItem.new(...)` and pushing it onto `#logs`.** Use the
-  helpers; they apply the same M10 strict construction and keep your
+  helpers; they apply the same strict construction and keep your
   call sites readable.
 - **Forgetting that `#validate` runs even when a declarative check
   already failed.** Either guard `#validate` with `return if

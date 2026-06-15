@@ -67,7 +67,7 @@ you.
 | `Service.around_execute(&block)`                                                | Frozen    | Hook block is `instance_exec`'d with an inner block argument that yields to the next layer.              |
 | `Service.input_snapshot_class -> Class`                                         | Frozen *(new in 1.0)* | Memoised `Data.define(*declared_input_names)` class used by `#input_snapshot`.                |
 
-> **M12 keyword-only sweep.** Every other public DSL helper (e.g.
+> **Keyword-only DSL.** Every other public DSL helper (e.g.
 > `merge_logs`, all `InputBuilder` internals) takes keyword arguments
 > only. The two exemptions above — `Service.input` and
 > `Service.inputs` — keep their leading positional `name` / `names`
@@ -145,7 +145,7 @@ flowchart TD
 
 ## `Assistant::LogItem`
 
-> **Breaking change in 1.0 (M10).** `LogItem.new` now raises
+> **Breaking change in 1.0.** `LogItem.new` now raises
 > `ArgumentError` when any required attribute is invalid. The
 > `#valid?` family is **retained** for introspection, but in normal
 > flows it always returns `true` after a successful `new`.
@@ -242,7 +242,7 @@ return values whose `class` is `equal?`. See
 
 ## `assistant-rbs` CLI
 
-Bundled executable shipped at `exe/assistant-rbs` (M11). Generates
+Bundled executable shipped at `exe/assistant-rbs`. Generates
 per-class RBS signatures for `Assistant::Service` subclasses so Steep
 can type-check user code.
 

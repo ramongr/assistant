@@ -1,15 +1,22 @@
-# CLI handler
-
-An `OptionParser`-driven script that runs a service and derives the
-process exit code from `#status`:
-
-```ruby
 #!/usr/bin/env ruby
 # frozen_string_literal: true
 
+# `examples/cli_handler/` runnable CLI. Drives the service in
+# `create_user.rb` from `OptionParser` and derives the process exit
+# code from the result hash's `:status`. Mirrors the script shown
+# verbatim in `docs/examples/cli-handler.md`.
+#
+# Top-level `CreateUser` is aliased to the namespaced
+# `CliHandlerExample::CreateUser` so the body of the script reads
+# exactly like the docs snippet.
+
+# Require order intentionally matches the docs snippet
+# (`stdlib`, `assistant`, `require_relative`) rather than alphabetical.
 require 'optparse'
-require 'assistant'
+require 'assistant' # rubocop:disable Style/RequireOrder
 require_relative 'create_user'
+
+CreateUser = CliHandlerExample::CreateUser unless defined?(CreateUser)
 
 options = {}
 OptionParser.new do |opts|
@@ -30,14 +37,3 @@ in { errors:, status: :with_errors }
   errors.each { |e| warn "error: #{e.message}" }
   exit 1
 end
-```
-
-Notes:
-
-* `:ok` and `:with_warnings` both exit 0 — warnings are still a
-  successful run. Only `:with_errors` exits 1.
-* Print to `$stderr` (`warn`) so the script can be piped without log
-  noise leaking into stdout.
-
-> Source: [`examples/cli_handler/`](https://github.com/ramongr/assistant/tree/main/examples/cli_handler) ·
-> Test: [`test/examples/cli_handler_example_test.rb`](https://github.com/ramongr/assistant/blob/main/test/examples/cli_handler_example_test.rb)

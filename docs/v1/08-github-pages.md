@@ -184,9 +184,14 @@ Each example PR ships **all three** of:
 
 ## Acceptance criteria
 
-- [x] `bundle exec jekyll build --strict_front_matter` passes locally and in CI.
+- [x] ~~`bundle exec jekyll build --strict_front_matter` passes locally
+      and in CI.~~ _Superseded by docsify migration in PR #187: the
+      `docs.yml` workflow uploads `docs/` to Pages directly via
+      `actions/upload-pages-artifact@v3`; local preview is `rake
+      docs:serve`._
 - [x] `https://ramongr.github.io/assistant/` returns 200 and renders the
-      full nav (live since the Jekyll migration in PR #180).
+      full nav (live since the Jekyll migration in PR #180, still live
+      after the docsify swap in PR #187).
 - [x] Every page in the **Site map** exists (placeholder is acceptable
       after P2; real content after the matching Pn).
 - [ ] Every code block tagged ```` ```ruby ```` in `docs/getting-started.md`,
@@ -197,13 +202,17 @@ Each example PR ships **all three** of:
       ships the runnable examples.
 - [ ] Search box returns sensible results for "input", "warnings",
       "call_service", "notifier", "RBS".
-- [x] Dark-mode toggle works. Shipped as a custom button wired through
-      `_includes/head_custom.html` + `_includes/nav_footer_custom.html`
-      with `localStorage` persistence on top of just-the-docs's built-in
-      `jtd.setTheme()` API (the bundled toggle in 0.12 doesn't surface a
-      visible control on `color_scheme: light`).
-- [x] Repo-edit-this-page link on every page points at the right file on
-      `main` (driven by `_config.yml` `gh_edit_*` settings).
+- [x] Dark-mode toggle works. ~~Shipped as a custom button wired
+      through `_includes/head_custom.html` +
+      `_includes/nav_footer_custom.html` with `localStorage` persistence
+      on top of just-the-docs's built-in `jtd.setTheme()` API.~~
+      _Superseded by docsify migration in PR #187: now served by
+      docsify's `darkMode` plugin configured in `docs/index.html`._
+- [x] ~~Repo-edit-this-page link on every page points at the right file
+      on `main` (driven by `_config.yml` `gh_edit_*` settings).~~
+      _Superseded by docsify migration in PR #187: docsify renders an
+      "Edit this page" link from the `repo` + `loadSidebar` config in
+      `docs/index.html` without a `_config.yml`._
 - [x] Site polish bundle: copy-code button (`enable_copy_code_button`),
       named callouts (`note`/`tip`/`warning`/`important`), Mermaid loader
       pinned to `10.9.1`, baseurl-aware favicons (SVG + 32px + 180px

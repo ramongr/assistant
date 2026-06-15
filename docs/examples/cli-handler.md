@@ -1,5 +1,4 @@
 # CLI handler
-{: .no_toc }
 
 An `OptionParser`-driven script that runs a service and derives the
 process exit code from `#status`:

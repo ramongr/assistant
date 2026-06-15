@@ -1,5 +1,4 @@
 # RBS generator
-{: .no_toc }
 
 `bin/assistant-rbs` (installed as the `assistant-rbs` executable when
 the gem is added to a `Gemfile`) scans a source tree for

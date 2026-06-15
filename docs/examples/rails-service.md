@@ -1,5 +1,4 @@
 # Rails service
-{: .no_toc }
 
 A Rails-shaped controller that calls a service and pattern-matches on
 the result hash:

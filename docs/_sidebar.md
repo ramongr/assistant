@@ -1,6 +1,6 @@
 <!-- Sidebar (Docsify reads this on every route).
-     Order mirrors the Jekyll nav: Home, Getting started, Guides,
-     API reference, Deprecations, Examples. -->
+     Order: Home, Getting started, Guides, API reference, Deprecations,
+     Examples. -->
 
 - [Home](/)
 - [Getting started](getting-started.md)
@@ -16,6 +16,7 @@
 - [Deprecations](deprecations.md)
 
 - **Examples**
+  - [Overview](examples/README.md)
   - [Rails service](examples/rails-service.md)
   - [CLI handler](examples/cli-handler.md)
   - [Sidekiq worker](examples/sidekiq-worker.md)

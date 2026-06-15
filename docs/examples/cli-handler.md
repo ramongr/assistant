@@ -1,9 +1,3 @@
----
-title: CLI handler
-parent: Examples
-nav_order: 2
----
-
 # CLI handler
 {: .no_toc }
 

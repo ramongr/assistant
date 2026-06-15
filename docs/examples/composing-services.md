@@ -1,9 +1,3 @@
----
-title: Composing services
-parent: Examples
-nav_order: 4
----
-
 # Composing services
 {: .no_toc }
 

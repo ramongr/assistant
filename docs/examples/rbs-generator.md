@@ -1,9 +1,3 @@
----
-title: RBS generator
-parent: Examples
-nav_order: 7
----
-
 # RBS generator
 {: .no_toc }
 

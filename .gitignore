@@ -4,9 +4,6 @@
 /coverage/
 /doc/
 /pkg/
-/_site/
-/.jekyll-cache/
-/.jekyll-metadata
 /spec/reports/
 /tmp/
 

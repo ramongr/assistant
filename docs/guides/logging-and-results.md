@@ -1,9 +1,3 @@
----
-title: Logging and results
-parent: Guides
-nav_order: 3
----
-
 <!-- markdownlint-disable MD013 MD024 -->
 # Logging and results
 

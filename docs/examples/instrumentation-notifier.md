@@ -1,9 +1,3 @@
----
-title: Instrumentation notifier
-parent: Examples
-nav_order: 6
----
-
 # Instrumentation notifier
 {: .no_toc }
 

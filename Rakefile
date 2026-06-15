@@ -39,19 +39,13 @@ desc 'Run the full local CI pipeline: test + rubocop + steep + yard'
 task ci: %i[test rubocop steep yard]
 
 namespace :docs do
-  desc 'Install the Jekyll docs toolchain (Bundler :docs group)'
-  task :install do
-    sh 'bundle install --with docs'
-  end
-
-  desc 'Build the Jekyll site into ./_site (mirrors the CI Pages build)'
-  task :build do
-    sh 'bundle exec jekyll build --strict_front_matter'
-  end
-
-  desc 'Serve the Jekyll site on http://127.0.0.1:4000 with live reload'
+  desc 'Serve the Docsify site on http://127.0.0.1:4000 (Ctrl-C to stop)'
   task :serve do
-    sh 'bundle exec jekyll serve --livereload'
+    # Docsify is a client-side SPA: no build step, no toolchain. We
+    # just serve `docs/` over WEBrick (shipped with stdlib via the
+    # `un` command). The Pages workflow uploads the same directory as
+    # the Pages artifact verbatim.
+    sh 'ruby -run -e httpd docs -p 4000'
   end
 end
 

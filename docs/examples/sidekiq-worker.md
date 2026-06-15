@@ -1,9 +1,3 @@
----
-title: Sidekiq worker
-parent: Examples
-nav_order: 3
----
-
 # Sidekiq worker
 {: .no_toc }
 

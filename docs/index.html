@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+
+  <title>Assistant &mdash; tiny, dependency-free soft-fail service objects for Ruby</title>
+  <meta name="description"
+        content="Assistant is a tiny, dependency-free Ruby gem for soft-fail service objects with a uniform result shape, structured log items, and first-class RBS/Steep support.">
+  <meta name="theme-color" content="#009ffd">
+
+  <link rel="icon" type="image/svg+xml" href="_media/home-logo.svg">
+  <link rel="icon" type="image/png" sizes="32x32" href="_media/favicon.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="_media/apple-touch-icon.png">
+
+  <!-- Open Graph / Twitter card -->
+  <meta property="og:title" content="Assistant">
+  <meta property="og:description" content="Tiny, dependency-free soft-fail service objects for Ruby.">
+  <meta property="og:image" content="https://ramongr.github.io/assistant/_media/repo-card.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="https://ramongr.github.io/assistant/_media/repo-card.png">
+
+  <!-- Docsify default theme + dark/light theme overlay -->
+  <link rel="stylesheet"
+        href="//cdn.jsdelivr.net/npm/docsify-darklight-theme@latest/dist/style.min.css"
+        title="docsify-darklight-theme"
+        type="text/css" />
+
+  <!-- Prism syntax-highlighting theme (light by default; swapped on dark toggle) -->
+  <link rel="stylesheet"
+        href="//cdn.jsdelivr.net/npm/prism-themes/themes/prism-material-light.min.css"
+        id="prism-theme"
+        type="text/css" />
+
+  <style>
+    :root {
+      /* Brand palette
+         #22223b — Space Cadet (dark text / dark bg)
+         #9ebc9f — Sage     (secondary accent / success)
+         #d3b88c — Tan      (warm highlight)
+         #f4f2f3 — Cultured (light background)
+         #009ffd — Vivid Sky Blue (primary accent) */
+      --theme-color: #009ffd;
+    }
+    .app-name-link img { width: 28px; height: 28px; }
+    .sidebar-toggle { background-color: transparent; }
+  </style>
+</head>
+<body>
+  <div id="app">Loading documentation&hellip;</div>
+
+  <script>
+    // Re-applies the matching Prism theme stylesheet whenever the
+    // docsify-darklight-theme toggle is clicked. Without this, switching to
+    // dark mode keeps the light Prism palette on code blocks.
+    const prismThemeSwitcher = function (hook) {
+      hook.doneEach(function () {
+        const toggle = document.querySelector('.docsify-darklight-theme');
+        if (!toggle || toggle.dataset.bound === '1') return;
+        toggle.dataset.bound = '1';
+        toggle.addEventListener('click', function () {
+          const link = document.getElementById('prism-theme');
+          if (!link) return;
+          const dark = link.href.includes('prism-material-dark');
+          link.href = dark
+            ? '//cdn.jsdelivr.net/npm/prism-themes/themes/prism-material-light.min.css'
+            : '//cdn.jsdelivr.net/npm/prism-themes/themes/prism-material-dark.min.css';
+        });
+      });
+    };
+
+    // Page footer rendered by docsify after each markdown body.
+    const pageFooter = function (hook) {
+      const footer = [
+        '<hr/>',
+        '<footer style="text-align:center; opacity:.7; font-size:.9em; padding:1rem 0;">',
+        '  <span>Assistant &middot; MIT-licensed &middot; ',
+        '    <a href="https://github.com/ramongr/assistant" target="_blank" rel="noopener">GitHub</a> &middot; ',
+        '    <a href="https://rubygems.org/gems/assistant" target="_blank" rel="noopener">RubyGems</a>',
+        '  </span>',
+        '</footer>'
+      ].join('');
+      hook.afterEach(function (html) { return html + footer; });
+    };
+
+    window.$docsify = {
+      name: 'Assistant',
+      repo: 'ramongr/assistant',
+      logo: '_media/home-logo.svg',
+      homepage: 'index.md',
+      coverpage: false,
+      loadSidebar: true,
+      loadNavbar: false,
+      auto2top: true,
+      subMaxLevel: 3,
+      maxLevel: 4,
+      relativePath: true,
+      notFoundPage: true,
+      executeScript: true,
+      themeColor: '#009ffd',
+      search: {
+        maxAge: 86400000,
+        paths: 'auto',
+        placeholder: 'Search the docs &hellip;',
+        noData: 'No results.',
+        depth: 3,
+        hideOtherSidebarContent: false
+      },
+      copyCode: {
+        buttonText: 'Copy',
+        errorText: 'Error',
+        successText: 'Copied'
+      },
+      mermaidConfig: {
+        querySelector: '.mermaid'
+      },
+      darklightTheme: {
+        siteFont: 'PT Sans, system-ui, sans-serif',
+        defaultTheme: 'light',
+        codeFontFamily: 'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace',
+        bodyFontSize: '17px',
+        dark: {
+          accent: '#009ffd',
+          toggleBackground: '#22223b',
+          background: '#22223b',
+          textColor: '#f4f2f3',
+          codeTextColor: '#f4f2f3',
+          codeBackgroundColor: '#2c2c4a',
+          borderColor: '#3a3a5c',
+          blockQuoteColor: '#9ebc9f',
+          highlightColor: '#d3b88c',
+          sidebarSublink: '#9ebc9f',
+          codeTypeColor: '#d3b88c',
+          coverBackground: 'linear-gradient(to left bottom, #22223b 0%, #009ffd 100%)'
+        },
+        light: {
+          accent: '#009ffd',
+          toggleBackground: '#f4f2f3',
+          background: '#f4f2f3',
+          textColor: '#22223b',
+          codeTextColor: '#22223b',
+          codeBackgroundColor: '#ffffff',
+          borderColor: 'rgba(34,34,59,0.12)',
+          blockQuoteColor: '#9ebc9f',
+          highlightColor: '#d3b88c',
+          sidebarSublink: '#22223b',
+          codeTypeColor: '#009ffd',
+          coverBackground: 'linear-gradient(to left bottom, #f4f2f3 0%, #9ebc9f 100%)'
+        }
+      },
+      plugins: [
+        prismThemeSwitcher,
+        pageFooter,
+        function (hook, vm) {
+          if (typeof EditOnGithubPlugin !== 'undefined') {
+            EditOnGithubPlugin.create(
+              'https://github.com/ramongr/assistant/blob/main/docs/',
+              null,
+              'Edit this page on GitHub'
+            )(hook, vm);
+          }
+        }
+      ]
+    };
+  </script>
+
+  <!-- Docsify core -->
+  <script src="//cdn.jsdelivr.net/npm/docsify@4"></script>
+
+  <!-- Dark/light theme toggle -->
+  <script src="//cdn.jsdelivr.net/npm/docsify-darklight-theme@latest/dist/index.min.js"
+          type="text/javascript"></script>
+
+  <!-- Plugins -->
+  <script src="//cdn.jsdelivr.net/npm/docsify/lib/plugins/search.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/docsify-copy-code@2"></script>
+  <script src="//cdn.jsdelivr.net/npm/docsify-edit-on-github"></script>
+  <script src="//cdn.jsdelivr.net/npm/docsify-tabs@1"></script>
+
+  <!-- Mermaid (diagrams) -->
+  <script src="//cdn.jsdelivr.net/npm/mermaid@10.9.1/dist/mermaid.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/docsify-mermaid@2"></script>
+  <script>mermaid.initialize({ startOnLoad: false, theme: 'default' });</script>
+
+  <!-- Prism syntax highlighting: Ruby + autoloader for everything else -->
+  <script src="//cdn.jsdelivr.net/npm/prismjs/components/prism-ruby.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/prismjs/components/prism-bash.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/prismjs/components/prism-yaml.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/prismjs/components/prism-json.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/prismjs/plugins/autoloader/prism-autoloader.min.js"></script>
+</body>
+</html>

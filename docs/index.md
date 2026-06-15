@@ -1,15 +1,6 @@
----
-title: Home
-layout: home
-nav_order: 0
-permalink: /
----
-
 # Assistant
-{: .fs-9 .fw-700 .mb-1 }
 
 **Tiny, dependency-free soft-fail service objects for Ruby.**
-{: .fs-6 .fw-300 .text-grey-dk-100 }
 
 [![Gem Version](https://badge.fury.io/rb/assistant.svg)](https://rubygems.org/gems/assistant)
 [![CI](https://github.com/ramongr/assistant/actions/workflows/ci.yml/badge.svg)](https://github.com/ramongr/assistant/actions/workflows/ci.yml)
@@ -20,9 +11,9 @@ uniform result hash that always carries either a value plus warnings, or a
 list of errors. Frozen 1.0 public API. RBS signatures ship in `sig/`.
 **Zero runtime gem dependencies.**
 
-[Get started in 60 seconds](getting-started.md){: .btn .btn-primary .fs-5 .mb-4 .mb-md-0 .mr-2 }
-[Browse the guides](guides/){: .btn .fs-5 .mb-4 .mb-md-0 .mr-2 }
-[View on GitHub](https://github.com/ramongr/assistant){: .btn .fs-5 .mb-4 .mb-md-0 }
+> [Get started in 60 seconds](getting-started.md) &nbsp;·&nbsp;
+> [Browse the guides](guides/inputs.md) &nbsp;·&nbsp;
+> [View on GitHub](https://github.com/ramongr/assistant)
 
 ---
 
@@ -101,7 +92,7 @@ end
 The same call returns `:with_warnings` if `#execute` logged any warnings, and
 `:with_errors` (without invoking `#execute`) if the inputs failed validation.
 
-[Walk through this example end-to-end](getting-started.md){: .btn .btn-outline .fs-4 }
+> [Walk through this example end-to-end &raquo;](getting-started.md)
 
 ---
 
@@ -110,9 +101,13 @@ The same call returns `:with_warnings` if `#execute` logged any warnings, and
 | Page | What you'll find |
 |:---|:---|
 | [Getting started](getting-started.md) | Install, your first service, consuming a result. |
-| [Guides](guides/) | DSL deep-dives — inputs, validation, logging, composition, RBS. |
+| [Inputs guide](guides/inputs.md) | The `input` DSL — types, defaults, optional, conditional. |
+| [Validation guide](guides/validation.md) | Built-in checks, `#validate`, warning vs error semantics. |
+| [Logging and results](guides/logging-and-results.md) | `LogItem`, `LogList`, the result hash shape. |
+| [Composing services](guides/composing-services.md) | `call_service`, callbacks, notifier, `#input_snapshot`. |
+| [RBS and types](guides/rbs-and-types.md) | Hand-curated sidecars + `bin/assistant-rbs`. |
 | [API reference](api-reference.md) | Every Frozen symbol in 1.0, deep-link friendly. |
-| [Examples](examples/) | Wiring patterns — Rails, CLI, Sidekiq, callbacks, notifier, RBS. |
+| [Examples](examples/rails-service.md) | Wiring patterns — Rails, CLI, Sidekiq, callbacks, notifier, RBS. |
 | [Roadmap](roadmap.md) | What's planned, what shipped, parallel deliverables. |
 | [Changelog](changelog.md) | Release history and migration notes. |
 | [Deprecations](deprecations.md) | What's flagged for removal in 2.0. |

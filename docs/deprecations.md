@@ -1,8 +1,3 @@
----
-title: Deprecations
-nav_order: 4
----
-
 # Deprecations
 
 This page tracks every public symbol that is **deprecated** in a 1.x release

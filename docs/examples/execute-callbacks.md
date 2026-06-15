@@ -1,9 +1,3 @@
----
-title: Execute callbacks
-parent: Examples
-nav_order: 5
----
-
 # Execute callbacks
 {: .no_toc }
 

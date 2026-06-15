@@ -1,8 +1,3 @@
----
-title: Changelog
-nav_order: 7
----
-
 # Changelog
 
 The full release history is in

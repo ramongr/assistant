@@ -10,19 +10,28 @@ then, and gains an "Online docs" link in a follow-up once Pages is live.
 
 ## Stack decisions (locked)
 
+> **Stack swap (post-P2):** the original mkdocs + Material stack shipped in
+> PR #177 and was replaced with **Jekyll + just-the-docs** in PR #178 to
+> match the gem's primary toolchain (Ruby), eliminate the Python build
+> dependency, drop the `Pygments==2.19.1` pin that worked around a
+> 2.20.0 regression, and let `Gemfile`/Bundler manage every site
+> dependency (the `runtime-deps` CI gate keeps the gemspec itself
+> dependency-free). The table below reflects the **current** stack.
+
 | Decision           | Choice                                                                 | Rationale                                                                                              |
 |--------------------|------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------|
-| Generator          | [mkdocs](https://www.mkdocs.org/) + [mkdocs-material](https://squidfunk.github.io/mkdocs-material/) | Polished out of the box: client-side search, dark mode, copy-code button, content tabs, mermaid.       |
-| Deploy             | GitHub Actions on push to `main`; deploys to GitHub Pages.             | No long-running build server. Uses `actions/configure-pages` + `actions/deploy-pages`.                 |
+| Generator          | [Jekyll](https://jekyllrb.com/) + [just-the-docs](https://just-the-docs.com/) | Ruby toolchain matches the gem; just-the-docs ships sidebar nav, Lunr search, color-scheme toggle, and Rouge syntax highlighting out of the box. |
+| Deploy             | GitHub Actions on push to `main`; deploys to GitHub Pages.             | No long-running build server. Uses `actions/upload-pages-artifact@v3` + `actions/deploy-pages@v4`.     |
 | Hosting            | `https://ramongr.github.io/assistant/`                                 | Default GitHub Pages URL; no custom domain in 1.0.                                                     |
-| Content source     | The same Markdown files under `docs/` that D2 ships.                   | Single source of truth: GitHub renders the files; mkdocs renders the site.                            |
-| Theme              | Material, default palette + indigo accent, light/dark toggle.          | No custom CSS in v1; revisit only if a clear branding decision lands.                                 |
-| Versioning         | Single live version (no `mike`).                                       | Premature for 1.0. Add versioned docs in the first minor that ships a breaking change behind a flag.   |
-| Search             | Material built-in `search` plugin.                                     | Zero-config, client-side, works offline.                                                              |
-| Diagrams           | Material `pymdownx.superfences` + `mermaid2` plugin.                   | We have at least the run-lifecycle diagram + the call_service composition diagram in mind.            |
-| Code highlighting  | Material `pymdownx.highlight` + `pymdownx.inlinehilite`.               | Ruby + console syntaxes; copy button enabled.                                                          |
-| Python toolchain   | Pinned in `requirements-docs.txt`. CI uses `actions/setup-python@v5`.  | Reproducible local + CI builds.                                                                       |
-| Live preview       | `bundle exec rake docs:serve` wraps `mkdocs serve` for parity.         | Ruby contributors don't have to remember the Python command.                                          |
+| Content source     | The same Markdown files under `docs/` that D2 ships.                   | Single source of truth: GitHub renders the files; Jekyll renders the site.                            |
+| Theme              | just-the-docs, light scheme default, dark scheme toggle.               | No custom CSS in v1; revisit only if a clear branding decision lands.                                 |
+| Versioning         | Single live version.                                                   | Premature for 1.0. Add versioned docs in the first minor that ships a breaking change behind a flag.   |
+| Search             | just-the-docs built-in Lunr search.                                    | Zero-config, client-side, works offline; `Ctrl/Cmd + K` to focus.                                     |
+| Diagrams           | Mermaid via Jekyll markdown filter (deferred to first guide that needs one). | Not pulled in until P3 actually adds a diagram so we don't ship JS for placeholders.                  |
+| Code highlighting  | Rouge (built into Jekyll/kramdown).                                    | Ruby + console syntaxes; pure Ruby; no JS runtime.                                                     |
+| Ruby toolchain     | `Gemfile` `:docs` group (optional) installs Jekyll + just-the-docs. CI uses `BUNDLE_WITH=docs`. | Reproducible local + CI builds; regular contributors don't pull docs deps unless they opt in.         |
+| Live preview       | `bundle exec rake docs:serve` wraps `jekyll serve --livereload`.        | Single Ruby command; no Python to install.                                                            |
+| Markdown link rewriting | `jekyll-relative-links` plugin rewrites intra-docs `.md` links to `.html`. | Same source renders both on GitHub (where authors keep `.md` links) and on the site.              |
 
 ## Site map
 
@@ -62,40 +71,46 @@ then, and gains an "Online docs" link in a follow-up once Pages is live.
       when the GitHub Pages plan landed).
 - [x] Update [`./README.md`](./README.md) plan index with row 08.
 
-### P2. mkdocs scaffolding + deploy pipeline
+### P2. Jekyll scaffolding + deploy pipeline
 
 Goal: every push to `main` deploys the site, even if content is mostly
-placeholder.
+placeholder. _Originally shipped as mkdocs in PR #177; replaced with
+Jekyll + just-the-docs in PR #178._
 
-- [x] `mkdocs.yml` at repo root: site name, `theme: name: material`, palette
-      with light/dark toggle, repo URL + edit-this-page links, navigation
-      tree matching the **Site map** table.
-- [x] `requirements-docs.txt`: pinned `mkdocs`, `mkdocs-material`,
-      `mkdocs-material-extensions`, `pymdown-extensions`, plus a
-      `Pygments` floor to dodge the 2.20.0 regression. The
-      `mkdocs-mermaid2-plugin` pin is deferred until P3 actually adds a
-      diagram so we don't ship a JS dependency for placeholders.
-- [x] Placeholder Markdown stubs for every site-map entry that does not
-      yet exist (each carries a one-line "Coming in PR Pn" note):
-      `docs/index.md`, `docs/guides/rbs-and-types.md`,
-      `docs/examples/index.md`, and the seven `docs/examples/*.md`
-      example pages, plus snippet-light `docs/roadmap.md` and
-      `docs/changelog.md` routes.
+- [x] `_config.yml` at repo root: site name, `theme: just-the-docs`,
+      `color_scheme: light` with built-in dark toggle, repo URL +
+      `gh_edit_link` permalinks, navigation derived from per-page
+      `parent:` / `nav_order:` front matter matching the **Site map**
+      table.
+- [x] `Gemfile` `:docs` group (optional) pinning `jekyll ~> 4.3`,
+      `just-the-docs ~> 0.10`, and `jekyll-relative-links ~> 0.7`. The
+      runtime `Gemfile.lock` keeps these resolved without affecting the
+      gem's `runtime_dependencies` (the `runtime-deps` CI job from
+      [`05-quality-and-tooling.md`](./05-quality-and-tooling.md) keeps
+      that honest).
+- [x] Front matter on every site page (`title:`, `nav_order:`,
+      `parent:`/`has_children:` where applicable) so just-the-docs builds
+      the nav tree automatically. Includes the new `docs/guides/index.md`
+      and `docs/examples/index.md` parent pages.
 - [x] `.github/workflows/docs.yml`: triggers on push to `main` and PR
-      against `main` (paths `docs/**`, `mkdocs.yml`,
-      `requirements-docs.txt`, the workflow itself). Steps:
-      `actions/setup-python@v5`, install requirements,
-      `mkdocs build --strict`, `actions/upload-pages-artifact`,
-      `actions/deploy-pages` (deploy step gated to `push` on `main`).
-      Permissions: `pages: write`, `id-token: write` on the deploy job
-      only. Concurrency group `pages` with `cancel-in-progress: false`.
-- [ ] Enable GitHub Pages source = "GitHub Actions" in repo settings
-      (one-time manual step; note in CHANGELOG release-engineering).
+      against `main` (paths `docs/**`, `_config.yml`, `Gemfile`,
+      `Gemfile.lock`, the workflow itself). Steps: `ruby/setup-ruby@v1`
+      with `bundler-cache: true` and `BUNDLE_WITH=docs`, then
+      `bundle exec jekyll build --strict_front_matter --baseurl /assistant`,
+      `actions/upload-pages-artifact@v3`, `actions/deploy-pages@v4`
+      (deploy step gated to `push` on `main`). Permissions:
+      `pages: write`, `id-token: write` on the deploy job only.
+      Concurrency group `pages` with `cancel-in-progress: false`.
+- [x] Enable GitHub Pages source = "GitHub Actions" in repo settings
+      (one-time manual step; enabled via the GitHub API after PR #177
+      merged).
 - [x] `Rakefile` `docs:serve`, `docs:build`, and `docs:install` tasks
-      that shell out to `python3 -m mkdocs serve` / `build` / pip-install
-      the pinned requirements.
+      that wrap `bundle exec jekyll serve --livereload`,
+      `bundle exec jekyll build --strict_front_matter`, and
+      `bundle install --with docs`.
 - [ ] Verify the deployed site renders at
-      `https://ramongr.github.io/assistant/` with the nav tree intact.
+      `https://ramongr.github.io/assistant/` with the nav tree intact
+      after the PR #178 deploy completes.
 
 ### P3. Landing page + getting-started + roadmap surface
 
@@ -105,9 +120,8 @@ placeholder.
 - [ ] `docs/getting-started.md` (was a D2 deliverable; landed here as part
       of this PR if D2 hasn't already shipped it).
 - [ ] Wire the `/roadmap/` route to render the existing
-      [`./README.md`](./README.md) via mkdocs `nav` aliasing
-      (`- Roadmap: ../v1/README.md` or via a generated stub that includes
-      the file).
+      [`./README.md`](./README.md) via a Jekyll stub that includes the
+      file (or migrate the content into `docs/roadmap.md` directly).
 - [ ] Same for `/changelog/` → root `CHANGELOG.md`.
 
 ### P4. Guides migration
@@ -135,8 +149,9 @@ Each example PR ships **all three** of:
 1. Runnable script(s) under `examples/<slug>/` with a `README.md` whose
    first sentence describes the problem the example solves.
 2. A site page under `docs/examples/<slug>.md` that includes the script
-   verbatim via mkdocs `pymdownx.snippets` (so the rendered prose stays
-   in sync with the runnable code).
+   verbatim via Jekyll's `{% include_relative %}` (or a fenced block
+   copied + kept honest by the regression test below) so the rendered
+   prose stays in sync with the runnable code.
 3. A regression test under `test/examples/<slug>_example_test.rb` that
    `require_relative`s the script in a sandboxed namespace and asserts
    on its result hash.
@@ -166,22 +181,22 @@ Each example PR ships **all three** of:
 
 ## Acceptance criteria
 
-- [ ] `mkdocs build --strict` passes locally and in CI.
+- [x] `bundle exec jekyll build --strict_front_matter` passes locally and in CI.
 - [ ] `https://ramongr.github.io/assistant/` returns 200 and renders the
       full nav.
-- [ ] Every page in the **Site map** exists (placeholder is acceptable
+- [x] Every page in the **Site map** exists (placeholder is acceptable
       after P2; real content after the matching Pn).
 - [ ] Every code block tagged ```` ```ruby ```` in `docs/getting-started.md`,
-      `docs/guides/*.md`, and `docs/examples/*.md` either is included
-      via `pymdownx.snippets` from a file under `examples/` **or** is
-      mirrored by an integration test under `test/docs/` /
-      `test/examples/` (the D2 acceptance criterion, extended to the
-      example pages).
+      `docs/guides/*.md`, and `docs/examples/*.md` either is rendered
+      verbatim from a script under `examples/` **or** is mirrored by an
+      integration test under `test/docs/` / `test/examples/` (the D2
+      acceptance criterion, extended to the example pages).
 - [ ] Search box returns sensible results for "input", "warnings",
       "call_service", "notifier", "RBS".
-- [ ] Dark-mode toggle works; no theme-specific custom CSS in v1.
-- [ ] Repo-edit-this-page link on every page points at the right file on
-      `main`.
+- [x] Dark-mode toggle works (built into just-the-docs); no
+      theme-specific custom CSS in v1.
+- [x] Repo-edit-this-page link on every page points at the right file on
+      `main` (driven by `_config.yml` `gh_edit_*` settings).
 
 ## Out of scope (deferred)
 

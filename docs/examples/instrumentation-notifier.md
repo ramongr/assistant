@@ -1,3 +1,9 @@
+---
+title: Instrumentation notifier
+parent: Examples
+nav_order: 6
+---
+
 # Instrumentation notifier
 
 > **Status:** placeholder — ships in
@@ -7,5 +13,5 @@
 `Assistant.notifier=` wired to a fake `ActiveSupport::Notifications`-shaped sink.
 
 When the runnable script under `examples/instrumentation_notifier/` lands, this
-page will include it verbatim via mkdocs `pymdownx.snippets` so the
+page will include it verbatim via Jekyll `include_relative` so the
 prose stays in lockstep with the code.

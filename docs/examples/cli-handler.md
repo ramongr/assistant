@@ -1,3 +1,9 @@
+---
+title: CLI handler
+parent: Examples
+nav_order: 2
+---
+
 # CLI handler
 
 > **Status:** placeholder — ships in
@@ -7,5 +13,5 @@
 An `OptionParser`-driven script whose exit code derives from `#status`.
 
 When the runnable script under `examples/cli_handler/` lands, this
-page will include it verbatim via mkdocs `pymdownx.snippets` so the
+page will include it verbatim via Jekyll `include_relative` so the
 prose stays in lockstep with the code.

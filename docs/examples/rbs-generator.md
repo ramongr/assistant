@@ -1,3 +1,9 @@
+---
+title: RBS generator
+parent: Examples
+nav_order: 7
+---
+
 # RBS generator
 
 > **Status:** placeholder — ships in
@@ -7,5 +13,5 @@
 Service definition → `bin/assistant-rbs --output sig` → Steep proving the per-input return type.
 
 When the runnable script under `examples/rbs_generator/` lands, this
-page will include it verbatim via mkdocs `pymdownx.snippets` so the
+page will include it verbatim via Jekyll `include_relative` so the
 prose stays in lockstep with the code.

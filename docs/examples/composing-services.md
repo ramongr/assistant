@@ -1,3 +1,9 @@
+---
+title: Composing services
+parent: Examples
+nav_order: 4
+---
+
 # Composing services
 
 > **Status:** placeholder — ships in
@@ -7,5 +13,5 @@
 An outer service uses `call_service` to chain two inner services with log timeline merging.
 
 When the runnable script under `examples/composing_services/` lands, this
-page will include it verbatim via mkdocs `pymdownx.snippets` so the
+page will include it verbatim via Jekyll `include_relative` so the
 prose stays in lockstep with the code.

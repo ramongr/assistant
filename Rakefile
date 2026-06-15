@@ -39,19 +39,19 @@ desc 'Run the full local CI pipeline: test + rubocop + steep + yard'
 task ci: %i[test rubocop steep yard]
 
 namespace :docs do
-  desc 'Install the mkdocs toolchain pinned in requirements-docs.txt'
+  desc 'Install the Jekyll docs toolchain (Bundler :docs group)'
   task :install do
-    sh 'python3 -m pip install --user -r requirements-docs.txt'
+    sh 'bundle install --with docs'
   end
 
-  desc 'Build the mkdocs site into ./site (mirrors the CI Pages build)'
+  desc 'Build the Jekyll site into ./_site (mirrors the CI Pages build)'
   task :build do
-    sh 'python3 -m mkdocs build --strict'
+    sh 'bundle exec jekyll build --strict_front_matter'
   end
 
-  desc 'Serve the mkdocs site on http://127.0.0.1:8000 with live reload'
+  desc 'Serve the Jekyll site on http://127.0.0.1:4000 with live reload'
   task :serve do
-    sh 'python3 -m mkdocs serve'
+    sh 'bundle exec jekyll serve --livereload'
   end
 end
 

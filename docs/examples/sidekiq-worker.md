@@ -1,3 +1,9 @@
+---
+title: Sidekiq worker
+parent: Examples
+nav_order: 3
+---
+
 # Sidekiq worker
 
 > **Status:** placeholder — ships in
@@ -7,5 +13,5 @@
 A background job that runs a service idempotently, logging warnings vs errors separately.
 
 When the runnable script under `examples/sidekiq_worker/` lands, this
-page will include it verbatim via mkdocs `pymdownx.snippets` so the
+page will include it verbatim via Jekyll `include_relative` so the
 prose stays in lockstep with the code.

@@ -22,7 +22,7 @@ Read them in order on a first pass; cross-reference as needed afterwards.
 | 05 | [`05-quality-and-tooling.md`](./05-quality-and-tooling.md) | Tests, coverage, RuboCop, Brakeman, Fasterer, RBS/Steep, CI matrix.           |
 | 06 | [`06-migration-0x-to-1.md`](./06-migration-0x-to-1.md)     | Migration notes for users moving from `0.x` to `1.0`.                         |
 | 07 | [`07-risks-and-open-questions.md`](./07-risks-and-open-questions.md) | Decisions still to make before tagging 1.0.                          |
-| 08 | [`08-github-pages.md`](./08-github-pages.md)               | GitHub Pages site (mkdocs-material) — parallel track, **not** a 1.0 gate.    |
+| 08 | [`08-github-pages.md`](./08-github-pages.md)               | GitHub Pages site (Jekyll + just-the-docs) — parallel track, **not** a 1.0 gate. |
 
 ## Status legend
 
@@ -61,7 +61,7 @@ recommendations:
 - **PR granularity**: one PR per concern (~20 PRs total).
 - **RC soak**: no fixed period; tag `v1.0.0` when smoke-test passes.
 - **GitHub Pages site**: added as a parallel deliverable under
-  [`08-github-pages.md`](./08-github-pages.md) — mkdocs-material, deploys
+  [`08-github-pages.md`](./08-github-pages.md) — Jekyll + just-the-docs, deploys
   via GH Actions. **Does not block the 1.0 tag**; ships incrementally
   across its own ~13 PRs. The README's documentation index will switch
   to the live `https://ramongr.github.io/assistant/` URL once the site

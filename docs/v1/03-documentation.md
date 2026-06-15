@@ -95,7 +95,7 @@ The example set is the runnable backing for the GitHub Pages
 Each example is shipped in its own PR (`P6`–`P12` on that plan) and
 includes all three of: a runnable script under `examples/<slug>/` with
 its own `README.md`, a site page under `docs/examples/<slug>.md` that
-embeds the script verbatim via mkdocs `pymdownx.snippets`, and a
+embeds the script verbatim via Jekyll `include_relative`, and a
 regression test under `test/examples/<slug>_example_test.rb`.
 
 | Slug                       | Demonstrates                                                                                  |
@@ -135,7 +135,7 @@ regression test under `test/examples/<slug>_example_test.rb`.
 - Auto-generated API reference from YARD; the curated `api-reference.md` is
   enough for 1.0.
 
-A GitHub Pages site (mkdocs-material) **is** in scope as a parallel
+A GitHub Pages site (Jekyll + just-the-docs) **is** in scope as a parallel
 deliverable tracked in [`08-github-pages.md`](./08-github-pages.md). It
 does not block the 1.0 tag; the README links at the in-repo Markdown
 until the site is live.

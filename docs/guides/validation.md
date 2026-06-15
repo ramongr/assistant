@@ -1,3 +1,9 @@
+---
+title: Validation
+parent: Guides
+nav_order: 2
+---
+
 <!-- markdownlint-disable MD013 MD024 -->
 # Validation
 

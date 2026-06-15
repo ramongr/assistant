@@ -1,0 +1,87 @@
+# Site configuration for the Assistant docs site, deployed to
+# https://ramongr.github.io/assistant/ via .github/workflows/docs.yml.
+# Toolchain: Jekyll 4 + just-the-docs (Ruby). Source files live under
+# docs/. The v1 planning corpus under docs/v1/ is excluded — those are
+# authored-for-GitHub-render plan docs, not site pages.
+
+title: Assistant
+description: >-
+  Tiny, dependency-free soft-fail service objects for Ruby. Uniform result
+  hash, RBS signatures, 1.0-frozen public API, zero runtime gem dependencies.
+url: https://ramongr.github.io
+baseurl: /assistant
+repository: ramongr/assistant
+
+# Source layout
+source: docs
+destination: _site
+
+# Theme
+theme: just-the-docs
+color_scheme: light
+
+# Search
+search_enabled: true
+search:
+  heading_level: 3
+  previews: 3
+  preview_words_before: 5
+  preview_words_after: 10
+  tokenizer_separator: /[\s/]+/
+  rel_url: true
+  button: true
+  focus_shortcut_key: 'k'
+
+# Navigation
+nav_enabled: true
+heading_anchors: true
+
+# Aux links (top-right)
+aux_links:
+  View on GitHub:
+    - https://github.com/ramongr/assistant
+  RubyGems:
+    - https://rubygems.org/gems/assistant
+aux_links_new_tab: true
+
+# Footer
+gh_edit_link: true
+gh_edit_link_text: Edit this page on GitHub
+gh_edit_repository: https://github.com/ramongr/assistant
+gh_edit_branch: main
+gh_edit_source: docs
+gh_edit_view_mode: tree
+
+back_to_top: true
+back_to_top_text: Back to top
+
+# Build settings
+markdown: kramdown
+kramdown:
+  syntax_highlighter: rouge
+  input: GFM
+  hard_wrap: false
+
+# Files Jekyll should ignore. Paths are relative to `source:` (docs/),
+# so `v1` skips docs/v1/ — the v1 planning corpus authored for GitHub's
+# Markdown renderer (relative links into ../ and across plan files). It
+# is intentionally NOT a site route.
+exclude:
+  - v1
+  - README.md
+
+# Jekyll plugins (the GitHub Pages workflow installs these via Bundler;
+# we are not using github-pages gem, so plugins must be safe-listed too)
+plugins:
+  - jekyll-seo-tag
+  - jekyll-relative-links
+
+# Rewrite intra-docs Markdown links (foo.md) to Jekyll URLs so the
+# same files render both on GitHub (where authors keep .md links for
+# context) and on the site (where .html is needed).
+relative_links:
+  enabled: true
+  collections: false
+
+# just-the-docs strict mode is off because the v1 plan docs use
+# kramdown-incompatible link anchors; this site doesn't include them.

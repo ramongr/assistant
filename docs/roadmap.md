@@ -1,8 +1,3 @@
----
-title: Roadmap
-nav_order: 6
----
-
 # Roadmap
 
 The full 1.0 plan lives in

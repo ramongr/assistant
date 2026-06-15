@@ -7,12 +7,9 @@ git_source(:github) { |repo_name| "https://github.com/#{repo_name}" }
 # Specify your gem's dependencies in assistant.gemspec
 gemspec
 
-# Documentation site (GitHub Pages) toolchain. Optional so regular
-# contributors don't pull Jekyll on every `bundle install`. CI's Docs
-# workflow installs this group via `BUNDLE_WITH=docs`. See
-# `docs/v1/08-github-pages.md` and `Rakefile`'s `docs:*` tasks.
-group :docs, optional: true do
-  gem 'jekyll', '~> 4.3'
-  gem 'jekyll-relative-links', '~> 0.7'
-  gem 'just-the-docs', '~> 0.10'
-end
+# WEBrick is no longer a default gem in Ruby 3.0+. It's a stdlib gem
+# used only by `rake docs:serve` to mount the Docsify SPA at
+# `/assistant/` with a 404 fallback (history-mode routing). Not in
+# `gemspec` because the `runtime-deps` CI gate keeps the gem itself
+# dependency-free.
+gem 'webrick', '~> 1.8'

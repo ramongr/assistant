@@ -1,9 +1,3 @@
----
-title: Inputs
-parent: Guides
-nav_order: 1
----
-
 <!-- markdownlint-disable MD013 MD024 -->
 # Inputs
 

@@ -8,6 +8,45 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
+- **GitHub Pages — drop hash routing**: switch Docsify from the
+  default `/#/getting-started` hash-routed URLs to clean
+  `/getting-started` URLs via `routerMode: 'history'` and
+  `basePath: '/assistant/'`. Ships `docs/404.html` (a verbatim copy
+  of `docs/index.html`) so GitHub Pages' 404 fallback re-boots the
+  SPA on unknown paths. `rake docs:serve` was reworked to mount
+  `docs/` at `/assistant/` over WEBrick with the same fallback so
+  local URLs match production verbatim. Adds `webrick ~> 1.8` as a
+  non-runtime `Gemfile` dep (it's a stdlib gem but no longer ships
+  as default in Ruby 3.0+).
+
+- **GitHub Pages — swap stack from Jekyll to Docsify**: replace the
+  Jekyll + just-the-docs site (shipped in PR #180) with a Docsify
+  client-side SPA matching the UX of
+  <https://lostisland.github.io/faraday/#/>. The new stack:
+  - Removes ~5 Ruby gems (`jekyll`, `jekyll-relative-links`,
+    `just-the-docs`, `jekyll-seo-tag`, `jekyll-include-cache`) plus
+    transitive deps (`kramdown`, `rouge`, `sass-embedded`, `webrick`,
+    `addressable`, `em-websocket`, `eventmachine`, etc.) from
+    `Gemfile.lock` — 104 lines deleted.
+  - Removes the 87 sass `darken()` deprecation warnings that came
+    from just-the-docs internals on every build.
+  - Removes the entire local docs toolchain step; `rake docs:serve`
+    now runs `ruby -run -e httpd docs -p 4000` (stdlib WEBrick) —
+    no `bundle install --with docs`, no Sass, no node, no Python.
+  - Loads every plugin (theme, search, syntax highlighting, mermaid,
+    edit-on-github, copy-code, tabs) from `cdn.jsdelivr.net` at
+    runtime. The Pages workflow uploads `docs/` verbatim — no build
+    step.
+  - Adopts the new brand palette: `#22223b` (Space Cadet) /
+    `#9ebc9f` (Sage) / `#d3b88c` (Tan) / `#f4f2f3` (Cultured) /
+    `#009ffd` (Vivid Sky Blue, primary accent). Logo, OG card,
+    favicons regenerated.
+  - URL shape changes from `/getting-started.html` → `/#/getting-started`
+    (hash-routed SPA). The site was only hours old; no external links
+    to redirect.
+
 ### Fixed
 
 - **GitHub Pages — restore default layout on every internal page**:

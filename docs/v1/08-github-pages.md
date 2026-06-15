@@ -10,28 +10,31 @@ then, and gains an "Online docs" link in a follow-up once Pages is live.
 
 ## Stack decisions (locked)
 
-> **Stack swap (post-P2):** the original mkdocs + Material stack shipped in
-> PR #177 and was replaced with **Jekyll + just-the-docs** in PR #178 to
-> match the gem's primary toolchain (Ruby), eliminate the Python build
-> dependency, drop the `Pygments==2.19.1` pin that worked around a
-> 2.20.0 regression, and let `Gemfile`/Bundler manage every site
-> dependency (the `runtime-deps` CI gate keeps the gemspec itself
-> dependency-free). The table below reflects the **current** stack.
+> **Stack swap history:** the original mkdocs + Material stack shipped in
+> PR #177 was replaced with **Jekyll + just-the-docs** in PR #180, then
+> swapped again to **Docsify** to match the exact UX of
+> <https://lostisland.github.io/faraday/#/>, eliminate the local Ruby
+> docs toolchain entirely, and drop the upstream sass-deprecation noise
+> from just-the-docs. The site is now a CDN-hosted SPA: every plugin
+> (theme, search, syntax highlighting, mermaid, edit-on-github) loads
+> from `cdn.jsdelivr.net` at runtime. The table below reflects the
+> **current** stack.
 
 | Decision           | Choice                                                                 | Rationale                                                                                              |
 |--------------------|------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------|
-| Generator          | [Jekyll](https://jekyllrb.com/) + [just-the-docs](https://just-the-docs.com/) | Ruby toolchain matches the gem; just-the-docs ships sidebar nav, Lunr search, color-scheme toggle, and Rouge syntax highlighting out of the box. |
-| Deploy             | GitHub Actions on push to `main`; deploys to GitHub Pages.             | No long-running build server. Uses `actions/upload-pages-artifact@v3` + `actions/deploy-pages@v4`.     |
+| Generator          | [Docsify](https://docsify.js.org) (client-side SPA, no build step)    | Zero local toolchain; same UX the user pointed at (Faraday docs); markdown is rendered in the browser. |
+| Deploy             | GitHub Actions on push to `main`; uploads `docs/` verbatim to Pages.   | One `actions/upload-pages-artifact@v3` step (no build job). Deploy via `actions/deploy-pages@v4`.      |
 | Hosting            | `https://ramongr.github.io/assistant/`                                 | Default GitHub Pages URL; no custom domain in 1.0.                                                     |
-| Content source     | The same Markdown files under `docs/` that D2 ships.                   | Single source of truth: GitHub renders the files; Jekyll renders the site.                            |
-| Theme              | just-the-docs, light scheme default, dark scheme toggle.               | No custom CSS in v1; revisit only if a clear branding decision lands.                                 |
+| Content source     | The same Markdown files under `docs/` that D2 ships.                   | Single source of truth: GitHub renders the files; docsify renders the site.                            |
+| Theme              | [`docsify-darklight-theme`](https://github.com/MrWangJustToDo/docsify-darklight-theme), brand palette: `#22223b` / `#9ebc9f` / `#d3b88c` / `#f4f2f3` / `#009ffd` (primary accent). | Built-in light/dark toggle; brand palette injected via `darklightTheme: { dark:, light: }` config.    |
 | Versioning         | Single live version.                                                   | Premature for 1.0. Add versioned docs in the first minor that ships a breaking change behind a flag.   |
-| Search             | just-the-docs built-in Lunr search.                                    | Zero-config, client-side, works offline; `Ctrl/Cmd + K` to focus.                                     |
-| Diagrams           | Mermaid via Jekyll markdown filter, pinned to `10.9.1`. Enabled in PR #182 and used by `docs/getting-started.md`, `docs/api-reference.md`, and `docs/guides/validation.md` from PR #183 onward. | Auto-loaded by just-the-docs once `mermaid:` is set in `_config.yml`; any guide can drop in a ```` ```mermaid ```` block. |
-| Code highlighting  | Rouge (built into Jekyll/kramdown).                                    | Ruby + console syntaxes; pure Ruby; no JS runtime.                                                     |
-| Ruby toolchain     | `Gemfile` `:docs` group (optional) installs Jekyll + just-the-docs. CI uses `BUNDLE_WITH=docs`. | Reproducible local + CI builds; regular contributors don't pull docs deps unless they opt in.         |
-| Live preview       | `bundle exec rake docs:serve` wraps `jekyll serve --livereload`.        | Single Ruby command; no Python to install.                                                            |
-| Markdown link rewriting | `jekyll-relative-links` plugin rewrites intra-docs `.md` links to `.html`. | Same source renders both on GitHub (where authors keep `.md` links) and on the site.              |
+| Search             | Built-in `docsify/lib/plugins/search.min.js`.                          | Zero-config, client-side full-text index.                                                              |
+| Diagrams           | Mermaid via `docsify-mermaid` plugin (mermaid 10.9.1, CDN-loaded).    | Any markdown file can drop in a fenced ```` ```mermaid ```` block.                                    |
+| Code highlighting  | Prism (themes: material-light / material-dark, swapped on dark toggle). | Ruby + bash + yaml + json explicit; everything else via `prism-autoloader`.                            |
+| Local toolchain    | None. `bundle exec rake docs:serve` runs a WEBrick server mounted at `/assistant/` (matching production base path) with a 404 fallback to `docs/404.html` (history-mode SPA support). | No `bundle install --with docs`, no Sass, no node, no Python. Adds `webrick ~> 1.8` to `Gemfile` (not gemspec) since it left Ruby's default gems in 3.0+. |
+| Live preview       | `bundle exec rake docs:serve` then visit `http://127.0.0.1:4000/assistant/`. | URL shape matches production verbatim.                                                                  |
+| Markdown link rewriting | Not needed — docsify rewrites intra-docs `.md` links to history-mode routes. | Source markdown keeps `.md` links; docsify produces `/assistant/getting-started`-style URLs.        |
+| URL routing        | History mode (`routerMode: 'history'`, `basePath: '/assistant/'`). Clean URLs like `/assistant/getting-started`; no `#/` fragment. `docs/404.html` is a verbatim copy of `docs/index.html` so GitHub Pages' 404 fallback re-boots the SPA on unknown paths. | The hash-routed default (`/#/getting-started`) was rejected for the cleaner URL shape. |
 
 ## Site map
 

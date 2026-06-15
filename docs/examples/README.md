@@ -1,10 +1,3 @@
----
-title: Examples
-nav_order: 5
-has_children: true
-permalink: /examples/
----
-
 # Examples
 
 Each entry below shows a small, real-world wiring pattern with a

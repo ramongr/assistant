@@ -1,9 +1,3 @@
----
-title: Rails service
-parent: Examples
-nav_order: 1
----
-
 # Rails service
 {: .no_toc }
 

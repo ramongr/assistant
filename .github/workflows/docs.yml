@@ -1,22 +1,21 @@
 ---
 name: Docs
 
+# Docsify is a client-side SPA: there is no build step. We upload the
+# raw `docs/` tree as the Pages artifact and let docsify fetch markdown
+# files at runtime. `docs/.nojekyll` tells GitHub to skip its own
+# Jekyll pre-processor on the artifact.
+
 on:
   push:
     branches: [main]
     paths:
       - docs/**
-      - _config.yml
-      - Gemfile
-      - Gemfile.lock
       - .github/workflows/docs.yml
   pull_request:
     branches: [main]
     paths:
       - docs/**
-      - _config.yml
-      - Gemfile
-      - Gemfile.lock
       - .github/workflows/docs.yml
   workflow_dispatch:
 
@@ -28,34 +27,19 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  build:
-    name: jekyll build --strict_front_matter
+  upload:
+    name: Upload docs/ artifact
     runs-on: ubuntu-latest
-    env:
-      BUNDLE_WITH: docs
-      JEKYLL_ENV: production
     steps:
       - uses: actions/checkout@v4
-      - uses: ruby/setup-ruby@v1
-        with:
-          ruby-version: '3.4'
-          bundler-cache: true
-      - name: Build site
-        # `2>` filters sass-embedded `darken()` deprecation noise from
-        # just-the-docs 0.12 (upstream issue; cosmetic only). Build
-        # status still surfaces via `pipefail`.
-        shell: bash
-        run: |
-          set -o pipefail
-          bundle exec jekyll build --strict_front_matter --baseurl "/assistant" 2> >(grep -v -E 'darken\(\)|sass-embedded|repetitive deprecation' >&2)
       - name: Upload site artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: _site
+          path: docs
 
   deploy:
     name: Deploy to GitHub Pages
-    needs: build
+    needs: upload
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     permissions:

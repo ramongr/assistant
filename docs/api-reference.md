@@ -4,7 +4,7 @@
 This is the hand-written, curated reference for every public symbol
 that ships in `assistant` 1.0.0. The source of truth for stability
 labels is
-[`docs/v1/01-api-surface.md`](./v1/01-api-surface.md); the table
+[`docs/v1/01-api-surface.md`](https://github.com/ramongr/assistant/blob/main/docs/v1/01-api-surface.md); the table
 of contents here mirrors it.
 
 Anything not listed on this page is **internal** and may change

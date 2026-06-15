@@ -1,0 +1,102 @@
+# mkdocs configuration for the assistant gem docs site.
+# Lives at https://ramongr.github.io/assistant/.
+# See docs/v1/08-github-pages.md for the plan and locked decisions.
+
+site_name: Assistant
+site_description: Tiny, dependency-free soft-fail service objects for Ruby
+site_author: Ramon Rodrigues
+site_url: https://ramongr.github.io/assistant/
+
+repo_name: ramongr/assistant
+repo_url: https://github.com/ramongr/assistant
+edit_uri: edit/main/docs/
+
+docs_dir: docs
+# v1 planning material is /roadmap/-only; everything else ships from docs/.
+# The site build excludes the v1 planning files explicitly so they don't
+# pollute search results.
+exclude_docs: |
+  v1/
+
+theme:
+  name: material
+  features:
+    - navigation.tabs
+    - navigation.sections
+    - navigation.top
+    - navigation.tracking
+    - content.code.copy
+    - content.action.edit
+    - content.tabs.link
+    - search.highlight
+    - search.share
+    - search.suggest
+  palette:
+    - media: '(prefers-color-scheme: light)'
+      scheme: default
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/weather-sunny
+        name: Switch to dark mode
+    - media: '(prefers-color-scheme: dark)'
+      scheme: slate
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/weather-night
+        name: Switch to light mode
+
+plugins:
+  - search
+
+markdown_extensions:
+  - admonition
+  - attr_list
+  - def_list
+  - footnotes
+  - md_in_html
+  - tables
+  - toc:
+      permalink: true
+  - pymdownx.details
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets:
+      check_paths: true
+      base_path:
+        - .
+        - docs
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+  - pymdownx.tabbed:
+      alternate_style: true
+
+nav:
+  - Home: index.md
+  - Getting started: getting-started.md
+  - Guides:
+      - Inputs: guides/inputs.md
+      - Validation: guides/validation.md
+      - Logging and results: guides/logging-and-results.md
+      - Composing services: guides/composing-services.md
+      - RBS and types: guides/rbs-and-types.md
+  - API reference: api-reference.md
+  - Deprecations: deprecations.md
+  - Examples:
+      - Overview: examples/index.md
+      - Rails service: examples/rails-service.md
+      - CLI handler: examples/cli-handler.md
+      - Sidekiq worker: examples/sidekiq-worker.md
+      - Composing services: examples/composing-services.md
+      - Execute callbacks: examples/execute-callbacks.md
+      - Instrumentation notifier: examples/instrumentation-notifier.md
+      - RBS generator: examples/rbs-generator.md
+  - Roadmap: roadmap.md
+  - Changelog: changelog.md

@@ -8,6 +8,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- **GitHub Pages — P2 scaffolding**: stood up the parallel mkdocs site
+  per [`docs/v1/08-github-pages.md`](docs/v1/08-github-pages.md). Ships
+  `mkdocs.yml` with the Material theme + indigo palette + light/dark
+  toggle + nav tree, a pinned `requirements-docs.txt` (`mkdocs`,
+  `mkdocs-material`, `mkdocs-material-extensions`,
+  `pymdown-extensions`, `Pygments`), the `.github/workflows/docs.yml`
+  CI workflow (PR builds `mkdocs build --strict`; pushes to `main`
+  deploy via `actions/deploy-pages`), `docs:install` / `docs:build` /
+  `docs:serve` Rake tasks, the `docs/index.md` landing page, and
+  placeholder stubs for `docs/guides/rbs-and-types.md`,
+  `docs/examples/{index,rails-service,cli-handler,sidekiq-worker,composing-services,execute-callbacks,instrumentation-notifier,rbs-generator}.md`,
+  `docs/roadmap.md`, and `docs/changelog.md`. Repository owner must
+  enable Pages source = "GitHub Actions" once in repo settings for the
+  first deploy to publish.
+
 ## [1.0.0.rc1] - 2026-06-15
 
 ### Added

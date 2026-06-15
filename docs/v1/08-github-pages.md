@@ -67,26 +67,33 @@ then, and gains an "Online docs" link in a follow-up once Pages is live.
 Goal: every push to `main` deploys the site, even if content is mostly
 placeholder.
 
-- [ ] `mkdocs.yml` at repo root: site name, `theme: name: material`, palette
+- [x] `mkdocs.yml` at repo root: site name, `theme: name: material`, palette
       with light/dark toggle, repo URL + edit-this-page links, navigation
       tree matching the **Site map** table.
-- [ ] `requirements-docs.txt`: pinned `mkdocs`, `mkdocs-material`,
-      `mkdocs-material-extensions`, `mkdocs-mermaid2-plugin`,
-      `pymdown-extensions`.
-- [ ] Placeholder Markdown stubs for every site-map entry that does not
-      yet exist (each carries a one-line "Coming in PR Pn" note).
-- [ ] `.github/workflows/docs.yml`: triggers on push to `main` (paths
-      `docs/**`, `mkdocs.yml`, `requirements-docs.txt`, the workflow
-      itself). Steps: `actions/setup-python@v5`, install requirements,
-      `mkdocs build --strict`, `actions/configure-pages`,
-      `actions/upload-pages-artifact`, `actions/deploy-pages`. Permissions:
-      `pages: write`, `id-token: write`. Concurrency group `pages` with
-      `cancel-in-progress: false`.
+- [x] `requirements-docs.txt`: pinned `mkdocs`, `mkdocs-material`,
+      `mkdocs-material-extensions`, `pymdown-extensions`, plus a
+      `Pygments` floor to dodge the 2.20.0 regression. The
+      `mkdocs-mermaid2-plugin` pin is deferred until P3 actually adds a
+      diagram so we don't ship a JS dependency for placeholders.
+- [x] Placeholder Markdown stubs for every site-map entry that does not
+      yet exist (each carries a one-line "Coming in PR Pn" note):
+      `docs/index.md`, `docs/guides/rbs-and-types.md`,
+      `docs/examples/index.md`, and the seven `docs/examples/*.md`
+      example pages, plus snippet-light `docs/roadmap.md` and
+      `docs/changelog.md` routes.
+- [x] `.github/workflows/docs.yml`: triggers on push to `main` and PR
+      against `main` (paths `docs/**`, `mkdocs.yml`,
+      `requirements-docs.txt`, the workflow itself). Steps:
+      `actions/setup-python@v5`, install requirements,
+      `mkdocs build --strict`, `actions/upload-pages-artifact`,
+      `actions/deploy-pages` (deploy step gated to `push` on `main`).
+      Permissions: `pages: write`, `id-token: write` on the deploy job
+      only. Concurrency group `pages` with `cancel-in-progress: false`.
 - [ ] Enable GitHub Pages source = "GitHub Actions" in repo settings
       (one-time manual step; note in CHANGELOG release-engineering).
-- [ ] `Rakefile` `docs:serve` and `docs:build` tasks that shell out to
-      `python -m mkdocs serve` / `build` after `pip install -r
-      requirements-docs.txt`.
+- [x] `Rakefile` `docs:serve`, `docs:build`, and `docs:install` tasks
+      that shell out to `python3 -m mkdocs serve` / `build` / pip-install
+      the pinned requirements.
 - [ ] Verify the deployed site renders at
       `https://ramongr.github.io/assistant/` with the nav tree intact.
 

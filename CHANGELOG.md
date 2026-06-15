@@ -10,6 +10,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- **GitHub Pages — home page redesign**: replace the bare
+  [`docs/index.md`](docs/index.md) landing with a richer page —
+  primary/secondary CTA buttons (built on just-the-docs's `.btn`
+  utilities), a three-column "Why Assistant?" value-prop strip
+  (soft-fail / zero deps / typed + Steep-ready), a Mermaid
+  lifecycle teaser ("How a service flows"), the install + 60-second
+  example blocks, and a "Where to next" navigation grid that
+  surfaces every top-level page (including Deprecations).
+
 - **GitHub Pages — examples gallery rewrites**: replace the seven
   `docs/examples/<slug>.md` P6–P12 placeholders with self-contained,
   callout-sized code patterns covering Rails controllers, CLI

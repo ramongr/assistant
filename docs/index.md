@@ -6,17 +6,51 @@ permalink: /
 ---
 
 # Assistant
+{: .fs-9 .fw-700 .mb-1 }
 
 **Tiny, dependency-free soft-fail service objects for Ruby.**
+{: .fs-6 .fw-300 .text-grey-dk-100 }
 
 [![Gem Version](https://badge.fury.io/rb/assistant.svg)](https://rubygems.org/gems/assistant)
 [![CI](https://github.com/ramongr/assistant/actions/workflows/ci.yml/badge.svg)](https://github.com/ramongr/assistant/actions/workflows/ci.yml)
+[![Docs](https://github.com/ramongr/assistant/actions/workflows/docs.yml/badge.svg)](https://github.com/ramongr/assistant/actions/workflows/docs.yml)
 
-Assistant lets you write service objects that **never raise for expected
-failures**. A service declares its inputs, validates them, runs its body, and
-returns a uniform result hash that always carries either a value plus
-warnings or a list of errors. Ships with RBS signatures, a 1.0-frozen public
-API, and zero runtime gem dependencies.
+A service declares its inputs, validates them, runs its body, and returns a
+uniform result hash that always carries either a value plus warnings, or a
+list of errors. Frozen 1.0 public API. RBS signatures ship in `sig/`.
+**Zero runtime gem dependencies.**
+
+[Get started in 60 seconds](getting-started.md){: .btn .btn-primary .fs-5 .mb-4 .mb-md-0 .mr-2 }
+[Browse the guides](guides/){: .btn .fs-5 .mb-4 .mb-md-0 .mr-2 }
+[View on GitHub](https://github.com/ramongr/assistant){: .btn .fs-5 .mb-4 .mb-md-0 }
+
+---
+
+## Why Assistant?
+
+| Soft-fail by default | Zero runtime deps | Typed and Steep-ready |
+|:---|:---|:---|
+| Expected failures become structured `LogItem` errors with a `:status`, not raised exceptions. Callers pattern-match on the result. | The gemspec declares zero runtime dependencies, and CI enforces it on every push. Drop-in for any Ruby 3.4+ project. | Hand-curated RBS sidecars for the public API plus the `assistant-rbs` generator for your own services. Steep-checked in CI. |
+
+---
+
+## How a service flows
+
+```mermaid
+flowchart LR
+    Run([Service.run]) --> Validate{Inputs +<br/>#validate}
+    Validate -- errors --> Failed[status: :with_errors]
+    Validate -- clean --> Execute[#execute]
+    Execute -- warnings --> Warns[status: :with_warnings]
+    Execute -- clean --> Ok[status: :ok]
+    Execute -- errors --> Failed
+```
+
+Validation runs first; `#execute` is skipped entirely when errors are already
+on the log. Warnings never short-circuit anything — they ride along on the
+result so the caller can decide what to surface.
+
+---
 
 ## Install
 
@@ -38,6 +72,8 @@ gem 'assistant', '~> 1.0'
 ```
 
 Ruby 3.4 or newer is required.
+
+---
 
 ## The 60-second example
 
@@ -62,16 +98,28 @@ in { errors:, status: :with_errors }
 end
 ```
 
+The same call returns `:with_warnings` if `#execute` logged any warnings, and
+`:with_errors` (without invoking `#execute`) if the inputs failed validation.
+
+[Walk through this example end-to-end](getting-started.md){: .btn .btn-outline .fs-4 }
+
+---
+
 ## Where to next
 
-- **[Getting started](getting-started.md)** — walk through your first
-  service end-to-end.
-- **[Guides](guides/inputs.md)** — DSL deep-dives, one page per concern.
-- **[API reference](api-reference.md)** — every Frozen symbol, deep-link
-  friendly.
-- **[Examples](examples/index.md)** — runnable patterns (Rails, CLI,
-  Sidekiq, composition, callbacks, instrumentation, RBS).
-- **[Roadmap](roadmap.md)** — what's planned, what shipped.
-- **[Changelog](changelog.md)** — full release history.
+| Page | What you'll find |
+|:---|:---|
+| [Getting started](getting-started.md) | Install, your first service, consuming a result. |
+| [Guides](guides/) | DSL deep-dives — inputs, validation, logging, composition, RBS. |
+| [API reference](api-reference.md) | Every Frozen symbol in 1.0, deep-link friendly. |
+| [Examples](examples/) | Wiring patterns — Rails, CLI, Sidekiq, callbacks, notifier, RBS. |
+| [Roadmap](roadmap.md) | What's planned, what shipped, parallel deliverables. |
+| [Changelog](changelog.md) | Release history and migration notes. |
+| [Deprecations](deprecations.md) | What's flagged for removal in 2.0. |
 
-Source on [GitHub](https://github.com/ramongr/assistant).
+---
+
+Source on [GitHub](https://github.com/ramongr/assistant) · Released under the
+[MIT License](https://github.com/ramongr/assistant/blob/main/LICENSE.txt) ·
+Contributions welcome — see
+[CONTRIBUTING.md](https://github.com/ramongr/assistant/blob/main/CONTRIBUTING.md).

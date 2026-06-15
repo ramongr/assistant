@@ -29,8 +29,16 @@ Today the suite is Minitest under `test/` (per the 0.1.0 migration noted in
       easy inspection on PRs.
 - [x] Add a CI step that prints line/branch percentages to the GitHub
       Actions job summary (`$GITHUB_STEP_SUMMARY`).
-- [ ] Add `test/docs/` for example-block tests required by
-      [`03-documentation.md`](./03-documentation.md) D5 acceptance criteria.
+- [x] Add `test/docs/` for example-block tests required by
+      [`03-documentation.md`](./03-documentation.md) D5 acceptance
+      criteria. Shipped: `test/docs/getting_started_examples_test.rb`,
+      `test/docs/inputs_guide_examples_test.rb`,
+      `test/docs/validation_guide_examples_test.rb`,
+      `test/docs/logging_and_results_guide_examples_test.rb`,
+      `test/docs/composing_services_guide_examples_test.rb` — each
+      mirrors the runnable examples in its sibling `docs/` page so
+      drift in literal error messages, hook ordering, or result-hash
+      shape breaks the matching assertion.
 
 ## RuboCop
 
@@ -150,16 +158,14 @@ public Frozen surface. Q6 was decided in favour of
       `target :examples` block. The `Steep` job in
       `.github/workflows/ci.yml:43` runs `bundle exec steep check
       --jobs=1` and is required by branch protection.
-- [ ] Document the limitation that `Service.input(:foo, ...)`-generated
+- [x] Document the limitation that `Service.input(:foo, ...)`-generated
       methods cannot be expressed precisely in RBS by hand on the gem
       side; users generate per-class sigs with `bin/assistant-rbs` (M11).
-      Surface this in `docs/guides/inputs.md` per D2 in
-      [`03-documentation.md`](./03-documentation.md). The limitation is
-      documented in the gem internals (`lib/assistant/service.rbs:1-10`,
-      `Steepfile:8-21`) and in
-      [`06-migration-0x-to-1.md`](./06-migration-0x-to-1.md) "Recipe:
-      `bin/assistant-rbs` for Steep users"; the user-facing guide ships
-      with D2.
+      Surfaced in `docs/guides/inputs.md` ("Using `bin/assistant-rbs`
+      for Steep users" subsection); also documented in the gem
+      internals (`lib/assistant/service.rbs:1-10`, `Steepfile:8-21`)
+      and in [`06-migration-0x-to-1.md`](./06-migration-0x-to-1.md)
+      "Recipe: `bin/assistant-rbs` for Steep users".
 
 ## CI matrix
 

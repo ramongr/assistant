@@ -35,10 +35,10 @@ contains `TODO` placeholders. v1 must ship a complete, navigable set of docs.
 | File                                  | Status | Contents                                                                  |
 |---------------------------------------|--------|---------------------------------------------------------------------------|
 | `docs/getting-started.md`             | [x] shipped | Install, first service, running it, reading the result hash, status enum. |
-| `docs/guides/inputs.md`               | [ ] follow-up PR | `input` / `inputs`, type checks, `required:`, `optional:`, `if:`, `default:`, `allow_nil:`, multi-type; "Using `bin/assistant-rbs`" subsection (M11) explaining the per-class RBS generator and R1's metaprogramming limitation. |
-| `docs/guides/validation.md`           | [ ] follow-up PR | `validate` hook, when to log warnings vs errors, conditional requirements. Note that `LogItem.new` is now strict (M10). |
-| `docs/guides/logging-and-results.md`  | [ ] follow-up PR | `LogItem` shape and **strict construction** (M10), levels, `add_log`, `merge_logs`, the `log_item_info/warning/error` shorthands (M5), `#logs` / `#warnings` / `#errors`, result hash. |
-| `docs/guides/composing-services.md`   | [ ] follow-up PR | Manual composition today; `call_service` (M-S2); error/warning propagation rules; using callbacks (M-S1) and the instrumentation notifier (M-S3); reading `#input_snapshot` (M-S4). |
+| `docs/guides/inputs.md`               | [x] shipped | `input` / `inputs`, type checks, `required:`, `optional:`, `if:`, `default:`, `allow_nil:`, multi-type; "Using `bin/assistant-rbs`" subsection (M11) explaining the per-class RBS generator and R1's metaprogramming limitation. |
+| `docs/guides/validation.md`           | [x] shipped | `validate` hook, when to log warnings vs errors, conditional requirements. Note that `LogItem.new` is now strict (M10). |
+| `docs/guides/logging-and-results.md`  | [x] shipped | `LogItem` shape and **strict construction** (M10), levels, `add_log`, `merge_logs`, the `log_item_info/warning/error` shorthands (M5), `#logs` / `#warnings` / `#errors`, result hash. |
+| `docs/guides/composing-services.md`   | [x] shipped | Manual composition today; `call_service` (M-S2); error/warning propagation rules; using callbacks (M-S1) and the instrumentation notifier (M-S3); reading `#input_snapshot` (M-S4). |
 | `docs/api-reference.md`               | [x] shipped | Curated, hand-written reference of every Frozen symbol from `01-api-surface.md`. Auto-generation deferred. |
 | `docs/deprecations.md`                | [x] shipped (M9) | Created as part of M9; first entry documents the `valid_require_*?` → `valid_required_*?` deprecation. |
 
@@ -122,12 +122,12 @@ regression test under `test/examples/<slug>_example_test.rb`.
 - [ ] Every link in `docs/**/*.md` is reachable
       (`bundle exec rake docs:check_links` — implementation deferred; manual
       pass acceptable for 1.0).
-- [ ] `bundle exec yard stats --list-undoc` reports 100% documented public
+- [x] `bundle exec yard stats --list-undoc` reports 100% documented public
       methods.
-- [ ] Each guide page has at least one tested example: every code block
+- [x] Each guide page has at least one tested example: every code block
       tagged ```` ```ruby ```` in `docs/getting-started.md` and
       `docs/guides/*.md` is mirrored by an integration test in
-      `test/docs/<guide>_examples_test.rb` (a new directory).
+      `test/docs/<guide>_examples_test.rb` — shipped in the D2 guides PR.
 
 ## Out of scope for v1 docs
 

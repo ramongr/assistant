@@ -10,6 +10,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- **D2 (follow-up)**: four user-facing guides under `docs/guides/` —
+  [`inputs.md`](docs/guides/inputs.md),
+  [`validation.md`](docs/guides/validation.md),
+  [`logging-and-results.md`](docs/guides/logging-and-results.md),
+  [`composing-services.md`](docs/guides/composing-services.md).
+  Each guide is mirrored by a `test/docs/<guide>_examples_test.rb`
+  integration test so the runnable examples can't silently drift from
+  the actual behaviour. `inputs.md` includes the "Using
+  `bin/assistant-rbs` for Steep users" subsection that closes the R1
+  user-facing-note item in
+  [`docs/v1/05-quality-and-tooling.md`](docs/v1/05-quality-and-tooling.md).
+  `.yardopts` extra-files list extended to include the four new pages
+  so they ship with the rendered YARD output.
+
 - **bin/ smoke**: new `bin-smoke` job in `.github/workflows/ci.yml`
   exercises `bin/setup` against a cold bundle, syntax-checks the three
   developer scripts (`bash -n bin/setup`, `ruby -c bin/{console,version}`),

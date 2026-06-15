@@ -1,6 +1,6 @@
 <!-- Sidebar (Docsify reads this on every route).
      Order mirrors the Jekyll nav: Home, Getting started, Guides,
-     API reference, Deprecations, Examples, Roadmap, Changelog. -->
+     API reference, Deprecations, Examples. -->
 
 - [Home](/)
 - [Getting started](getting-started.md)
@@ -23,9 +23,6 @@
   - [Execute callbacks](examples/execute-callbacks.md)
   - [Instrumentation notifier](examples/instrumentation-notifier.md)
   - [RBS generator](examples/rbs-generator.md)
-
-- [Roadmap](roadmap.md)
-- [Changelog](changelog.md)
 
 - **Links**
   - [GitHub](https://github.com/ramongr/assistant)

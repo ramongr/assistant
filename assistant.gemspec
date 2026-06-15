@@ -13,22 +13,35 @@ Gem::Specification.new do |spec|
   spec.authors = ['Ramon Rodrigues']
   spec.email = ['cerberus.ramon@gmail.com']
 
-  spec.summary = 'Simple, soft fail enabled, composable services'
-  spec.description = 'Simple, composable services'
+  spec.summary = 'Tiny, dependency-free soft-fail service objects for Ruby'
+  spec.description = <<~DESC
+    Assistant is a tiny, dependency-free Ruby library for writing soft-fail,
+    composable service objects. A service declares its inputs, validates
+    them, runs its body, and returns a uniform result that always carries
+    either a value plus warnings or a list of errors — never raising for
+    expected failures. Ships with RBS signatures, a 1.0-frozen public API,
+    and zero runtime gem dependencies.
+  DESC
   spec.homepage = 'https://github.com/ramongr/assistant'
   spec.license = 'MIT'
   spec.required_ruby_version = '>= 3.4'
 
   spec.metadata['allowed_push_host'] = 'https://rubygems.org'
+  spec.metadata['bug_tracker_uri'] = 'https://github.com/ramongr/assistant/issues'
   spec.metadata['changelog_uri'] = 'https://github.com/ramongr/assistant/blob/main/CHANGELOG.md'
+  spec.metadata['documentation_uri'] = 'https://rubydoc.info/gems/assistant'
   spec.metadata['homepage_uri'] = 'https://github.com/ramongr/assistant'
   spec.metadata['rubygems_mfa_required'] = 'true'
   spec.metadata['source_code_uri'] = 'https://github.com/ramongr/assistant'
 
   # Specify which files should be added to the gem when it is released.
   # The `git ls-files -z` loads the files in the RubyGem that have been added into git.
+  # Internal planning docs (`docs/v1/`, `docs/v1.x/`) and runnable examples
+  # are excluded from the packaged gem (Q9 decision).
   spec.files = Dir.chdir(File.expand_path(__dir__)) do
-    `git ls-files -z`.split("\x0").reject { |f| f.match(%r{^(test|spec|features)/}) }
+    `git ls-files -z`.split("\x0").reject do |f|
+      f.match(%r{^(test|spec|features|examples|docs/v1(\.x)?)/})
+    end
   end
 
   spec.bindir = 'exe'

@@ -12,23 +12,23 @@
 
 ## Pre-release: `assistant.gemspec` updates
 
-- [ ] `spec.summary` — replace
-      `"Simple, soft fail enabled, composable services"` (`assistant.gemspec:16`)
-      with the same one-liner used in `README.md`'s elevator pitch.
-- [ ] `spec.description` — expand from the current
-      `"Simple, composable services"` (`assistant.gemspec:17`) to a 2–3
-      sentence description matching `00-overview.md`.
-- [ ] Add `spec.metadata['documentation_uri'] = 'https://rubydoc.info/gems/assistant'`.
-- [ ] Add `spec.metadata['bug_tracker_uri'] = 'https://github.com/ramongr/assistant/issues'`.
-- [ ] Confirm `spec.metadata['changelog_uri']` (`assistant.gemspec:23`) still
-      points at `CHANGELOG.md` after merge.
-- [ ] Confirm `spec.required_ruby_version = '>= 3.4'` matches the CI floor
-      (`assistant.gemspec:20`, `.github/workflows/ci.yml`).
-- [ ] Confirm `spec.metadata['rubygems_mfa_required']` stays `'true'`
-      (`assistant.gemspec:25`).
-- [ ] Confirm the `spec.files` glob (`assistant.gemspec:30`) excludes
-      `docs/v1/`, `docs/v1.x/`, and `examples/` from the packaged gem
-      (Q9 decision; we don't ship internal plans or examples):
+- [x] `spec.summary` — replaced the bundler-template line with
+      `Tiny, dependency-free soft-fail service objects for Ruby`
+      (`assistant.gemspec:16`), matching the README elevator pitch.
+- [x] `spec.description` — expanded into a 3-sentence heredoc
+      (`assistant.gemspec:17-24`) covering soft-fail semantics, the
+      uniform result shape, RBS/Steep posture, and the zero-runtime-deps
+      guarantee.
+- [x] Added `spec.metadata['documentation_uri'] = 'https://rubydoc.info/gems/assistant'`.
+- [x] Added `spec.metadata['bug_tracker_uri'] = 'https://github.com/ramongr/assistant/issues'`.
+- [x] Confirmed `spec.metadata['changelog_uri']` still points at
+      `CHANGELOG.md` on `main`.
+- [x] Confirmed `spec.required_ruby_version = '>= 3.4'` matches both the
+      gemspec, `.rubocop.yml`'s `TargetRubyVersion`, and the CI matrix
+      floor (`'3.4'`).
+- [x] Confirmed `spec.metadata['rubygems_mfa_required']` stays `'true'`.
+- [x] `spec.files` glob now excludes `docs/v1/`, `docs/v1.x/`, and
+      `examples/` from the packaged gem per the Q9 decision:
   ```ruby
   spec.files = Dir.chdir(File.expand_path(__dir__)) do
     `git ls-files -z`.split("\x0").reject do |f|
@@ -36,11 +36,18 @@
     end
   end
   ```
-- [ ] Confirm `bin/assistant-rbs` (M11) is included in `spec.executables`
-      and listed in `spec.files`.
-- [ ] Add `yard` (development dep) per [`03-documentation.md`](./03-documentation.md).
-- [ ] Add `simplecov` (development dep) per [`05-quality-and-tooling.md`](./05-quality-and-tooling.md).
-- [ ] Add `steep` (development dep) per [`05-quality-and-tooling.md`](./05-quality-and-tooling.md).
+  Verified locally with `Gem::Specification.load("assistant.gemspec").files`
+  — 0 entries match `^docs/v1/`, 0 match `^examples/`.
+- [x] Confirmed the M11 CLI is shipped: `spec.bindir = 'exe'` plus the
+      `spec.files.grep(%r{^exe/})` for `spec.executables` resolves to
+      `["assistant-rbs"]`, with `exe/assistant-rbs` included in
+      `spec.files`.
+- [x] Added `yard` (development dep) — shipped in D3 at
+      `assistant.gemspec:50` (`yard ~> 0.9`).
+- [x] Added `simplecov` (development dep) — shipped with the SimpleCov
+      slice at `assistant.gemspec:48` (`simplecov ~> 0.22`).
+- [x] `steep` (development dep) was already declared pre-1.0 at
+      `assistant.gemspec:49` (`steep ~> 2.0`).
 
 ## Pre-release: source updates
 

@@ -8,6 +8,24 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
+- **Release prep**: gemspec polished for the 1.0 cut. `spec.summary`
+  rewritten to match the README elevator pitch
+  (`Tiny, dependency-free soft-fail service objects for Ruby`),
+  `spec.description` expanded into a 3-sentence heredoc covering
+  soft-fail semantics, the uniform result shape, the RBS / Steep
+  posture, and the zero-runtime-deps guarantee. Added
+  `spec.metadata['documentation_uri']`
+  (`https://rubydoc.info/gems/assistant`) and
+  `spec.metadata['bug_tracker_uri']`
+  (`https://github.com/ramongr/assistant/issues`). The `spec.files`
+  glob now excludes `examples/`, `docs/v1/`, and `docs/v1.x/` from the
+  packaged gem so internal planning material and runnable samples no
+  longer ship to RubyGems (Q9 decision in
+  [`docs/v1/07-risks-and-open-questions.md`](docs/v1/07-risks-and-open-questions.md)).
+  No behaviour change; `Assistant::VERSION` is unchanged.
+
 ### Changed (Breaking)
 
 - **M12**: `LogList#merge_logs` and every internal

@@ -114,3 +114,27 @@ jobs:
               exit 1
             end
           '
+
+  bin-smoke:
+    name: bin/ scripts smoke
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.4'
+          # Intentionally no bundler-cache: bin/setup is the thing under
+          # test; we want it to drive the bundle install end-to-end on a
+          # cold checkout.
+      - name: bin/setup smoke (cold bundle install)
+        run: ./bin/setup
+      - name: Syntax check bin/ scripts
+        run: |
+          bash -n bin/setup
+          ruby -c bin/console
+          ruby -c bin/version
+      - name: bin/version --help smoke
+        run: bundle exec bin/version --help
+      - name: bin/console loads assistant
+        run: |
+          echo 'puts Assistant::VERSION; exit' | bundle exec bin/console

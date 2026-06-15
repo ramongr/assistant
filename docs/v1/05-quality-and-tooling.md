@@ -193,9 +193,16 @@ Current matrix (`.github/workflows/ci.yml:21`): `['3.4', '4.0']`.
 
 ## `bin/` scripts
 
-- [ ] Smoke-test `bin/setup`, `bin/console`, `bin/version` on a clean
-      checkout. Document them in `CONTRIBUTING.md` (D4 in
-      [`03-documentation.md`](./03-documentation.md)).
+- [x] Smoke-test `bin/setup`, `bin/console`, `bin/version` on a clean
+      checkout. A dedicated `bin-smoke` job in
+      `.github/workflows/ci.yml` runs on Ruby 3.4, exercises
+      `bin/setup` end-to-end against a cold bundle, syntax-checks the
+      three scripts (`bash -n bin/setup`, `ruby -c bin/{console,version}`),
+      runs `bin/version --help`, and pipes
+      `puts Assistant::VERSION; exit` through `bin/console` to confirm
+      the gem loads. Each script is documented in
+      [`CONTRIBUTING.md`](../../CONTRIBUTING.md) (D4) under
+      `bin/ developer scripts`.
 
 ## Acceptance criteria
 

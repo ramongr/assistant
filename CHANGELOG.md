@@ -8,6 +8,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- **bin/ smoke**: new `bin-smoke` job in `.github/workflows/ci.yml`
+  exercises `bin/setup` against a cold bundle, syntax-checks the three
+  developer scripts (`bash -n bin/setup`, `ruby -c bin/{console,version}`),
+  runs `bin/version --help`, and pipes a short ruby snippet through
+  `bin/console` to confirm `Assistant::VERSION` resolves. Closes the
+  `bin/` smoke item in
+  [`docs/v1/05-quality-and-tooling.md`](docs/v1/05-quality-and-tooling.md).
+  [`CONTRIBUTING.md`](CONTRIBUTING.md) gains a `bin/ developer scripts`
+  section documenting each script's purpose and noting that none of the
+  three ship in the packaged gem (only `exe/assistant-rbs` does).
+
 ### Changed
 
 - **Release prep**: gemspec polished for the 1.0 cut. `spec.summary`

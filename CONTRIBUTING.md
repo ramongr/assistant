@@ -20,6 +20,23 @@ bundle exec rake     # default task runs the test suite
 If `bin/console` is more your speed, that boots an IRB session with the gem
 preloaded.
 
+## `bin/` developer scripts
+
+The three checked-in scripts under `bin/` are developer conveniences. They
+are smoke-tested on every CI run by the `bin/ scripts smoke` job, so they
+should always work on a fresh clone.
+
+| Script        | What it does                                                       | Usage                                          |
+|---------------|--------------------------------------------------------------------|------------------------------------------------|
+| `bin/setup`   | Bash wrapper that runs `bundle install` on a cold checkout.        | `./bin/setup`                                  |
+| `bin/console` | Boots IRB with `bundler/setup` + `require 'assistant'` preloaded.  | `bin/console`                                  |
+| `bin/version` | Bumps `Assistant::VERSION` in `lib/assistant/version.rb`.          | `bin/version --patch` &#124; `--minor` &#124; `--major` &#124; `--help` |
+
+These scripts are **not packaged with the gem** — they live under `bin/`,
+not `exe/`. The only executable that ships in the gem is
+`exe/assistant-rbs` (M11). See [`assistant.gemspec`](./assistant.gemspec)
+for the `spec.executables` derivation.
+
 ## Local checks
 
 Before you push, run the full local pipeline. The CI pipeline mirrors these

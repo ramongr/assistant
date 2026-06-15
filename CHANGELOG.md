@@ -10,6 +10,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
+- **GitHub Pages — light-mode accent passes WCAG AAA**: the
+  previous light-mode primary accent `#4d7c8a` Steel Teal cleared
+  WCAG AA-large (3:1) but only reached 4.07:1 on the `#f4f2f3`
+  background, just shy of AA-normal (4.5:1) for body-text links.
+  Introduced `#2f4f5a` Steel Teal Dark as a derived shade — same
+  hue family, 7.87:1 contrast on `#f4f2f3`, comfortably AAA.
+  Replaced the light-theme `accent`, `codeTypeColor`,
+  Docsify `themeColor`, inline `--theme-color`, and the
+  `<meta name="theme-color">` mobile address-bar color. Dark mode
+  is untouched — `#4d7c8a` stays as the dark-theme highlight and
+  the brand-asset color (logo, OG card).
+
 - **GitHub Pages — render Mermaid diagrams**: the
   `docsify-mermaid@2` plugin was loaded from the package root
   (`//cdn.jsdelivr.net/npm/docsify-mermaid@2`), which jsDelivr

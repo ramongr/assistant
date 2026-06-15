@@ -8,7 +8,7 @@
   <title>Assistant &mdash; tiny, dependency-free soft-fail service objects for Ruby</title>
   <meta name="description"
         content="Assistant is a tiny, dependency-free Ruby gem for soft-fail service objects with a uniform result shape, structured log items, and first-class RBS/Steep support.">
-  <meta name="theme-color" content="#4d7c8a">
+  <meta name="theme-color" content="#2f4f5a">
 
   <link rel="icon" type="image/svg+xml" href="/assistant/_media/home-logo.svg">
   <link rel="icon" type="image/png" sizes="32x32" href="/assistant/_media/favicon.png">
@@ -38,13 +38,15 @@
   <style>
     :root {
       /* Brand palette
-         #22223b — Space Cadet   (dark text / dark bg)
-         #a07178 — Rose Taupe    (secondary accent / success)
-         #4d7c8a — Steel Teal    (primary accent / links in light mode)
-         #f4f2f3 — Cultured      (light background)
-         #ffd166 — Naples Yellow (primary accent in dark mode;
-                                  light-mode highlight) */
-      --theme-color: #4d7c8a;
+         #22223b — Space Cadet      (dark text / dark bg)
+         #a07178 — Rose Taupe       (secondary accent / success)
+         #4d7c8a — Steel Teal       (dark-mode highlight; brand asset color)
+         #2f4f5a — Steel Teal Dark  (light-mode links / theme color —
+                                     7.87:1 contrast on #f4f2f3, AAA)
+         #f4f2f3 — Cultured         (light background)
+         #ffd166 — Naples Yellow    (primary accent in dark mode;
+                                     light-mode highlight) */
+      --theme-color: #2f4f5a;
     }
     .app-name-link img { width: 28px; height: 28px; }
     .sidebar-toggle { background-color: transparent; }
@@ -101,7 +103,7 @@
       relativePath: true,
       notFoundPage: true,
       executeScript: true,
-      themeColor: '#4d7c8a',
+      themeColor: '#2f4f5a',
       // Hash-routed by default (`/assistant/#/getting-started`). A
       // history-mode experiment was tried but every clean URL like
       // `/assistant/getting-started` returned HTTP 404 on GitHub Pages — Pages
@@ -145,7 +147,7 @@
           coverBackground: 'linear-gradient(to left bottom, #22223b 0%, #ffd166 100%)'
         },
         light: {
-          accent: '#4d7c8a',
+          accent: '#2f4f5a',
           toggleBackground: '#f4f2f3',
           background: '#f4f2f3',
           textColor: '#22223b',
@@ -155,7 +157,7 @@
           blockQuoteColor: '#a07178',
           highlightColor: '#ffd166',
           sidebarSublink: '#22223b',
-          codeTypeColor: '#4d7c8a',
+          codeTypeColor: '#2f4f5a',
           coverBackground: 'linear-gradient(to left bottom, #f4f2f3 0%, #a07178 100%)'
         }
       },

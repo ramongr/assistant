@@ -1,10 +1,3 @@
----
-title: Guides
-nav_order: 2
-has_children: true
-permalink: /guides/
----
-
 # Guides
 
 Topic-focused walkthroughs of every part of the Assistant DSL.

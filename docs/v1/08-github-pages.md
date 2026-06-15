@@ -31,9 +31,10 @@ then, and gains an "Online docs" link in a follow-up once Pages is live.
 | Search             | Built-in `docsify/lib/plugins/search.min.js`.                          | Zero-config, client-side full-text index.                                                              |
 | Diagrams           | Mermaid via `docsify-mermaid` plugin (mermaid 10.9.1, CDN-loaded).    | Any markdown file can drop in a fenced ```` ```mermaid ```` block.                                    |
 | Code highlighting  | Prism (themes: material-light / material-dark, swapped on dark toggle). | Ruby + bash + yaml + json explicit; everything else via `prism-autoloader`.                            |
-| Local toolchain    | None. `bundle exec rake docs:serve` runs `ruby -run -e httpd docs -p 4000` (stdlib WEBrick). | No `bundle install --with docs`, no Sass, no node, no Python.                                         |
-| Live preview       | `bundle exec rake docs:serve` then visit `http://127.0.0.1:4000/`.    | Stdlib HTTP server; docsify fetches markdown via XHR.                                                  |
-| Markdown link rewriting | Not needed — docsify rewrites intra-docs `.md` links to hash routes. | Source markdown keeps `.md` links; docsify produces `/#/getting-started` URLs.                       |
+| Local toolchain    | None. `bundle exec rake docs:serve` runs a WEBrick server mounted at `/assistant/` (matching production base path) with a 404 fallback to `docs/404.html` (history-mode SPA support). | No `bundle install --with docs`, no Sass, no node, no Python. Adds `webrick ~> 1.8` to `Gemfile` (not gemspec) since it left Ruby's default gems in 3.0+. |
+| Live preview       | `bundle exec rake docs:serve` then visit `http://127.0.0.1:4000/assistant/`. | URL shape matches production verbatim.                                                                  |
+| Markdown link rewriting | Not needed — docsify rewrites intra-docs `.md` links to history-mode routes. | Source markdown keeps `.md` links; docsify produces `/assistant/getting-started`-style URLs.        |
+| URL routing        | History mode (`routerMode: 'history'`, `basePath: '/assistant/'`). Clean URLs like `/assistant/getting-started`; no `#/` fragment. `docs/404.html` is a verbatim copy of `docs/index.html` so GitHub Pages' 404 fallback re-boots the SPA on unknown paths. | The hash-routed default (`/#/getting-started`) was rejected for the cleaner URL shape. |
 
 ## Site map
 

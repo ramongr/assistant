@@ -10,6 +10,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+- **GitHub Pages — drop hash routing**: switch Docsify from the
+  default `/#/getting-started` hash-routed URLs to clean
+  `/getting-started` URLs via `routerMode: 'history'` and
+  `basePath: '/assistant/'`. Ships `docs/404.html` (a verbatim copy
+  of `docs/index.html`) so GitHub Pages' 404 fallback re-boots the
+  SPA on unknown paths. `rake docs:serve` was reworked to mount
+  `docs/` at `/assistant/` over WEBrick with the same fallback so
+  local URLs match production verbatim. Adds `webrick ~> 1.8` as a
+  non-runtime `Gemfile` dep (it's a stdlib gem but no longer ships
+  as default in Ruby 3.0+).
+
 - **GitHub Pages — swap stack from Jekyll to Docsify**: replace the
   Jekyll + just-the-docs site (shipped in PR #180) with a Docsify
   client-side SPA matching the UX of

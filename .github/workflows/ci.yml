@@ -93,3 +93,24 @@ jobs:
           name: coverage-html
           path: coverage/
           if-no-files-found: warn
+
+  runtime-deps:
+    name: Runtime deps assertion (zero)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.4'
+      - name: Assert assistant.gemspec declares zero runtime dependencies
+        run: |
+          ruby -e '
+            spec = Gem::Specification.load("assistant.gemspec")
+            deps = spec.runtime_dependencies.map(&:name)
+            if deps.empty?
+              puts "OK: assistant has zero runtime dependencies."
+            else
+              warn "FAIL: unexpected runtime dependencies: #{deps.join(", ")}"
+              exit 1
+            end
+          '

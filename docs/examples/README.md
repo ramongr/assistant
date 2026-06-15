@@ -1,10 +1,10 @@
 # Examples
 
 Each entry below shows a small, real-world wiring pattern with a
-callout-sized code snippet. The runnable scripts under `examples/<slug>/`
-and their regression tests ship per
-[P6–P12 of the GitHub Pages plan](https://github.com/ramongr/assistant/blob/main/docs/v1/08-github-pages.md#p6p12-examples-one-pr-per-example);
-the prose on each page works as-is today.
+callout-sized code snippet. Runnable scripts live under
+[`examples/<slug>/`](https://github.com/ramongr/assistant/tree/main/examples)
+and their regression tests under
+[`test/examples/`](https://github.com/ramongr/assistant/tree/main/test/examples).
 
 | Example | Demonstrates |
 | --- | --- |
@@ -17,6 +17,3 @@ the prose on each page works as-is today.
 | [RBS generator](rbs-generator.md) | Service definition → `bin/assistant-rbs --output sig` → Steep proving per-input return types. |
 
 Each example is intentionally small enough to be read in one sitting.
-Source for every script lives under
-[`examples/`](https://github.com/ramongr/assistant/tree/main/examples)
-in the repository.

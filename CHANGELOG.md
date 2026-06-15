@@ -10,6 +10,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- **GitHub Pages — examples gallery rewrites**: replace the seven
+  `docs/examples/<slug>.md` P6–P12 placeholders with self-contained,
+  callout-sized code patterns covering Rails controllers, CLI
+  handlers, Sidekiq workers, composed services, execute callbacks,
+  the instrumentation notifier, and `bin/assistant-rbs`. Each page
+  still calls out which P6–P12 milestone will ship the runnable
+  script + regression test, but the prose is now useful on its own.
+
 - **GitHub Pages — Mermaid diagrams**: render the result-status
   decision flow on [`docs/getting-started.md`](docs/getting-started.md)
   and [`docs/api-reference.md`](docs/api-reference.md), plus the full

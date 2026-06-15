@@ -7,11 +7,11 @@ permalink: /examples/
 
 # Examples
 
-> **Status:** gallery scaffolding — each entry below ships with a
-> runnable script under `examples/<slug>/`, a writeup on this site,
-> and a regression test. See
-> [P6–P12 of the GitHub Pages plan](https://github.com/ramongr/assistant/blob/main/docs/v1/08-github-pages.md#p6p12-examples-one-pr-per-example)
-> for the per-example schedule.
+Each entry below shows a small, real-world wiring pattern with a
+callout-sized code snippet. The runnable scripts under `examples/<slug>/`
+and their regression tests ship per
+[P6–P12 of the GitHub Pages plan](https://github.com/ramongr/assistant/blob/main/docs/v1/08-github-pages.md#p6p12-examples-one-pr-per-example);
+the prose on each page works as-is today.
 
 | Example | Demonstrates |
 | --- | --- |

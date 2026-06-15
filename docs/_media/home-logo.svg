@@ -4,5 +4,5 @@
   <rect width="64" height="64" rx="12" fill="#22223b"/>
   <text x="32" y="44" text-anchor="middle"
         font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace"
-        font-size="38" font-weight="700" fill="#009ffd">A</text>
+        font-size="38" font-weight="700" fill="#ffd166">A</text>
 </svg>

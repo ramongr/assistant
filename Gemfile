@@ -9,7 +9,7 @@ gemspec
 
 # WEBrick is no longer a default gem in Ruby 3.0+. It's a stdlib gem
 # used only by `rake docs:serve` to mount the Docsify SPA at
-# `/assistant/` with a 404 fallback (history-mode routing). Not in
+# `/assistant/` so local URLs match the production base path. Not in
 # `gemspec` because the `runtime-deps` CI gate keeps the gem itself
 # dependency-free.
 gem 'webrick', '~> 1.8'

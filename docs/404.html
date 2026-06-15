@@ -8,7 +8,7 @@
   <title>Assistant &mdash; tiny, dependency-free soft-fail service objects for Ruby</title>
   <meta name="description"
         content="Assistant is a tiny, dependency-free Ruby gem for soft-fail service objects with a uniform result shape, structured log items, and first-class RBS/Steep support.">
-  <meta name="theme-color" content="#009ffd">
+  <meta name="theme-color" content="#ffd166">
 
   <link rel="icon" type="image/svg+xml" href="/assistant/_media/home-logo.svg">
   <link rel="icon" type="image/png" sizes="32x32" href="/assistant/_media/favicon.png">
@@ -38,12 +38,12 @@
   <style>
     :root {
       /* Brand palette
-         #22223b — Space Cadet (dark text / dark bg)
-         #9ebc9f — Sage     (secondary accent / success)
-         #d3b88c — Tan      (warm highlight)
-         #f4f2f3 — Cultured (light background)
-         #009ffd — Vivid Sky Blue (primary accent) */
-      --theme-color: #009ffd;
+         #22223b — Space Cadet   (dark text / dark bg)
+         #a07178 — Rose Taupe    (secondary accent / success)
+         #4d7c8a — Steel Teal    (cool highlight)
+         #f4f2f3 — Cultured      (light background)
+         #ffd166 — Naples Yellow (primary accent) */
+      --theme-color: #ffd166;
     }
     .app-name-link img { width: 28px; height: 28px; }
     .sidebar-toggle { background-color: transparent; }
@@ -100,14 +100,14 @@
       relativePath: true,
       notFoundPage: true,
       executeScript: true,
-      themeColor: '#009ffd',
-      // History-mode routing produces clean URLs like /assistant/getting-started
-      // (no `#/` fragment). Requires the host to serve `index.html` for any
-      // unknown path; on GitHub Pages we ship `docs/404.html` as a copy of
-      // `docs/index.html` so Pages' 404 fallback re-boots the SPA. The local
-      // `rake docs:serve` task does the same via a WEBrick 404 handler.
-      routerMode: 'history',
-      basePath: '/assistant/',
+      themeColor: '#ffd166',
+      // Hash-routed by default (`/assistant/#/getting-started`). History-mode
+      // routing was tried (M-D2.1) but every clean URL like
+      // `/assistant/getting-started` returned HTTP 404 on GitHub Pages — Pages
+      // serves `docs/404.html` as the SPA shell for unknown paths, but always
+      // with a 404 status code, which breaks link previews, link checkers,
+      // and search crawlers. Hash routing keeps every navigable URL on a
+      // genuine 200 response.
       search: {
         maxAge: 86400000,
         paths: 'auto',
@@ -130,32 +130,32 @@
         codeFontFamily: 'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace',
         bodyFontSize: '17px',
         dark: {
-          accent: '#009ffd',
+          accent: '#ffd166',
           toggleBackground: '#22223b',
           background: '#22223b',
           textColor: '#f4f2f3',
           codeTextColor: '#f4f2f3',
           codeBackgroundColor: '#2c2c4a',
           borderColor: '#3a3a5c',
-          blockQuoteColor: '#9ebc9f',
-          highlightColor: '#d3b88c',
-          sidebarSublink: '#9ebc9f',
-          codeTypeColor: '#d3b88c',
-          coverBackground: 'linear-gradient(to left bottom, #22223b 0%, #009ffd 100%)'
+          blockQuoteColor: '#a07178',
+          highlightColor: '#4d7c8a',
+          sidebarSublink: '#a07178',
+          codeTypeColor: '#4d7c8a',
+          coverBackground: 'linear-gradient(to left bottom, #22223b 0%, #ffd166 100%)'
         },
         light: {
-          accent: '#009ffd',
+          accent: '#ffd166',
           toggleBackground: '#f4f2f3',
           background: '#f4f2f3',
           textColor: '#22223b',
           codeTextColor: '#22223b',
           codeBackgroundColor: '#ffffff',
           borderColor: 'rgba(34,34,59,0.12)',
-          blockQuoteColor: '#9ebc9f',
-          highlightColor: '#d3b88c',
+          blockQuoteColor: '#a07178',
+          highlightColor: '#4d7c8a',
           sidebarSublink: '#22223b',
-          codeTypeColor: '#009ffd',
-          coverBackground: 'linear-gradient(to left bottom, #f4f2f3 0%, #9ebc9f 100%)'
+          codeTypeColor: '#ffd166',
+          coverBackground: 'linear-gradient(to left bottom, #f4f2f3 0%, #a07178 100%)'
         }
       },
       plugins: [

@@ -8,18 +8,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+
+- **GitHub Pages — revert to hash routing**: clean URLs from the
+  history-mode experiment (`routerMode: 'history'` + `basePath:`)
+  returned HTTP 404 on GitHub Pages even though the `docs/404.html`
+  SPA fallback rendered the right page. The 404 status broke link
+  previews, link checkers, and search crawlers. Reverted to Docsify's
+  default hash routing (`/assistant/#/getting-started`); every
+  navigable URL now resolves with HTTP 200. `docs/404.html` is kept
+  as a copy of `docs/index.html` so stale history-mode URLs still
+  land on a usable docs page. `rake docs:serve` no longer needs the
+  SPA-fallback servlet.
+
 ### Changed
 
-- **GitHub Pages — drop hash routing**: switch Docsify from the
-  default `/#/getting-started` hash-routed URLs to clean
-  `/getting-started` URLs via `routerMode: 'history'` and
-  `basePath: '/assistant/'`. Ships `docs/404.html` (a verbatim copy
-  of `docs/index.html`) so GitHub Pages' 404 fallback re-boots the
-  SPA on unknown paths. `rake docs:serve` was reworked to mount
-  `docs/` at `/assistant/` over WEBrick with the same fallback so
-  local URLs match production verbatim. Adds `webrick ~> 1.8` as a
-  non-runtime `Gemfile` dep (it's a stdlib gem but no longer ships
-  as default in Ruby 3.0+).
+- **GitHub Pages — brand palette refresh**: swap the secondary
+  accent / highlight / primary accent to
+  [`22223b-a07178-4d7c8a-f4f2f3-ffd166`](https://coolors.co/22223b-a07178-4d7c8a-f4f2f3-ffd166).
+  Roles: `#22223b` Space Cadet (dark), `#a07178` Rose Taupe
+  (secondary), `#4d7c8a` Steel Teal (highlight), `#f4f2f3` Cultured
+  (light bg), `#ffd166` Naples Yellow (primary accent, replaces the
+  former Vivid Sky Blue `#009ffd`). Applied to `docs/index.html`,
+  `docs/404.html`, and `docs/_media/home-logo.svg`. The PNG assets
+  (`favicon.png`, `apple-touch-icon.png`, `repo-card.png`) still
+  carry the old blue accent and need to be regenerated separately.
 
 - **GitHub Pages — swap stack from Jekyll to Docsify**: replace the
   Jekyll + just-the-docs site (shipped in PR #180) with a Docsify
@@ -40,9 +53,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
     runtime. The Pages workflow uploads `docs/` verbatim — no build
     step.
   - Adopts the new brand palette: `#22223b` (Space Cadet) /
-    `#9ebc9f` (Sage) / `#d3b88c` (Tan) / `#f4f2f3` (Cultured) /
-    `#009ffd` (Vivid Sky Blue, primary accent). Logo, OG card,
-    favicons regenerated.
+    `#a07178` (Rose Taupe) / `#4d7c8a` (Steel Teal) / `#f4f2f3`
+    (Cultured) / `#ffd166` (Naples Yellow, primary accent). Logo,
+    OG card, favicons regenerated.
   - URL shape changes from `/getting-started.html` → `/#/getting-started`
     (hash-routed SPA). The site was only hours old; no external links
     to redirect.

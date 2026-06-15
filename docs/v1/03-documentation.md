@@ -64,17 +64,22 @@ Each guide includes:
 
 ### D4. Repository hygiene files
 
-- [ ] `CONTRIBUTING.md`: how to clone, `bin/setup`, run `rake test` and
+- [x] `CONTRIBUTING.md`: how to clone, `bin/setup`, run `rake test` and
       `rake ci`, branch naming, commit style, PR template expectations,
       code of conduct link.
-- [ ] `SECURITY.md`: supported versions table (1.x supported; 0.x EOL on
-      1.0.0 release), how to report vulnerabilities (private email,
-      response SLA).
-- [ ] `.github/PULL_REQUEST_TEMPLATE.md`: checklist that includes
-      "CHANGELOG entry added", "tests added", "docs updated".
-- [ ] Confirm `CODE_OF_CONDUCT.md` contact email is current
-      (`CODE_OF_CONDUCT.md` exists, last reviewed 2026-05-07).
-- [ ] Confirm `README.md` and `CHANGELOG.md` link to the right repo URL.
+- [x] `SECURITY.md`: supported versions table (1.x supported; 0.x EOL on
+      1.0.0 release), how to report vulnerabilities (private email
+      `cerberus.ramon@gmail.com`, 7-day first response / 30-day fix SLA).
+- [x] `.github/PULL_REQUEST_TEMPLATE.md`: checklist that includes
+      "CHANGELOG entry added", "tests added", "docs updated", and
+      "`bundle exec rake ci` is green".
+- [x] Confirm `CODE_OF_CONDUCT.md` contact email is current — verified
+      `cerberus.ramon@gmail.com` at `CODE_OF_CONDUCT.md:58` matches the
+      gemspec contact (`assistant.gemspec:14`).
+- [x] Confirm `README.md` and `CHANGELOG.md` link to the right repo URL —
+      `README.md` uses `https://github.com/ramongr/assistant` throughout
+      (badges, contributing, CoC); `CHANGELOG.md` has no URL references
+      (Keep-a-Changelog header sections only).
 
 ### D5. Examples
 

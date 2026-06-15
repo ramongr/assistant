@@ -42,6 +42,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- **D4**: shipped the repository-hygiene files called for in
+  [`docs/v1/03-documentation.md`](docs/v1/03-documentation.md). New
+  `CONTRIBUTING.md` documents the clone / `bin/setup` flow, the local
+  pipeline (`rake test`, `rubocop`, `steep check`, `rake ci`), branch
+  naming, commit-tag conventions, and PR template expectations. New
+  `SECURITY.md` declares 1.x as the supported line, 0.x as EOL on the
+  `1.0.0` release, gives `cerberus.ramon@gmail.com` as the private
+  report channel, and commits to a 7-day first-response /
+  30-day-fix-or-mitigation-plan SLA. New
+  `.github/PULL_REQUEST_TEMPLATE.md` enforces the
+  `Scope / What ships / Verification / Out of scope` body shape and the
+  `CHANGELOG entry / tests added / docs updated / rake ci is green`
+  checklist on every pull request.
 - **D1**: rewrote the top-level `README.md`. Replaced the bundler-template
   `TODO:` placeholders and `[USERNAME]/assistant` URLs with an elevator
   pitch, status badges (CI, gem version, downloads, Ruby version,

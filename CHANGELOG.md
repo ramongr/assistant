@@ -8,6 +8,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+
+- **GitHub Pages — restore default layout on every internal page**:
+  add a `defaults:` block to [`_config.yml`](_config.yml) that applies
+  just-the-docs's `layout: default` to every page that doesn't
+  declare its own layout. Before this fix, only the homepage
+  (`layout: home`) rendered with the full chrome — every other page
+  (Getting started, Guides, API reference, Examples, Roadmap,
+  Changelog, Deprecations and all their children) was emitted as a
+  raw `<h1>…</h1>` body fragment with no sidebar, header, search
+  input, sub-nav, copy buttons, dark-mode toggle, footer, or
+  baseurl-aware navigation. Latent since PR #180; the homepage
+  redesign in PR #185 made the contrast visible.
+
 ### Added
 
 - **GitHub Pages — home page redesign**: replace the bare

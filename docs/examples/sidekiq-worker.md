@@ -33,8 +33,5 @@ Notes:
   caller's identifier, look up existing state, no-op when already
   satisfied.
 
-{: .note }
-> A runnable `examples/sidekiq_worker/` script + fake-Sidekiq test
-> ships in
-> [P8](https://github.com/ramongr/assistant/blob/main/docs/v1/08-github-pages.md#p6p12-examples-one-pr-per-example)
-> of the GitHub Pages plan.
+> Source: [`examples/sidekiq_worker/`](https://github.com/ramongr/assistant/tree/main/examples/sidekiq_worker) ·
+> Test: [`test/examples/sidekiq_worker_example_test.rb`](https://github.com/ramongr/assistant/blob/main/test/examples/sidekiq_worker_example_test.rb)

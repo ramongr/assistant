@@ -20,13 +20,13 @@ without a major version bump.
 ## Table of contents
 
 - [`Assistant` module](#assistant-module)
-- [`Assistant::Service`](#assistantservice)
+- [`Assistant::Service`](#assistant-service)
   - [Class methods](#class-methods)
   - [Instance methods](#instance-methods)
   - [Generated per-input methods](#generated-per-input-methods)
   - [Result shape](#result-shape)
-- [`Assistant::LogItem`](#assistantlogitem)
-- [`Assistant::LogList`](#assistantloglist)
+- [`Assistant::LogItem`](#assistant-logitem)
+- [`Assistant::LogList`](#assistant-loglist)
 - [Execute callbacks](#execute-callbacks)
 - [Service composition](#service-composition)
 - [Instrumentation notifier](#instrumentation-notifier)

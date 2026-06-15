@@ -194,5 +194,5 @@ catalogue.
   generated `valid_*` predicates.
 - [Logging and results](./logging-and-results.md) — the helpers, the
   full result hash, log filtering.
-- [API reference: LogItem](../api-reference.md#assistantlogitem).
-- [API reference: LogList](../api-reference.md#assistantloglist).
+- [API reference: LogItem](../api-reference.md#assistant-logitem).
+- [API reference: LogList](../api-reference.md#assistant-loglist).

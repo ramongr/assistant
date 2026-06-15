@@ -10,6 +10,24 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
+- **GitHub Pages — fix 9 broken in-page anchor links**: the API
+  reference's own table of contents and four guide pages linked
+  to API reference headings using the pre-Docsify Marked.js
+  slugger output (`#assistantservice`, `#assistantlogitem`,
+  `#assistantloglist`), which *stripped* the `::` separator.
+  Docsify's slugger *replaces* `:` with `-`, producing
+  `#assistant-service`, `#assistant-logitem`, `#assistant-loglist`,
+  so every one of those links scrolled to the top of the page
+  instead of the target section. Same root cause for
+  `examples/rbs-generator.md` → `guides/inputs.md` which still
+  used the legacy heading slug `#using-binassistant-rbs-for-steep-users`
+  after the heading was renamed to `## Using \`assistant-rbs\` for
+  Steep users` (now `#using-assistant-rbs-for-steep-users`). All
+  nine links updated; verified by hitting each anchor against
+  `bundle exec rake docs:serve`. No HTTP 404s exist anywhere in
+  the served Examples nav (already confirmed in #190 and re-verified
+  here).
+
 - **GitHub Pages — light-mode inline `code` is readable**: the
   light theme passed `highlightColor: '#ffd166'` Naples Yellow to
   docsify-darklight-theme. That property controls the **text color

@@ -212,5 +212,5 @@ Notes:
   requirements.
 - [Logging and results](./logging-and-results.md) — what
   `merge_logs(logs:)` does, the result hash shape.
-- [API reference](../api-reference.md#assistantservice) for the
+- [API reference](../api-reference.md#assistant-service) for the
   full callback / call_service / notifier surfaces.

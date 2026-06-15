@@ -8,6 +8,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.0.0.rc1] - 2026-06-15
+
 ### Added
 
 - **D2 (follow-up)**: four user-facing guides under `docs/guides/` —
@@ -329,6 +331,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `Assistant::Service#valid_require_conditional_<name>?` (use
   `#valid_required_conditional_<name>?` instead). Scheduled for removal
   in `assistant 2.0`. (M9, v1 plan)
+
+### Migration
+
+`1.0.0` is a stabilisation release. Three small breaking changes have
+to be addressed; every one is mechanical and `git grep`-able. The full
+recipe lives in
+[`docs/v1/06-migration-0x-to-1.md`](docs/v1/06-migration-0x-to-1.md).
+
+1. **`LogList#merge_logs` is keyword-only (M12, B3)** — rewrite every
+   `merge_logs(other.logs)` call site to `merge_logs(logs: other.logs)`.
+   The two public DSL entry points `Service.input` and `Service.inputs`
+   keep their leading positional `attr_name` / `attr_names`; only
+   `merge_logs` and the internal `InputBuilder` helpers changed.
+2. **`LogItem.new` raises on invalid attrs (M10, B1)** — audit any
+   direct `LogItem.new(...)` call sites. The gem's own call sites are
+   already correct; fixtures that exercised the old "constructs but
+   `valid? == false`" path need updating. Prefer the `add_log` /
+   `log_item_*` helpers in regular code.
+3. **`valid_require_*?` is deprecated (M9, B2)** — rename direct calls
+   to the new `valid_required_*?` form. Users who don't call these
+   predicates directly (driven internally by `validate_inputs`) need
+   no source change; the old name still works in 1.x with a one-time
+   `Kernel.warn` per call site, and is removed in 2.0.
+
+Pin to `~> 1.0` in your `Gemfile` once the upgrade lands.
 
 ## [0.1.0] - 2026-05-07
 

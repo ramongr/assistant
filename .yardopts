@@ -7,6 +7,10 @@ lib/**/*.rb
 -
 docs/getting-started.md
 docs/api-reference.md
+docs/guides/inputs.md
+docs/guides/validation.md
+docs/guides/logging-and-results.md
+docs/guides/composing-services.md
 CHANGELOG.md
 CONTRIBUTING.md
 SECURITY.md

@@ -108,7 +108,7 @@ regression test under `test/examples/<slug>_example_test.rb`.
 | `instrumentation_notifier` | `Assistant.notifier=` wired to a fake `ActiveSupport::Notifications`-shaped sink.              |
 | `rbs_generator`            | Service definition → `bin/assistant-rbs --output sig` → Steep proving the per-input return type. |
 
-- [ ] Each example has its own `README.md` linking back to
+- [x] Each example has its own `README.md` linking back to
       `docs/getting-started.md` and to its rendered site page.
 - [ ] The legacy `examples/greeter.rb` (used by the M11 Steep fixture)
       stays where it is and is **not** restructured into an example
@@ -117,8 +117,8 @@ regression test under `test/examples/<slug>_example_test.rb`.
 
 ## Acceptance criteria
 
-- [ ] `README.md` renders cleanly on rubygems.org and github.com.
-- [ ] No `TODO:` strings remain in `README.md`.
+- [x] `README.md` renders cleanly on rubygems.org and github.com.
+- [x] No `TODO:` strings remain in `README.md`.
 - [ ] Every link in `docs/**/*.md` is reachable
       (`bundle exec rake docs:check_links` — implementation deferred; manual
       pass acceptable for 1.0).

@@ -111,16 +111,16 @@ Jekyll + just-the-docs in PR #178._
       that wrap `bundle exec jekyll serve --livereload`,
       `bundle exec jekyll build --strict_front_matter`, and
       `bundle install --with docs`.
-- [ ] Verify the deployed site renders at
+- [x] Verify the deployed site renders at
       `https://ramongr.github.io/assistant/` with the nav tree intact
       after the PR #178 deploy completes.
 
 ### P3. Landing page + getting-started + roadmap surface
 
-- [ ] `docs/index.md` (landing): pulls the elevator pitch, install
+- [x] `docs/index.md` (landing): pulls the elevator pitch, install
       blurb, the tiniest possible runnable snippet, and the four primary
       CTAs (Getting started · Guides · API reference · GitHub).
-- [ ] `docs/getting-started.md` (was a D2 deliverable; landed here as part
+- [x] `docs/getting-started.md` (was a D2 deliverable; landed here as part
       of this PR if D2 hasn't already shipped it).
 - [ ] Wire the `/roadmap/` route to render the existing
       [`./README.md`](./README.md) via a Jekyll stub that includes the
@@ -129,18 +129,18 @@ Jekyll + just-the-docs in PR #178._
 
 ### P4. Guides migration
 
-- [ ] Move (or co-author with D2) the five guide pages listed in the
+- [x] Move (or co-author with D2) the five guide pages listed in the
       **Site map** under `docs/guides/`.
-- [ ] Add the new `docs/guides/rbs-and-types.md` page (M11 + R1 + Steep
+- [x] Add the new `docs/guides/rbs-and-types.md` page (M11 + R1 + Steep
       CI hookup); not in the original D2 outline because D2 folds RBS
       into `docs/guides/inputs.md`. Splitting out is cleaner once the
       site has a left-nav.
-- [ ] Each guide opens with the "TL;DR / runnable snippet / common
+- [x] Each guide opens with the "TL;DR / runnable snippet / common
       pitfalls / see also" pattern mandated by D2.
 
 ### P5. API reference
 
-- [ ] `docs/api-reference.md` curated reference of every Frozen symbol
+- [x] `docs/api-reference.md` curated reference of every Frozen symbol
       in [`01-api-surface.md`](./01-api-surface.md), one anchor per
       symbol, deep-link friendly. **Hand-written**, not YARD-generated
       (matches D2 decision).
@@ -171,16 +171,13 @@ Each example PR ships **all three** of:
 
 ### P13. README online-docs link
 
-- [ ] Once the site is live and the **Site map** routes resolve, edit the
+- [x] Once the site is live and the **Site map** routes resolve, edit the
       top-level [`README.md`](../../README.md) to add a "**Online
       documentation:** `https://ramongr.github.io/assistant/`" callout
       above the Documentation section and to flip the inline
       documentation index over to the deployed URLs.
-- [ ] Update `assistant.gemspec`
-      `spec.metadata['documentation_uri']` from the placeholder
-      `https://rubydoc.info/gems/assistant` (per
-      [`04-release-checklist.md`](./04-release-checklist.md) D-checklist)
-      to the live Pages URL.
+- [x] Update `assistant.gemspec`
+      `spec.metadata['documentation_uri']` to the live Pages URL.
 
 ## Acceptance criteria
 
@@ -194,7 +191,7 @@ Each example PR ships **all three** of:
       after the docsify swap in PR #187).
 - [x] Every page in the **Site map** exists (placeholder is acceptable
       after P2; real content after the matching Pn).
-- [ ] Every code block tagged ```` ```ruby ```` in `docs/getting-started.md`,
+- [x] Every code block tagged ```` ```ruby ```` in `docs/getting-started.md`,
       `docs/guides/*.md`, and `docs/examples/*.md` either is rendered
       verbatim from a script under `examples/` **or** is mirrored by an
       integration test under `test/docs/` / `test/examples/` (the D2

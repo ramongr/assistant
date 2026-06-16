@@ -55,7 +55,7 @@ Configuration lives in `.rubocop.yml` and `.rubocop_todo.yml`.
       2023); deleted in this change, and the corresponding
       `inherit_from:` directive was removed from `.rubocop.yml`.
       `bundle exec rubocop` stays clean on 40 files.
-- [ ] Keep the existing `rubocop-minitest`, `rubocop-performance`,
+- [x] Keep the existing `rubocop-minitest`, `rubocop-performance`,
       `rubocop-rake` extensions (per `Gemfile.lock`).
 - [x] Adopt `rubocop-style-compact_nesting` (added with M13). Enforces
       a hybrid nesting style across `lib/` and `test/`: namespace chains
@@ -171,11 +171,11 @@ public Frozen surface. Q6 was decided in favour of
 
 Current matrix (`.github/workflows/ci.yml:21`): `['3.4', '4.0']`.
 
-- [ ] Keep the floating `'4.0'` entry (Q5 decision: Ruby 4.0 has shipped
+- [x] Keep the floating `'4.0'` entry (Q5 decision: Ruby 4.0 has shipped
       stable; `ruby/setup-ruby` resolves to the latest 4.0.x). Floor
       stays at `'3.4'`.
-- [ ] Keep `fail-fast: false` so a single Ruby's flake doesn't mask others.
-- [ ] Run RuboCop on the highest matrix entry only (current behaviour;
+- [x] Keep `fail-fast: false` so a single Ruby's flake doesn't mask others.
+- [x] Run RuboCop on the highest matrix entry only (current behaviour;
       `.github/workflows/ci.yml:38`).
 - [x] Add a `coverage` job that runs the test suite once with SimpleCov and
       uploads the artifact (soft gate).
@@ -185,16 +185,16 @@ Current matrix (`.github/workflows/ci.yml:21`): `['3.4', '4.0']`.
 
 ## Bundler / dependency hygiene
 
-- [ ] Keep `bundler ~> 4.0` as a dev dep (`assistant.gemspec:37`).
+- [x] Keep `bundler ~> 4.0` as a dev dep (`assistant.gemspec:37`).
 - [x] Keep zero runtime gem dependencies; add a CI assertion that
       `Gem::Specification.load("assistant.gemspec").runtime_dependencies` is
       empty. New `runtime-deps` job in `.github/workflows/ci.yml` runs the
       one-liner on every push/PR and fails loudly if a runtime dep is ever
       introduced.
-- [ ] Re-run `bundle update` and ensure `Gemfile.lock` checksums stay
+- [x] Re-run `bundle update` and ensure `Gemfile.lock` checksums stay
       reproducible (already enabled via `CHECKSUMS:` block in
       `Gemfile.lock`).
-- [ ] Confirm `dependabot.yml` (`.github/dependabot.yml`) covers `bundler`
+- [x] Confirm `dependabot.yml` (`.github/dependabot.yml`) covers `bundler`
       and `github-actions` weekly.
 
 ## `bin/` scripts
@@ -214,7 +214,7 @@ Current matrix (`.github/workflows/ci.yml:21`): `['3.4', '4.0']`.
 
 - [x] `bundle exec rake ci` exits 0 locally (test + rubocop + steep).
       CI exercises each tool in a dedicated job for parallelism.
-- [ ] Coverage reported (soft gate; ≥98% line / ≥95% branch is the
+- [x] Coverage reported (soft gate; ≥98% line / ≥95% branch is the
       target but not enforced in CI).
-- [ ] No new runtime dependencies have been introduced.
-- [ ] Required Steep CI job is green on `main` and on every PR.
+- [x] No new runtime dependencies have been introduced.
+- [x] Required Steep CI job is green on `main` and on every PR.

@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    assistant (1.0.0.rc1)
+    assistant (1.0.0)
 
 GEM
   remote: https://rubygems.org/
@@ -130,7 +130,7 @@ DEPENDENCIES
   yard (~> 0.9)
 
 CHECKSUMS
-  assistant (1.0.0.rc1)
+  assistant (1.0.0)
   ast (2.4.3) sha256=954615157c1d6a382bc27d690d973195e79db7f55e9765ac7c481c60bdb4d383
   bundler (4.0.11) sha256=5bcec0fb78302e48d02ee46f10ee6e6942be647ba5b44a6d1ddfda9a240ce785
   byebug (13.0.0) sha256=d2263efe751941ca520fa29744b71972d39cbc41839496706f5d9b22e92ae05d

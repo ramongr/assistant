@@ -6,6 +6,10 @@ one in declaration order. The matching site page is
 [`docs/examples/composing-services.md`](../../docs/examples/composing-services.md);
 this directory is the runnable mirror referenced from that page.
 
+Start with the [getting started guide](../../docs/getting-started.md) if this
+is your first Assistant service. Rendered docs:
+<https://ramongr.github.io/assistant/#/examples/composing-services>.
+
 ## Files
 
 | File | Role |

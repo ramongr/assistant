@@ -10,6 +10,10 @@ Companion to the
 [Instrumentation notifier docs page](../../docs/examples/instrumentation-notifier.md)
 (P11 of [`docs/v1/08-github-pages.md`](../../docs/v1/08-github-pages.md#p6p12-examples-one-pr-per-example)).
 
+Start with the [getting started guide](../../docs/getting-started.md) if this
+is your first Assistant service. Rendered docs:
+<https://ramongr.github.io/assistant/#/examples/instrumentation-notifier>.
+
 ## Files
 
 | File                     | Role                                                                                                            |

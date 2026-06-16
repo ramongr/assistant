@@ -1,0 +1,9 @@
+# frozen_string_literal: true
+
+target :rbs_generator_example do
+  signature '../../lib'
+  signature 'sig'
+
+  check 'create_user.rb'
+  check 'type_probe.rb'
+end

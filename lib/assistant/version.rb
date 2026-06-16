@@ -5,5 +5,5 @@ module Assistant
   # documented in `docs/v1/01-api-surface.md` from 1.0.0 onward.
   #
   # @return [String]
-  VERSION = '1.0.0.rc1'
+  VERSION = '1.0.0'
 end

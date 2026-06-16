@@ -25,6 +25,8 @@ gem install assistant
 
 Ruby `>= 3.4` is required.
 
+**Online documentation:** <https://ramongr.github.io/assistant/>
+
 ## 60-second example
 
 ```ruby
@@ -90,8 +92,11 @@ a per-class generator (`bin/assistant-rbs`) out of the box.
 
 ## Documentation
 
+- **Online documentation** — <https://ramongr.github.io/assistant/>.
 - **Getting started** — [`docs/getting-started.md`](docs/getting-started.md)
   walks from `gem install` to a first working service.
+- **Guides** — [`docs/guides/`](docs/guides/README.md) covers inputs,
+  validation, logging/results, composition, and RBS/Steep usage.
 - **API reference** — [`docs/api-reference.md`](docs/api-reference.md)
   is the hand-written, curated reference for every Frozen symbol; the
   source of truth for stability labels stays in
@@ -102,13 +107,10 @@ a per-class generator (`bin/assistant-rbs`) out of the box.
   [`docs/v1/06-migration-0x-to-1.md`](docs/v1/06-migration-0x-to-1.md).
 - **Deprecations** — [`docs/deprecations.md`](docs/deprecations.md).
 - **Runnable sample** — [`examples/greeter.rb`](examples/greeter.rb).
+- **Examples gallery** — [`docs/examples/README.md`](docs/examples/README.md)
+  links to runnable Rails, CLI, Sidekiq, callbacks, notifier, composition, and
+  RBS generator examples.
 - **Changelog** — [`CHANGELOG.md`](CHANGELOG.md).
-
-The deeper guides (`docs/guides/inputs.md`,
-`docs/guides/validation.md`, `docs/guides/logging-and-results.md`,
-`docs/guides/composing-services.md`) are tracked in
-[`docs/v1/03-documentation.md`](docs/v1/03-documentation.md) and land
-in follow-up PRs.
 
 ## Roadmap
 

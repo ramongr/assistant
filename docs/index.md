@@ -45,21 +45,15 @@ result so the caller can decide what to surface.
 
 ## Install
 
-Assistant 1.0 is currently in release-candidate. Pin the RC explicitly:
+Use the standard pessimistic pin:
 
 ```ruby
 # Gemfile
-gem 'assistant', '1.0.0.rc1'
+gem 'assistant', '~> 1.0'
 ```
 
 ```sh
 bundle install
-```
-
-Once `1.0.0` ships, use the standard pessimistic pin:
-
-```ruby
-gem 'assistant', '~> 1.0'
 ```
 
 Ruby 3.4 or newer is required.

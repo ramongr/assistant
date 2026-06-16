@@ -8,258 +8,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-### Fixed
+## [1.0.0] - 2026-06-16
 
-- **GitHub Pages — fix 9 broken in-page anchor links**: the API
-  reference's own table of contents and four guide pages linked
-  to API reference headings using the pre-Docsify Marked.js
-  slugger output (`#assistantservice`, `#assistantlogitem`,
-  `#assistantloglist`), which *stripped* the `::` separator.
-  Docsify's slugger *replaces* `:` with `-`, producing
-  `#assistant-service`, `#assistant-logitem`, `#assistant-loglist`,
-  so every one of those links scrolled to the top of the page
-  instead of the target section. Same root cause for
-  `examples/rbs-generator.md` → `guides/inputs.md` which still
-  used the legacy heading slug `#using-binassistant-rbs-for-steep-users`
-  after the heading was renamed to `## Using \`assistant-rbs\` for
-  Steep users` (now `#using-assistant-rbs-for-steep-users`). All
-  nine links updated; verified by hitting each anchor against
-  `bundle exec rake docs:serve`. No HTTP 404s exist anywhere in
-  the served Examples nav (already confirmed in #190 and re-verified
-  here).
+### Documentation
 
-- **GitHub Pages — light-mode inline `code` is readable**: the
-  light theme passed `highlightColor: '#ffd166'` Naples Yellow to
-  docsify-darklight-theme. That property controls the **text color
-  of inline `<code>` tags** in markdown (the plugin's CSS sets
-  `.markdown-section code { color: var(--highlightColor) }`), which
-  renders on the `#ffffff` code background at **1.43:1** contrast —
-  essentially invisible. Every inline `code` snippet across the
-  docs site was unreadable in light mode. Swapped to `#2f4f5a`
-  Steel Teal Dark (matching the link accent), giving **8.30:1** on
-  white — comfortably AAA. Dark mode is unchanged; `#ffd166`
-  remains the dark-theme primary accent (12:1 on `#22223b`) and
-  the dark-cover gradient endpoint. Naples Yellow is no longer
-  referenced anywhere in the light-theme palette.
-
-- **GitHub Pages — light-mode accent passes WCAG AAA**: the
-  previous light-mode primary accent `#4d7c8a` Steel Teal cleared
-  WCAG AA-large (3:1) but only reached 4.07:1 on the `#f4f2f3`
-  background, just shy of AA-normal (4.5:1) for body-text links.
-  Introduced `#2f4f5a` Steel Teal Dark as a derived shade — same
-  hue family, 7.87:1 contrast on `#f4f2f3`, comfortably AAA.
-  Replaced the light-theme `accent`, `codeTypeColor`,
-  Docsify `themeColor`, inline `--theme-color`, and the
-  `<meta name="theme-color">` mobile address-bar color. Dark mode
-  is untouched — `#4d7c8a` stays as the dark-theme highlight and
-  the brand-asset color (logo, OG card).
-
-- **GitHub Pages — render Mermaid diagrams**: the
-  `docsify-mermaid@2` plugin was loaded from the package root
-  (`//cdn.jsdelivr.net/npm/docsify-mermaid@2`), which jsDelivr
-  resolves to an ES-module source file (`src/index.js`). The browser
-  refused to execute it as a classic script, the plugin never
-  registered, and every fenced ```` ```mermaid ```` block on the
-  site (landing page, getting started, api reference, validation
-  guide, GitHub Pages spec) rendered as raw flowchart text inside a
-  `<pre><code>` instead of as a diagram. Pinned to the UMD bundle
-  at `/dist/docsify-mermaid.js` (5 KB, no `import` statements);
-  diagrams now render on every page.
-
-- **GitHub Pages — revert to hash routing**: clean URLs from the
-  history-mode experiment (`routerMode: 'history'` + `basePath:`)
-  returned HTTP 404 on GitHub Pages even though the `docs/404.html`
-  SPA fallback rendered the right page. The 404 status broke link
-  previews, link checkers, and search crawlers. Reverted to Docsify's
-  default hash routing (`/assistant/#/getting-started`); every
-  navigable URL now resolves with HTTP 200. `docs/404.html` is kept
-  as a copy of `docs/index.html` so stale history-mode URLs still
-  land on a usable docs page. `rake docs:serve` no longer needs the
-  SPA-fallback servlet.
-
-### Changed
-
-- **GitHub Pages — drop Roadmap and Changelog from the public nav**:
-  the sidebar (`docs/_sidebar.md`) and the "Where to next" table
-  on the landing page (`docs/index.md`) both used to list
-  Roadmap and Changelog as primary destinations. Both are
-  contributor-facing artefacts — the roadmap tracks internal
-  milestone planning, and the changelog is the verbatim
-  `Keep a Changelog` history used for releases — neither tells a
-  reader how to use the gem. Removed both entries from the sidebar
-  and from the landing-page table. The pages themselves still live
-  under `docs/roadmap.md` and `docs/changelog.md` and remain
-  reachable by direct URL (the self-link in `roadmap.md` and the
-  release-process tooling in `docs/v1/*` still resolve), they're
-  just no longer surfaced as navigation.
-
-- **GitHub Pages — drop internal milestone tags from public copy**:
-  the user-facing docs (api reference, deprecations, roadmap,
-  every guide page) used to suffix headings and prose with
-  internal roadmap identifiers like `(M3)`, `(M-S1)`, or `(M10)`.
-  Those tags are meaningful only to contributors who built the v1
-  plan; to readers they're noise. Stripped them from 9 pages,
-  renamed 8 headings to drop the suffix (e.g.
-  `## default: (M1)` → `## default:`, `## Execute callbacks (M-S1)`
-  → `## Execute callbacks`), and updated the 3 inbound anchor
-  links accordingly. The internal `docs/v1/*` working docs (not in
-  the sidebar, but reachable by direct URL) are left as-is — they
-  are the milestone-tracking working set.
-
-- **GitHub Pages — light-mode link color + nav cleanup**: the light
-  theme now uses `#4d7c8a` Steel Teal as the primary accent (links,
-  Docsify `themeColor`, browser address bar) instead of `#ffd166`
-  Naples Yellow, which failed AA contrast against the `#f4f2f3`
-  background. Yellow is reassigned to `highlightColor` so it still
-  highlights the active sidebar entry and search matches. Dark mode
-  is unchanged — yellow stays the primary accent against the
-  Space Cadet background. Also dropped the `[YARD docs]` sidebar
-  link (the gem ships RBS, not YARD-rendered Ruby source, so the
-  link pointed at an empty rubydoc.info page).
-
-- **GitHub Pages — regenerate favicon + apple-touch-icon from new
-  brand SVG**: rasterized `docs/_media/home-logo.svg` (Space Cadet
-  rounded square with a Naples Yellow `A` glyph) into
-  `docs/_media/favicon.png` (32×32) and
-  `docs/_media/apple-touch-icon.png` (180×180), replacing the legacy
-  PNGs that still carried the old `#009ffd` Vivid Sky Blue accent.
-  `docs/_media/repo-card.png` (1200×630 OG card) has no SVG source
-  in the tree and still needs external regeneration.
-
-- **GitHub Pages — small content polish**: dropped a stale "Jekyll
-  site" reference in `docs/roadmap.md` (we've been on Docsify since
-  PR #187) and scrubbed an internal `(M-D2.1)` post-mortem tag from
-  the `docs/index.html` / `docs/404.html` JavaScript comment block
-  about hash routing. Public-facing wording only — no behavior
-  change.
-
-- **GitHub Pages — brand palette refresh**: swap the secondary
-  accent / highlight / primary accent to
-  [`22223b-a07178-4d7c8a-f4f2f3-ffd166`](https://coolors.co/22223b-a07178-4d7c8a-f4f2f3-ffd166).
-  Roles: `#22223b` Space Cadet (dark), `#a07178` Rose Taupe
-  (secondary), `#4d7c8a` Steel Teal (highlight), `#f4f2f3` Cultured
-  (light bg), `#ffd166` Naples Yellow (primary accent, replaces the
-  former Vivid Sky Blue `#009ffd`). Applied to `docs/index.html`,
-  `docs/404.html`, and `docs/_media/home-logo.svg`. The
-  `favicon.png` and `apple-touch-icon.png` are regenerated from the
-  refreshed SVG further down in this Unreleased section; the
-  `repo-card.png` (1200×630 OG card) still carries the old blue
-  accent and needs external regeneration.
-
-- **GitHub Pages — swap stack from Jekyll to Docsify**: replace the
-  Jekyll + just-the-docs site (shipped in PR #180) with a Docsify
-  client-side SPA matching the UX of
-  <https://lostisland.github.io/faraday/#/>. The new stack:
-  - Removes ~5 Ruby gems (`jekyll`, `jekyll-relative-links`,
-    `just-the-docs`, `jekyll-seo-tag`, `jekyll-include-cache`) plus
-    transitive deps (`kramdown`, `rouge`, `sass-embedded`, `webrick`,
-    `addressable`, `em-websocket`, `eventmachine`, etc.) from
-    `Gemfile.lock` — 104 lines deleted.
-  - Removes the 87 sass `darken()` deprecation warnings that came
-    from just-the-docs internals on every build.
-  - Removes the entire local docs toolchain step; `rake docs:serve`
-    now runs `ruby -run -e httpd docs -p 4000` (stdlib WEBrick) —
-    no `bundle install --with docs`, no Sass, no node, no Python.
-  - Loads every plugin (theme, search, syntax highlighting, mermaid,
-    edit-on-github, copy-code, tabs) from `cdn.jsdelivr.net` at
-    runtime. The Pages workflow uploads `docs/` verbatim — no build
-    step.
-  - Adopts the new brand palette: `#22223b` (Space Cadet) /
-    `#a07178` (Rose Taupe) / `#4d7c8a` (Steel Teal) / `#f4f2f3`
-    (Cultured) / `#ffd166` (Naples Yellow, primary accent). Logo,
-    OG card, favicons regenerated.
-  - URL shape changes from `/getting-started.html` → `/#/getting-started`
-    (hash-routed SPA). The site was only hours old; no external links
-    to redirect.
-
-### Fixed
-
-- **GitHub Pages — restore default layout on every internal page**:
-  add a `defaults:` block to [`_config.yml`](_config.yml) that applies
-  just-the-docs's `layout: default` to every page that doesn't
-  declare its own layout. Before this fix, only the homepage
-  (`layout: home`) rendered with the full chrome — every other page
-  (Getting started, Guides, API reference, Examples, Roadmap,
-  Changelog, Deprecations and all their children) was emitted as a
-  raw `<h1>…</h1>` body fragment with no sidebar, header, search
-  input, sub-nav, copy buttons, dark-mode toggle, footer, or
-  baseurl-aware navigation. Latent since PR #180; the homepage
-  redesign in PR #185 made the contrast visible.
-
-### Added
-
-- **GitHub Pages — home page redesign**: replace the bare
-  [`docs/index.md`](docs/index.md) landing with a richer page —
-  primary/secondary CTA buttons (built on just-the-docs's `.btn`
-  utilities), a three-column "Why Assistant?" value-prop strip
-  (soft-fail / zero deps / typed + Steep-ready), a Mermaid
-  lifecycle teaser ("How a service flows"), the install + 60-second
-  example blocks, and a "Where to next" navigation grid that
-  surfaces every top-level page (including Deprecations).
-
-- **GitHub Pages — examples gallery rewrites**: replace the seven
-  `docs/examples/<slug>.md` P6–P12 placeholders with self-contained,
-  callout-sized code patterns covering Rails controllers, CLI
-  handlers, Sidekiq workers, composed services, execute callbacks,
-  the instrumentation notifier, and `bin/assistant-rbs`. Each page
-  still calls out which P6–P12 milestone will ship the runnable
-  script + regression test, but the prose is now useful on its own.
-
-- **GitHub Pages — Mermaid diagrams**: render the result-status
-  decision flow on [`docs/getting-started.md`](docs/getting-started.md)
-  and [`docs/api-reference.md`](docs/api-reference.md), plus the full
-  per-request lifecycle (defaults → declarative validators → `#validate`
-  → execute → notifier hooks) on
-  [`docs/guides/validation.md`](docs/guides/validation.md). Uses the
-  Mermaid loader enabled in the site-polish bundle (just-the-docs
-  auto-injects the ESM importer once `mermaid:` is set in
-  [`_config.yml`](_config.yml)).
-
-- **GitHub Pages — site polish bundle**: dark-mode toggle button
-  (wired through `docs/_includes/head_custom.html` +
-  `docs/_includes/nav_footer_custom.html` with `localStorage`
-  persistence on top of just-the-docs's `jtd.setTheme()` API),
-  `enable_copy_code_button` for every code block, named callouts
-  (`note`/`tip`/`warning`/`important`) via `callouts:` in
-  [`_config.yml`](_config.yml), Mermaid loader pinned to `10.9.1`,
-  baseurl-aware favicons (SVG, 32-px PNG, 180-px apple-touch) and a
-  1200×630 OG / Twitter card image under
-  [`docs/assets/images/`](docs/assets/images/), and a custom
-  `_includes/footer_custom.html`. Also rewrites the install snippet on
-  the Home page so the visible default pins the `1.0.0.rc1`
-  pre-release explicitly (the `~> 1.0` snippet kicks in once the
-  stable tag ships), and filters the upstream sass `darken()`
-  deprecation noise out of the Docs CI log (real build errors still
-  surface via `set -o pipefail`).
-
-- **GitHub Pages — P2 scaffolding (Jekyll + just-the-docs)**: stood up
-  the parallel docs site per
-  [`docs/v1/08-github-pages.md`](docs/v1/08-github-pages.md). Ships
-  `_config.yml` (just-the-docs theme, Lunr search, dark-mode toggle,
-  `gh_edit_link`, `jekyll-seo-tag` + `jekyll-relative-links` plugins),
-  an optional `:docs` Bundler group in [`Gemfile`](Gemfile) pinning
-  `jekyll ~> 4.3`, `just-the-docs ~> 0.10`, and
-  `jekyll-relative-links ~> 0.7`, the
-  [`.github/workflows/docs.yml`](.github/workflows/docs.yml) workflow
-  (PR builds `bundle exec jekyll build --strict_front_matter`; pushes
-  to `main` deploy via `actions/deploy-pages@v4`), `docs:install` /
-  `docs:build` / `docs:serve` Rake tasks driving the Jekyll
-  toolchain, per-page front matter on every site page (Home, Getting
-  started, Guides + 5 sub-pages, API reference, Deprecations, Examples
-  + 7 sub-pages, Roadmap, Changelog), and a new `docs/guides/index.md`
-  landing for the Guides section. The site builds locally with `rake
-  docs:build` and deploys to `https://ramongr.github.io/assistant/` on
-  every push to `main`. Pages source = `GitHub Actions` was enabled in
-  repo settings after the original mkdocs PR (#177) merged; no further
-  manual step is needed for the Jekyll cut-over.
-
-  _This entry supersedes the original mkdocs-based P2 scaffolding —
-  the mkdocs stack lived for one PR before being replaced with Jekyll
-  to match the gem's primary toolchain, drop the Python build
-  dependency, and avoid the `Pygments==2.19.1` pin that worked around
-  a 2.20.0 `HtmlFormatter` regression._
-
-## [1.0.0.rc1] - 2026-06-15
+- Published a public docs site with getting started, API reference, guides,
+  examples, search, dark mode, copy buttons, and diagrams.
+- Polished docs navigation, anchors, routing, and light-mode readability.
 
 ### Added
 
@@ -297,14 +52,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   soft-fail semantics, the uniform result shape, the RBS / Steep
   posture, and the zero-runtime-deps guarantee. Added
   `spec.metadata['documentation_uri']`
-  (`https://rubydoc.info/gems/assistant`) and
+  (`https://ramongr.github.io/assistant/`) and
   `spec.metadata['bug_tracker_uri']`
   (`https://github.com/ramongr/assistant/issues`). The `spec.files`
   glob now excludes `examples/`, `docs/v1/`, and `docs/v1.x/` from the
   packaged gem so internal planning material and runnable samples no
   longer ship to RubyGems (Q9 decision in
   [`docs/v1/07-risks-and-open-questions.md`](docs/v1/07-risks-and-open-questions.md)).
-  No behaviour change; `Assistant::VERSION` is unchanged.
+  No behaviour change.
 
 ### Changed (Breaking)
 

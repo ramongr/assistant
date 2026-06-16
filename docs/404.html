@@ -47,12 +47,18 @@
          #ffd166 — Naples Yellow    (primary accent in dark mode only) */
       --theme-color: #2f4f5a;
     }
-    .app-name-link img { width: 28px; height: 28px; }
+    .assistant-app-name {
+      align-items: center;
+      display: inline-flex;
+      gap: 0.45rem;
+    }
+    .assistant-app-name img { width: 28px; height: 28px; }
     .assistant-home-wordmark { margin: 0 0 1rem; }
     .assistant-home-wordmark img {
       display: block;
       width: min(100%, 720px);
       height: auto;
+      margin: auto;
     }
     .sidebar-toggle { background-color: transparent; }
   </style>
@@ -95,9 +101,13 @@
     };
 
     window.$docsify = {
-      name: 'Assistant',
+      name: [
+        '<span class="assistant-app-name">',
+        '<img src="/assistant/_media/assistant_icon.svg" alt="" aria-hidden="true">',
+        '<span>Assistant</span>',
+        '</span>'
+      ].join(''),
       repo: 'ramongr/assistant',
-      logo: '/assistant/_media/assistant_icon.svg',
       homepage: 'index.md',
       coverpage: false,
       loadSidebar: true,

@@ -48,11 +48,10 @@
       --theme-color: #2f4f5a;
     }
     .assistant-app-name {
-      align-items: center;
-      display: inline-flex;
-      gap: 0.45rem;
+      display: block;
+      height: 44px;
+      width: 44px;
     }
-    .assistant-app-name img { width: 28px; height: 28px; }
     .assistant-home-wordmark { margin: 0 0 1rem; }
     .assistant-home-wordmark img {
       display: block;
@@ -101,12 +100,7 @@
     };
 
     window.$docsify = {
-      name: [
-        '<span class="assistant-app-name">',
-        '<img src="/assistant/_media/assistant_icon.svg" alt="" aria-hidden="true">',
-        '<span>Assistant</span>',
-        '</span>'
-      ].join(''),
+      name: '<img class="assistant-app-name" src="/assistant/_media/assistant_icon.svg" alt="Assistant">',
       repo: 'ramongr/assistant',
       homepage: 'index.md',
       coverpage: false,

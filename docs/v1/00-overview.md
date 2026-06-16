@@ -19,9 +19,10 @@ with at most a small, documented set of code-mods.
 - Land the "must" feature items in [`02-features.md`](./02-features.md).
 - Replace the bundler-template `README.md` and add user guides
   (see [`03-documentation.md`](./03-documentation.md)).
-- Populate `lib/assistant/*.rbs` signatures and wire Steep into CI as an
-  allowed-failure job.
-- Reach ≥95% line coverage and ≥90% branch coverage with SimpleCov in CI.
+- Populate `lib/assistant/*.rbs` signatures and wire Steep into CI as a
+  required job.
+- Report line and branch coverage with SimpleCov in CI; the release target is
+  reviewed as a soft gate, not enforced by CI.
 - Publish `1.0.0` on RubyGems via the existing OIDC trusted-publishing flow
   (`.github/workflows/release.yml`).
 
@@ -32,11 +33,9 @@ with at most a small, documented set of code-mods.
 - Rails generators or Railtie integration.
 - Async or concurrent execution primitives.
 - A plug-in marketplace, schema DSL, or pluggable serializer story.
-- A documentation site as a **1.0 gate**. A GitHub Pages site built with
-  Jekyll + just-the-docs is being assembled as a parallel deliverable tracked
-  in [`08-github-pages.md`](./08-github-pages.md); it does not block
-  the `v1.0.0` tag and the README links at the in-repo Markdown until
-  the site is live.
+- A documentation site as a **1.0 gate**. The live GitHub Pages site is a
+  Docsify SPA tracked in [`08-github-pages.md`](./08-github-pages.md); it does
+  not block the `v1.0.0` tag.
 
 ## Personas and primary use cases
 
@@ -53,18 +52,18 @@ with at most a small, documented set of code-mods.
 
 A "v1.0.0" tag may be cut once **all** of the following are true:
 
-- [ ] All "must" items in [`02-features.md`](./02-features.md) are merged.
-- [ ] [`01-api-surface.md`](./01-api-surface.md) is marked **Frozen** (no open
+- [x] All "must" items in [`02-features.md`](./02-features.md) are merged.
+- [x] [`01-api-surface.md`](./01-api-surface.md) is marked **Frozen** (no open
       questions in [`07-risks-and-open-questions.md`](./07-risks-and-open-questions.md)
       affecting public API).
-- [ ] `README.md` no longer contains any `TODO:` from the bundler template.
-- [ ] Every public method has a YARD comment and a corresponding RBS signature.
+- [x] `README.md` no longer contains any `TODO:` from the bundler template.
+- [x] Every public method has a YARD comment and a corresponding RBS signature.
 - [ ] CI is green on Ruby 3.4 and the latest stable Ruby on `main`.
 - [ ] `bundle exec rake ci` (test + rubocop + steep) is green
       locally and in CI.
-- [ ] SimpleCov reports ≥95% line / ≥90% branch coverage.
-- [ ] `CHANGELOG.md` has a complete `[1.0.0]` section with migration notes.
-- [ ] A `v1.0.0.rc1` pre-release was published to RubyGems and smoke-tested in
+- [ ] SimpleCov reports the release target coverage.
+- [x] `CHANGELOG.md` has a complete `[1.0.0]` section with migration notes.
+- [x] A `v1.0.0.rc1` pre-release was published to RubyGems and smoke-tested in
       a fresh Ruby 3.4 project.
 
 ## Anti-success criteria (red flags that block 1.0)

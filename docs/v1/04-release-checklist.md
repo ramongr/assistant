@@ -19,7 +19,7 @@
       (`assistant.gemspec:17-24`) covering soft-fail semantics, the
       uniform result shape, RBS/Steep posture, and the zero-runtime-deps
       guarantee.
-- [x] Added `spec.metadata['documentation_uri'] = 'https://rubydoc.info/gems/assistant'`.
+- [x] Added `spec.metadata['documentation_uri'] = 'https://ramongr.github.io/assistant/'`.
 - [x] Added `spec.metadata['bug_tracker_uri'] = 'https://github.com/ramongr/assistant/issues'`.
 - [x] Confirmed `spec.metadata['changelog_uri']` still points at
       `CHANGELOG.md` on `main`.
@@ -52,18 +52,13 @@
 ## Pre-release: source updates
 
 - [x] Bump `Assistant::VERSION` to `'1.0.0'` in `lib/assistant/version.rb:4`.
-      Bumped to `'1.0.0.rc1'` for the RC cut; the `1.0.0` bump rides
-      the follow-up release commit after the RC smoke passes.
 - [x] Update `bin/version` (if it touches the constant) to keep it green.
       `bin/version` reads `Assistant::VERSION` at runtime; no edit
       required and the `bin-smoke` CI job (added in PR #173)
       keeps it honest.
 - [x] Move all `[Unreleased]` entries in `CHANGELOG.md` under a new
       `## [1.0.0] - YYYY-MM-DD` heading and add a `## [Unreleased]` empty
-      section above it. Done for the RC: entries promoted to
-      `## [1.0.0.rc1] - 2026-06-15`; an empty `## [Unreleased]` sits
-      above it. The release PR retitles to `## [1.0.0]` with the tag
-      date.
+      section above it.
 - [x] In `CHANGELOG.md`, add a "Migration" subsection under `[1.0.0]`
       summarizing [`06-migration-0x-to-1.md`](./06-migration-0x-to-1.md).
 - [x] Tag the EOL of `0.x` in `SECURITY.md` (created in
@@ -80,7 +75,7 @@ bundle exec rake test
 bundle exec rubocop --parallel
 bundle exec rake ci          # aggregate task: test + rubocop + steep
 gem build assistant.gemspec
-gem install ./assistant-1.0.0.rc1.gem
+gem install ./assistant-1.0.0.gem
 ruby -e 'require "assistant"; p Assistant::VERSION'
 ```
 
@@ -115,14 +110,14 @@ dependency.
   tree (exit 0). Verified `runtime_dependencies == []` on the installed
   gem, plus `documentation_uri` / `bug_tracker_uri` / `summary` match the
   polished gemspec from PR #172.
-- [ ] **No fixed soak period** — tag `v1.0.0` as soon as the smoke-test
+- [x] **No fixed soak period** — tag `v1.0.0` as soon as the smoke-test
       passes and CI on the RC tag is green. If bugs surface post-RC, cut
       additional `rcN` tags until clean.
 
 ## Release: 1.0.0 tag
 
 - [ ] Confirm `main` is green and the RC has no open follow-ups.
-- [ ] Bump `Assistant::VERSION` to `'1.0.0'`.
+- [x] Bump `Assistant::VERSION` to `'1.0.0'`.
 - [ ] Commit with message `Release 1.0.0`; push to `main`.
 - [ ] Tag `v1.0.0` and push the tag — release workflow takes over.
 - [ ] Verify on RubyGems:

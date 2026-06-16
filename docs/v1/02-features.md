@@ -724,11 +724,11 @@ documented to avoid surprise.
 
 ## Cross-cutting acceptance criteria for the "must" list
 
-- [ ] Every new feature ships with at least one Minitest test that fails
+- [x] Every new feature ships with at least one Minitest test that fails
       without the implementation.
-- [ ] Every new feature is referenced from
+- [x] Every new feature is referenced from
       [`03-documentation.md`](./03-documentation.md) so the docs PR is not
       forgotten.
-- [ ] Every new feature has an entry in `CHANGELOG.md` under
-      `[Unreleased]` → `### Added` (or `### Changed`).
-- [ ] No new feature introduces a runtime gem dependency.
+- [x] Every new feature has an entry in `CHANGELOG.md` under the release
+      section's `### Added` (or `### Changed`).
+- [x] No new feature introduces a runtime gem dependency.

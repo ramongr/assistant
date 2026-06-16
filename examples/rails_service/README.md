@@ -6,6 +6,10 @@ site page is
 [`docs/examples/rails-service.md`](../../docs/examples/rails-service.md);
 this directory is the runnable mirror referenced from that page.
 
+Start with the [getting started guide](../../docs/getting-started.md) if this
+is your first Assistant service. Rendered docs:
+<https://ramongr.github.io/assistant/#/examples/rails-service>.
+
 ## Files
 
 | File | Role |

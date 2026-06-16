@@ -58,7 +58,6 @@
     }
     .assistant-app-name {
       display: block;
-      color: #22223b;
       font-family: 'MuseoModerno', 'PT Sans', system-ui, sans-serif;
       font-size: 5.5rem;
       font-style: normal;
@@ -119,10 +118,15 @@
 
     window.$docsify = {
       name: '<span class="assistant-app-name" aria-label="Assistant">a</span>',
+      nameLink: '#/',
       repo: 'ramongr/assistant',
+      basePath: '/assistant/',
       homepage: 'index.md',
       coverpage: false,
       loadSidebar: true,
+      alias: {
+        '/.*/_sidebar.md': '/_sidebar.md'
+      },
       loadNavbar: false,
       auto2top: true,
       subMaxLevel: 3,

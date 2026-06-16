@@ -6,6 +6,10 @@ retry loop. The matching site page is
 [`docs/examples/sidekiq-worker.md`](../../docs/examples/sidekiq-worker.md);
 this directory is the runnable mirror referenced from that page.
 
+Start with the [getting started guide](../../docs/getting-started.md) if this
+is your first Assistant service. Rendered docs:
+<https://ramongr.github.io/assistant/#/examples/sidekiq-worker>.
+
 ## Files
 
 | File | Role |

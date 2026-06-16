@@ -54,10 +54,9 @@
       align-items: center;
       display: flex;
       justify-content: center;
-      padding: 0.75rem 0 1rem;
+      padding: 12px 0 16px;
     }
     .assistant-app-name {
-      color: #22223b;
       display: block;
       font-family: 'MuseoModerno', 'PT Sans', system-ui, sans-serif;
       font-size: 5.5rem;
@@ -67,14 +66,13 @@
       line-height: 0.82;
     }
     .assistant-home-wordmark {
-      color: #22223b;
       font-family: 'MuseoModerno', 'PT Sans', system-ui, sans-serif;
-      font-size: clamp(4.25rem, 16vw, 16rem);
+      font-size: clamp(68px, 16vw, 256px) !important;
       font-style: normal;
       font-weight: 800;
-      letter-spacing: -0.09em;
+      letter-spacing: -1.44px;
       line-height: 0.82;
-      margin: 0 0 1rem;
+      margin-bottom: 3.125rem !important;
       text-align: center;
     }
     .sidebar-toggle { background-color: transparent; }
@@ -107,7 +105,7 @@
     const pageFooter = function (hook) {
       const footer = [
         '<hr/>',
-        '<footer style="text-align:center; opacity:.7; font-size:.9em; padding:1rem 0;">',
+        '<footer style="text-align:center; opacity:.7; font-size:.9em; padding:16px 0;">',
         '  <span>Assistant &middot; MIT-licensed &middot; ',
         '    <a href="https://github.com/ramongr/assistant" target="_blank" rel="noopener">GitHub</a> &middot; ',
         '    <a href="https://rubygems.org/gems/assistant" target="_blank" rel="noopener">RubyGems</a>',
@@ -119,10 +117,15 @@
 
     window.$docsify = {
       name: '<span class="assistant-app-name" aria-label="Assistant">a</span>',
+      nameLink: '#/',
       repo: 'ramongr/assistant',
+      basePath: '/assistant/',
       homepage: 'index.md',
       coverpage: false,
       loadSidebar: true,
+      alias: {
+        '/.*/_sidebar.md': '/_sidebar.md'
+      },
       loadNavbar: false,
       auto2top: true,
       subMaxLevel: 3,
@@ -158,7 +161,7 @@
         siteFont: 'PT Sans, system-ui, sans-serif',
         defaultTheme: 'light',
         codeFontFamily: 'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace',
-        bodyFontSize: '17px',
+        bodyFontSize: '1.0625rem',
         dark: {
           accent: '#ffd166',
           toggleBackground: '#22223b',

@@ -8,6 +8,10 @@ see also the
 [Composing services guide](../../docs/guides/composing-services.md#execute-callbacks)
 for the full hook contract.
 
+Start with the [getting started guide](../../docs/getting-started.md) if this
+is your first Assistant service. Rendered docs:
+<https://ramongr.github.io/assistant/#/examples/execute-callbacks>.
+
 ## Files
 
 | File | What it shows |

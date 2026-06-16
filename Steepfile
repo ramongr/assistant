@@ -54,3 +54,11 @@ target :examples do
 
   check 'examples/greeter.rb'
 end
+
+target :rbs_generator_example do
+  signature 'lib'
+  signature 'examples/rbs_generator/sig'
+
+  check 'examples/rbs_generator/create_user.rb'
+  check 'examples/rbs_generator/type_probe.rb'
+end

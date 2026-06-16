@@ -29,7 +29,7 @@ Gem::Specification.new do |spec|
   spec.metadata['allowed_push_host'] = 'https://rubygems.org'
   spec.metadata['bug_tracker_uri'] = 'https://github.com/ramongr/assistant/issues'
   spec.metadata['changelog_uri'] = 'https://github.com/ramongr/assistant/blob/main/CHANGELOG.md'
-  spec.metadata['documentation_uri'] = 'https://rubydoc.info/gems/assistant'
+  spec.metadata['documentation_uri'] = 'https://ramongr.github.io/assistant/'
   spec.metadata['homepage_uri'] = 'https://github.com/ramongr/assistant'
   spec.metadata['rubygems_mfa_required'] = 'true'
   spec.metadata['source_code_uri'] = 'https://github.com/ramongr/assistant'

@@ -20,9 +20,9 @@ index ties them together.
 
 ## Current snapshot
 
-- 1.0 release plumbing is in flight — the gem is at
-  [`1.0.0.rc1`](changelog.md) and the migration recipe is finalised.
+- 1.0 release plumbing is ready — the gem is prepared for
+  [`1.0.0`](changelog.md) and the migration recipe is finalised.
 - Every "Must" milestone and every promoted "Should" item has shipped
   to `main`.
-- The Docsify site you're reading now is P2 of the GitHub Pages plan;
-  later phases land the remaining guide / example content.
+- The Docsify site you're reading now is live; guide and example content for
+  1.0 is in place.

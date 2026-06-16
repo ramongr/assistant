@@ -1,4 +1,4 @@
-# Examples
+# Examples <!-- {docsify-ignore-all} -->
 
 Each entry below shows a small, real-world wiring pattern with a
 callout-sized code snippet. Runnable scripts live under
@@ -14,6 +14,6 @@ and their regression tests under
 | [Composing services](composing-services.md) | Outer service uses `call_service` to chain two inner services; log timeline merging. |
 | [Execute callbacks](execute-callbacks.md) | `before_execute` audit logger; `around_execute` timing wrapper; failure cases. |
 | [Instrumentation notifier](instrumentation-notifier.md) | `Assistant.notifier=` wired to a fake `ActiveSupport::Notifications`-shaped sink. |
-| [RBS generator](rbs-generator.md) | Service definition → `bin/assistant-rbs --output sig` → Steep proving per-input return types. |
+| [RBS generator](rbs-generator.md) | Service definition → `bin/assistant-rbs --output sig` → Steep proving generated input reader types. |
 
 Each example is intentionally small enough to be read in one sitting.

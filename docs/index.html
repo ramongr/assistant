@@ -57,9 +57,14 @@
       padding: 0.75rem 0 1rem;
     }
     .assistant-app-name {
+      color: #22223b;
       display: block;
-      height: auto;
-      width: min(180px, 78%);
+      font-family: 'MuseoModerno', 'PT Sans', system-ui, sans-serif;
+      font-size: 5.5rem;
+      font-style: normal;
+      font-weight: 800;
+      letter-spacing: -0.09em;
+      line-height: 0.82;
     }
     .assistant-home-wordmark {
       color: #22223b;
@@ -113,7 +118,7 @@
     };
 
     window.$docsify = {
-      name: '<img class="assistant-app-name" src="/assistant/_media/assistant_icon.svg" alt="" aria-hidden="true">',
+      name: '<span class="assistant-app-name" aria-label="Assistant">a</span>',
       repo: 'ramongr/assistant',
       homepage: 'index.md',
       coverpage: false,

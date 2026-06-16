@@ -1,4 +1,4 @@
-# Examples
+# Examples <!-- {docsify-ignore-all} -->
 
 Each entry below shows a small, real-world wiring pattern with a
 callout-sized code snippet. Runnable scripts live under

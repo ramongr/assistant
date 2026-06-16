@@ -1,6 +1,4 @@
-<h1 class="assistant-home-wordmark">
-  <img src="_media/assistant.jpg" alt="Assistant">
-</h1>
+<h1 class="assistant-home-wordmark">assistant</h1>
 
 **Tiny, dependency-free soft-fail service objects for Ruby.**
 

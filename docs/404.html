@@ -12,6 +12,9 @@
 
   <link rel="icon" type="image/svg+xml" href="/assistant/_media/assistant_icon.svg">
   <link rel="apple-touch-icon" sizes="180x180" href="/assistant/_media/apple-touch-icon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=MuseoModerno:ital,wght@0,800;1,800&display=swap" rel="stylesheet">
 
   <!-- Open Graph / Twitter card -->
   <meta property="og:title" content="Assistant">
@@ -52,12 +55,16 @@
       height: 44px;
       width: 44px;
     }
-    .assistant-home-wordmark { margin: 0 0 1rem; }
-    .assistant-home-wordmark img {
-      display: block;
-      width: min(100%, 720px);
-      height: auto;
-      margin: auto;
+    .assistant-home-wordmark {
+      color: #22223b;
+      font-family: 'MuseoModerno', 'PT Sans', system-ui, sans-serif;
+      font-size: clamp(4.25rem, 16vw, 9rem);
+      font-style: normal;
+      font-weight: 800;
+      letter-spacing: -0.09em;
+      line-height: 0.82;
+      margin: 0 0 1rem;
+      text-align: center;
     }
     .sidebar-toggle { background-color: transparent; }
   </style>

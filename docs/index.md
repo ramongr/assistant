@@ -1,4 +1,6 @@
-# Assistant
+<h1 class="assistant-home-wordmark">
+  <img src="_media/assistant.png" alt="Assistant">
+</h1>
 
 **Tiny, dependency-free soft-fail service objects for Ruby.**
 

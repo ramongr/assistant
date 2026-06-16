@@ -216,7 +216,8 @@ Each example PR ships **all three** of:
 - [x] Site polish bundle: copy-code button (`enable_copy_code_button`),
       named callouts (`note`/`tip`/`warning`/`important`), Mermaid loader
       pinned to `10.9.1`, baseurl-aware favicons (SVG + 32px + 180px
-      apple-touch), and a 1200×630 OG / Twitter card image. See PR #182.
+      apple-touch), homepage wordmark, and a 1200×630 OG / Twitter card
+      image. See PR #182 and the follow-up wordmark PR.
 
 ## Out of scope (deferred)
 
@@ -227,8 +228,8 @@ Each example PR ships **all three** of:
 - Translated docs.
 - Analytics / cookie consent.
 - Custom theme branding — partially landed in the site-polish PR (favicons,
-  OG image, accent color `#7253ed`); remaining tweaks (logo wordmark,
-  larger palette) still deferred.
+  OG image, accent color `#7253ed`) and follow-up wordmark PR; remaining
+  larger palette tweaks still deferred.
 
 ## Cross-references
 

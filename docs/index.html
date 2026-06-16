@@ -10,9 +10,11 @@
         content="Assistant is a tiny, dependency-free Ruby gem for soft-fail service objects with a uniform result shape, structured log items, and first-class RBS/Steep support.">
   <meta name="theme-color" content="#2f4f5a">
 
-  <link rel="icon" type="image/svg+xml" href="/assistant/_media/home-logo.svg">
-  <link rel="icon" type="image/png" sizes="32x32" href="/assistant/_media/favicon.png">
+  <link rel="icon" type="image/svg+xml" href="/assistant/_media/assistant_icon.svg">
   <link rel="apple-touch-icon" sizes="180x180" href="/assistant/_media/apple-touch-icon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=MuseoModerno:ital,wght@0,800;1,800&display=swap" rel="stylesheet">
 
   <!-- Open Graph / Twitter card -->
   <meta property="og:title" content="Assistant">
@@ -48,7 +50,33 @@
          #ffd166 — Naples Yellow    (primary accent in dark mode only) */
       --theme-color: #2f4f5a;
     }
-    .app-name-link img { width: 28px; height: 28px; }
+    .app-name-link {
+      align-items: center;
+      display: flex;
+      justify-content: center;
+      padding: 0.75rem 0 1rem;
+    }
+    .assistant-app-name {
+      color: #22223b;
+      display: block;
+      font-family: 'MuseoModerno', 'PT Sans', system-ui, sans-serif;
+      font-size: 5.5rem;
+      font-style: normal;
+      font-weight: 800;
+      letter-spacing: -0.09em;
+      line-height: 0.82;
+    }
+    .assistant-home-wordmark {
+      color: #22223b;
+      font-family: 'MuseoModerno', 'PT Sans', system-ui, sans-serif;
+      font-size: clamp(4.25rem, 16vw, 16rem);
+      font-style: normal;
+      font-weight: 800;
+      letter-spacing: -0.09em;
+      line-height: 0.82;
+      margin: 0 0 1rem;
+      text-align: center;
+    }
     .sidebar-toggle { background-color: transparent; }
   </style>
 </head>
@@ -90,9 +118,8 @@
     };
 
     window.$docsify = {
-      name: 'Assistant',
+      name: '<span class="assistant-app-name" aria-label="Assistant">a</span>',
       repo: 'ramongr/assistant',
-      logo: '/assistant/_media/home-logo.svg',
       homepage: 'index.md',
       coverpage: false,
       loadSidebar: true,

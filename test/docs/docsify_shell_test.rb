@@ -24,6 +24,9 @@ class DocsifyShellTest < Minitest::Test
       assert_includes html, "nameLink: '#/'", shell
       assert_includes html, "basePath: '/assistant/'", shell
       assert_includes html, "'/.*/_sidebar.md': '/_sidebar.md'", shell
+      assert_includes html, 'bottom: auto;', shell
+      assert_includes html, 'top: 0;', shell
+      assert_includes html, 'width: auto;', shell
     end
   end
 end

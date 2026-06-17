@@ -24,9 +24,20 @@ class DocsifyShellTest < Minitest::Test
       assert_includes html, "nameLink: '#/'", shell
       assert_includes html, "basePath: '/assistant/'", shell
       assert_includes html, "'/.*/_sidebar.md': '/_sidebar.md'", shell
+    end
+  end
+
+  def test_docsify_shells_style_sidebar_toggle_states
+    SHELLS.each do |shell|
+      html = File.read(shell)
+
+      assert_includes html, '<body class="assistant-sidebar-shell">', shell
+      assert_includes html, 'body.assistant-sidebar-shell .sidebar {', shell
       assert_includes html, 'bottom: auto;', shell
-      assert_includes html, 'top: 0;', shell
-      assert_includes html, 'width: auto;', shell
+      assert_includes html, 'top: 0.875rem;', shell
+      assert_includes html, 'content: "\\00d7";', shell
+      assert_includes html, 'body.assistant-sidebar-shell.close .sidebar-toggle::before', shell
+      assert_includes html, 'content: "\\2630";', shell
     end
   end
 end

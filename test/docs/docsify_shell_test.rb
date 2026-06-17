@@ -40,4 +40,17 @@ class DocsifyShellTest < Minitest::Test
       assert_includes html, 'content: "\\2630";', shell
     end
   end
+
+  def test_docsify_shells_keep_sidebar_toggle_palette_mode_neutral
+    SHELLS.each do |shell|
+      html = File.read(shell)
+
+      assert_includes html, '--assistant-space-cadet: #22223b;', shell
+      assert_includes html, '--assistant-naples-yellow: #ffd166;', shell
+      assert_includes html, 'background: var(--assistant-space-cadet);', shell
+      assert_includes html, 'color: var(--assistant-naples-yellow);', shell
+      assert_includes html, 'background: var(--assistant-naples-yellow);', shell
+      assert_includes html, 'color: var(--assistant-space-cadet);', shell
+    end
+  end
 end

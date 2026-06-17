@@ -47,8 +47,10 @@
                                      theme color — 7.87:1 on #f4f2f3,
                                      8.30:1 on #ffffff, both AAA)
          #f4f2f3 — Cultured         (light background)
-         #ffd166 — Naples Yellow    (primary accent in dark mode only) */
+         #ffd166 — Naples Yellow    (primary accent) */
       --theme-color: #2f4f5a;
+      --assistant-space-cadet: #22223b;
+      --assistant-naples-yellow: #ffd166;
     }
     .app-name-link {
       align-items: center;
@@ -80,12 +82,12 @@
     }
     body.assistant-sidebar-shell .sidebar-toggle {
       align-items: center;
-      background: rgba(34, 34, 59, 0.94);
-      border: 1px solid rgba(255, 209, 102, 0.34);
+      background: var(--assistant-space-cadet);
+      border: 1px solid rgba(255, 209, 102, 0.42);
       border-radius: 999px;
       bottom: auto;
       box-shadow: 0 10px 30px rgba(0, 0, 0, 0.24);
-      color: #ffd166;
+      color: var(--assistant-naples-yellow);
       display: flex;
       height: 2.25rem;
       justify-content: center;
@@ -98,9 +100,9 @@
       z-index: 60;
     }
     body.assistant-sidebar-shell .sidebar-toggle:hover {
-      background: #ffd166;
-      border-color: #ffd166;
-      color: #22223b;
+      background: var(--assistant-naples-yellow);
+      border-color: var(--assistant-naples-yellow);
+      color: var(--assistant-space-cadet);
       transform: translateY(-1px);
     }
     body.assistant-sidebar-shell .sidebar-toggle span {
@@ -114,9 +116,14 @@
       transform: translateY(-0.08em);
     }
     body.assistant-sidebar-shell.close .sidebar-toggle {
-      background: rgba(244, 242, 243, 0.94);
-      border-color: rgba(47, 79, 90, 0.2);
-      color: #2f4f5a;
+      background: var(--assistant-naples-yellow);
+      border-color: var(--assistant-naples-yellow);
+      color: var(--assistant-space-cadet);
+    }
+    body.assistant-sidebar-shell.close .sidebar-toggle:hover {
+      background: var(--assistant-space-cadet);
+      border-color: var(--assistant-space-cadet);
+      color: var(--assistant-naples-yellow);
     }
     body.assistant-sidebar-shell.close .sidebar-toggle::before {
       content: "\2630";

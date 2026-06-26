@@ -116,9 +116,9 @@ dependency.
 
 ## Release: 1.0.0 tag
 
-- [ ] Confirm `main` is green and the RC has no open follow-ups.
+- [x] Confirm `main` is green and the RC has no open follow-ups.
 - [x] Bump `Assistant::VERSION` to `'1.0.0'`.
-- [ ] Commit with message `Release 1.0.0`; push to `main`.
+- [x] Commit with message `Release 1.0.0`; push to `main`.
 - [ ] Tag `v1.0.0` and push the tag — release workflow takes over.
 - [ ] Verify on RubyGems:
   - Version `1.0.0` is listed.

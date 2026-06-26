@@ -1,9 +1,12 @@
 <!-- markdownlint-disable MD013 MD024 -->
+> **Historical planning documents.** Plans for the 1.0.0 release — shipped on 2026-06-26.
+> See the [release announcement](https://github.com/ramongr/assistant/issues/213) and the [CHANGELOG](../../CHANGELOG.md).
+
 # Assistant — v1 Plan
 
 This folder contains the planning documents for the **1.0.0** release of the
-[`assistant`](../../README.md) gem. The current shipped version is `0.1.0`
-(see `lib/assistant/version.rb:4` and `CHANGELOG.md`). The goal of v1 is to
+[`assistant`](../../README.md) gem. The current shipped version is `1.0.0`
+(see `lib/assistant/version.rb` and `CHANGELOG.md`). The goal of v1 was to
 freeze a small, dependency-free, soft-fail composable services API; ship full
 documentation; populate RBS signatures; and publish `1.0.0` to RubyGems via the
 existing trusted-publishing workflow.

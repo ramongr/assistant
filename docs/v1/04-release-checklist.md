@@ -119,25 +119,26 @@ dependency.
 - [x] Confirm `main` is green and the RC has no open follow-ups.
 - [x] Bump `Assistant::VERSION` to `'1.0.0'`.
 - [x] Commit with message `Release 1.0.0`; push to `main`.
-- [ ] Tag `v1.0.0` and push the tag — release workflow takes over.
-- [ ] Verify on RubyGems:
+- [x] Tag `v1.0.0` and push the tag — release workflow takes over.
+- [x] Verify on RubyGems:
   - Version `1.0.0` is listed.
   - The trusted publisher badge is shown.
   - `documentation_uri` and `bug_tracker_uri` resolve.
-- [ ] Verify on GitHub:
+- [x] Verify on GitHub:
   - The Release page exists with the auto-generated notes.
   - The `assistant-1.0.0.gem` artifact is attached
     (`.github/workflows/release.yml:46`).
 
 ## Post-release
 
-- [ ] Open an `[Unreleased]` PR that bumps `Assistant::VERSION` to
+- [x] Open an `[Unreleased]` PR that bumps `Assistant::VERSION` to
       `'1.0.1.dev'` (or chosen pre-release marker) and adds an empty
       `### Added` / `### Changed` / `### Fixed` skeleton in `CHANGELOG.md`.
-- [ ] Pin a "v1.0.0 released" announcement issue and link from the README.
-- [ ] Move all "Should" items from [`02-features.md`](./02-features.md) that
+- [x] Pin a "v1.0.0 released" announcement issue and link from the README.
+- [-] Move all "Should" items from [`02-features.md`](./02-features.md) that
       did not land into a fresh `docs/v1.x/` planning folder.
-- [ ] Mark `docs/v1/` as historical: add a banner at the top of
+      (All Should items were promoted to Must and shipped as M-S1–M-S4.)
+- [x] Mark `docs/v1/` as historical: add a banner at the top of
       [`README.md`](./README.md) noting "Plans for the 1.0.0 release —
       shipped on YYYY-MM-DD."
 

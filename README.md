@@ -6,6 +6,8 @@
 [![Ruby](https://img.shields.io/badge/ruby-%3E%3D%203.4-ruby.svg)](https://www.ruby-lang.org/)
 [![License: MIT](https://img.shields.io/badge/license-MIT-green.svg)](https://opensource.org/licenses/MIT)
 
+**v1.0.0 is out!** See the [release announcement](https://github.com/ramongr/assistant/issues/213) and the [changelog](CHANGELOG.md#100---2026-06-16).
+
 A tiny, dependency-free Ruby library for writing **soft-fail, composable
 service objects**. A service declares its inputs, validates them, runs its
 body, and returns a uniform result that always carries either a value plus

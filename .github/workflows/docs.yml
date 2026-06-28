@@ -31,7 +31,7 @@ jobs:
     name: Upload docs/ artifact
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - name: Upload site artifact
         uses: actions/upload-pages-artifact@v5
         with:

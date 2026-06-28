@@ -177,6 +177,52 @@ module Assistant
       assert_equal 1, calls
     end
 
+    # ---- #run idempotency ----
+
+    def test_run_called_twice_returns_same_payload_object
+      klass = Class.new(Assistant::Service) do
+        def execute = :ok
+      end
+
+      service = klass.new
+      first  = service.run
+      second = service.run
+
+      assert_same first, second
+    end
+
+    def test_run_called_twice_does_not_duplicate_logs_on_success
+      klass = Class.new(Assistant::Service) do
+        def validate
+          add_log(level: :warning, source: :validate, detail: :check, message: 'heads up')
+        end
+
+        def execute = :ok
+      end
+
+      service = klass.new
+      service.run
+      service.run
+
+      assert_equal 1, service.warnings.size
+    end
+
+    def test_run_called_twice_does_not_duplicate_error_logs
+      klass = Class.new(Assistant::Service) do
+        def validate
+          add_log(level: :error, source: :validate, detail: :check, message: 'boom')
+        end
+
+        def execute = :never
+      end
+
+      service = klass.new
+      service.run
+      service.run
+
+      assert_equal 1, service.errors.size
+    end
+
     # ---- #logs reader (M4) ----
 
     def test_logs_reader_returns_empty_array_on_fresh_service

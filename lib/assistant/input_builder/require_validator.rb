@@ -72,12 +72,13 @@ module Assistant::InputBuilder::RequireValidator
     define_method(canonical) do |log = true|
       # M2: explicit nil counts as "supplied" when allow_nil: true is set.
       return true if allow_nil && @inputs.key?(name)
-      # Check key presence and non-nil rather than the `name?` predicate
-      # so that falsey-but-valid values (e.g. `false` for a Boolean
-      # input) are treated as supplied. `nil` is always "missing" for
-      # non-allow_nil inputs; `apply_input_defaults` never writes nil
-      # into @inputs for those inputs.
-      return true if options[:required] == true && @inputs.key?(name) && !@inputs[name].nil?
+      # Use the `name?` predicate for presence, but special-case the Ruby
+      # literal `false`: the predicate returns `false` for it (see
+      # Accessors#input_checker_meth), yet `false` is a valid supplied value
+      # for Boolean inputs. Whitespace strings and empty collections are still
+      # treated as missing via the predicate path.
+      return true if options[:required] == true && @inputs.key?(name) &&
+                     (@inputs[name] == false || send("#{name}?") == true)
 
       log && send(
         :log_item_error_initialize, attr_name: name, message: "Service is missing argument with name #{name}"

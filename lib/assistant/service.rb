@@ -66,11 +66,10 @@ module Assistant
       @logs = []
     end
 
-    # Execute the validation + execute pipeline once and return the
-    # result payload. Idempotent: calling `#run` a second time returns
-    # an updated payload based on the memoised `#result`, but `#execute`
-    # itself runs only once (M-S1 hook chain is gated by {#result}'s
-    # `||=`).
+    # Execute the validation + execute pipeline and return the result
+    # payload. Fully idempotent: every subsequent call returns the same
+    # cached payload without re-running validations, hooks, or
+    # `#execute`. Only the first call performs side-effects.
     #
     # @return [Hash{Symbol => Object}] either
     #   - `{ result: Object, status: :ok | :with_warnings, warnings: Array<LogItem> }`
@@ -78,6 +77,8 @@ module Assistant
     #   - `{ errors: Array<LogItem>, result: nil, status: :with_errors }`
     #     when any error has been logged before or during validation.
     def run
+      return @ran_payload if defined?(@ran_payload)
+
       @run_started_at = Process.clock_gettime(Process::CLOCK_MONOTONIC)
       notify(:service_started)
 
@@ -85,13 +86,13 @@ module Assistant
       validate
       notify(:service_validated)
 
-      return failed_payload if errors.any?
+      return @ran_payload = failed_payload if errors.any?
 
       # Trigger `#execute` (through the M-S1 hook chain) eagerly so any
       # error logged by a `before_/after_/around_execute` hook influences
       # the terminal event and the payload's `:status` field.
       result
-      errors.empty? ? executed_payload : failed_payload
+      @ran_payload = errors.empty? ? executed_payload : failed_payload
     end
 
     # Memoised return value of {#execute}, threaded through the

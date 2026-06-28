@@ -14,7 +14,7 @@ surface area, but security reports are still very welcome.
 The supported branch will always be the current `1.x` release line. There is
 no intention to backport security fixes to `0.x` once `1.0.0` ships; users on
 `0.x` should upgrade. The migration guide lives at
-[`docs/v1/06-migration-0x-to-1.md`](./docs/v1/06-migration-0x-to-1.md).
+[`docs/v1/index.md`](./docs/v1/index.md).
 
 ## Reporting a vulnerability
 

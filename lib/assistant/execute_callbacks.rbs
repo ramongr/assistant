@@ -1,5 +1,5 @@
 # Type signatures for `lib/assistant/execute_callbacks.rb`. See
-# docs/v1/01-api-surface.md for the frozen 1.0 surface. The block types
+# docs/v1/index.md for the frozen 1.0 surface. The block types
 # for `before_execute` / `after_execute` / `around_execute` are loosely
 # typed because the user's block can take a `&blk` continuation, varied
 # `result` shapes, or no arguments at all — RBS cannot model the

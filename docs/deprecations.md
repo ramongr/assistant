@@ -72,10 +72,10 @@ method, so an override under the old name is silently bypassed.
 ### Why
 
 Q2 in
-[`docs/v1/07-risks-and-open-questions.md`](https://github.com/ramongr/assistant/blob/main/docs/v1/07-risks-and-open-questions.md)
+[`docs/v1/index.md`](https://github.com/ramongr/assistant/blob/main/docs/v1/index.md)
 was decided in favour of Option B: the new names read better, match
 standard English, and are easier to grep for. The old names live one
 minor cycle to give downstream services an upgrade window.
 
-See [`docs/v1/02-features.md`](https://github.com/ramongr/assistant/blob/main/docs/v1/02-features.md) for the
+See [`docs/v1/index.md`](https://github.com/ramongr/assistant/blob/main/docs/v1/index.md) for the
 implementation plan and acceptance criteria.

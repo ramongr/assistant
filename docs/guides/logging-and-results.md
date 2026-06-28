@@ -158,7 +158,7 @@ end
 
 > **Keyword-only.** `#merge_logs` is keyword-only in 1.0. Passing positional
 > arguments raises `ArgumentError`. The
-> [migration guide](https://github.com/ramongr/assistant/blob/main/docs/v1/06-migration-0x-to-1.md) covers the
+> [migration guide](https://github.com/ramongr/assistant/blob/main/docs/v1/index.md) covers the
 > mechanical rewrite.
 
 ## Inspecting an entry
@@ -193,4 +193,4 @@ service.errors.first.item
   merges inner logs into the outer timeline.
 - [API reference: LogItem](../api-reference.md#assistant-logitem).
 - [API reference: LogList](../api-reference.md#assistant-loglist).
-- [Migration guide](https://github.com/ramongr/assistant/blob/main/docs/v1/06-migration-0x-to-1.md) for the 1.0 breaking changes.
+- [Migration guide](https://github.com/ramongr/assistant/blob/main/docs/v1/index.md) for the 1.0 breaking changes.

@@ -12,7 +12,7 @@
 # a duplicate of each registered hook array. Adding more hooks to the
 # subclass does not affect the parent, and vice-versa.
 #
-# See docs/v1/02-features.md M-S1 and docs/v1/01-api-surface.md.
+# See docs/v1/index.md M-S1 and docs/v1/index.md.
 module Assistant::ExecuteCallbacks
   # The exhaustive set of hook types this module manages.
   # @return [Array<Symbol>]

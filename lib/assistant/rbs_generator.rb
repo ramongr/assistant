@@ -12,10 +12,10 @@
 # -- it is a developer-time tool. The shipped `exe/assistant-rbs`
 # binary requires it explicitly.
 #
-# Marked Experimental in `docs/v1/01-api-surface.md` so the output
+# Marked Experimental in `docs/v1/index.md` so the output
 # format may evolve within 1.x.
 #
-# See `docs/v1/02-features.md` (M11) for the contract.
+# See `docs/v1/index.md` (M11) for the contract.
 module Assistant::RbsGenerator
   # Header marker written as the first line of every generated `.rbs`
   # file. {Writer} refuses to overwrite a file whose first line is

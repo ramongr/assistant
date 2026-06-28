@@ -52,13 +52,13 @@ bundle exec rake ci             # convenience aggregate (test + rubocop + steep)
 SimpleCov runs automatically as part of `rake test` and writes its report to
 `coverage/`. Coverage is reported in CI but is **not a hard gate**; the long-
 term targets (≥98% line, ≥95% branch) are documented in
-[`docs/v1/05-quality-and-tooling.md`](./docs/v1/05-quality-and-tooling.md).
+[`docs/v1/index.md`](./docs/v1/index.md).
 
 ## Branch naming
 
 | Branch                       | Use it for                                                 |
 |------------------------------|------------------------------------------------------------|
-| `feature/m<n>-<slug>`        | A roadmap milestone from `docs/v1/02-features.md`.         |
+| `feature/m<n>-<slug>`        | A roadmap milestone from [`docs/v1/index.md`](./docs/v1/index.md). |
 | `feature/m-s<n>-<slug>`      | A promoted "Should" item (M-S1, M-S2, …).                  |
 | `docs/<slug>`                | Documentation-only changes (D1–D5, status sweeps, guides). |
 | `chore/<slug>`               | Tooling / housekeeping with no roadmap milestone.          |
@@ -77,10 +77,10 @@ Reference roadmap milestones or issues by ID.>
 `<TAG>` is one of:
 
 - `M<n>` — a roadmap milestone (e.g. `M11: bin/assistant-rbs per-class RBS
-  generator`). Look up the number in [`docs/v1/02-features.md`](./docs/v1/02-features.md).
+  generator`). Look up the number in [`docs/v1/index.md`](./docs/v1/index.md).
 - `M-S<n>` — a promoted "Should" item.
 - `D<n>` — a documentation milestone from
-  [`docs/v1/03-documentation.md`](./docs/v1/03-documentation.md).
+  [`docs/v1/index.md`](./docs/v1/index.md).
 - `chore:`, `docs:`, `refactor:`, `fix:` — when the change does not map to a
   roadmap entry.
 

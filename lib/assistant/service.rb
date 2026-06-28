@@ -24,7 +24,7 @@ module Assistant
     include Assistant::LogList
 
     # Public reader for the full log timeline (info + warning + error), in
-    # insertion order. See docs/v1/02-features.md M4.
+    # insertion order. See docs/v1/index.md M4.
     #
     # @return [Array<Assistant::LogItem>]
     attr_reader :logs

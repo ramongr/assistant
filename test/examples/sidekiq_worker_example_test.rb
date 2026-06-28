@@ -5,7 +5,7 @@ require_relative 'test_helper'
 require File.join(ExampleTestHelpers::EXAMPLES_ROOT, 'sidekiq_worker/create_user_worker')
 
 # Regression test for `examples/sidekiq_worker/` (P8 of
-# docs/v1/08-github-pages.md). Exercises each `case … in …` branch of
+# docs/v1/index.md). Exercises each `case … in …` branch of
 # `CreateUserWorker#perform` and asserts on the right sink for each
 # `:status`.
 class SidekiqWorkerExampleTest < Minitest::Test

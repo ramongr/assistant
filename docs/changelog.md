@@ -18,4 +18,4 @@ under the gem's **Changelog** tab.
   `### Fixed` / `### Security`.
 - `### Changed (Breaking)` callouts mark semver-breaking changes; for
   the 0.x → 1.x sweep, those are catalogued in
-  [`docs/v1/06-migration-0x-to-1.md`](https://github.com/ramongr/assistant/blob/main/docs/v1/06-migration-0x-to-1.md).
+  [`docs/v1/index.md`](https://github.com/ramongr/assistant/blob/main/docs/v1/index.md).

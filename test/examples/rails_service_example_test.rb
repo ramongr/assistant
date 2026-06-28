@@ -5,7 +5,7 @@ require_relative 'test_helper'
 require File.join(ExampleTestHelpers::EXAMPLES_ROOT, 'rails_service/users_controller')
 
 # Regression test for `examples/rails_service/` (P6 of
-# docs/v1/08-github-pages.md). Exercises every `case … in …` branch of
+# docs/v1/index.md). Exercises every `case … in …` branch of
 # `Examples::RailsService::UsersController#create` so the response
 # shape promised by `docs/examples/rails-service.md` stays honest.
 class RailsServiceExampleTest < Minitest::Test

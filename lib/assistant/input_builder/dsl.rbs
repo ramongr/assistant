@@ -1,5 +1,5 @@
 # Type signatures for `lib/assistant/input_builder/dsl.rb`. The public
-# `#input`/`#inputs` DSL surface; see docs/v1/01-api-surface.md.
+# `#input`/`#inputs` DSL surface; see docs/v1/index.md.
 #
 # Note: `#input` and `#inputs` deliberately keep their leading
 # positional `attr_name`/`attr_names` parameter; every other M12 helper

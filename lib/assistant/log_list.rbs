@@ -1,5 +1,5 @@
 # Type signatures for `lib/assistant/log_list.rb`. See
-# docs/v1/01-api-surface.md for the frozen surface.
+# docs/v1/index.md for the frozen surface.
 #
 # `Assistant::LogList` is mixed into `Assistant::Service`; the `@logs`
 # instance variable it operates on is declared on `Service` itself.

@@ -2,8 +2,8 @@
 
 module Assistant
   # Semantic version of the `assistant` gem. Follows the semver contract
-  # documented in `docs/v1/01-api-surface.md` from 1.0.0 onward.
+  # documented in `docs/v1/index.md` from 1.0.0 onward.
   #
   # @return [String]
-  VERSION = '1.0.0'
+  VERSION = '1.0.1.dev'
 end

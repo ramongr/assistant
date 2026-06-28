@@ -79,6 +79,44 @@ module Assistant::InputBuilder
       assert_includes outcome[:errors].map(&:message), 'Service is missing argument with name note'
     end
 
+    # ---- required: + falsey values (false) ----
+
+    def test_required_input_accepts_false_as_a_valid_value
+      klass = Class.new(Assistant::Service) do
+        input :enabled, type: [TrueClass, FalseClass], required: true
+        def execute = enabled
+      end
+
+      outcome = klass.run(enabled: false)
+
+      assert_equal :ok, outcome[:status]
+      assert_nil outcome[:errors]
+    end
+
+    def test_required_input_with_default_false_satisfies_requirement_when_key_absent
+      klass = Class.new(Assistant::Service) do
+        input :enabled, type: [TrueClass, FalseClass], required: true, default: false
+        def execute = enabled
+      end
+
+      outcome = klass.run
+
+      assert_equal :ok, outcome[:status]
+      assert_nil outcome[:errors]
+    end
+
+    def test_required_input_without_default_errors_when_key_absent
+      klass = Class.new(Assistant::Service) do
+        input :enabled, type: [TrueClass, FalseClass], required: true
+        def execute = enabled
+      end
+
+      outcome = klass.run
+
+      assert_equal :with_errors, outcome[:status]
+      assert_includes outcome[:errors].map(&:message), 'Service is missing argument with name enabled'
+    end
+
     # ---- RequireValidator helpers in isolation ----
 
     def test_require_validator_can_be_included_in_isolation

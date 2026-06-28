@@ -8,11 +8,26 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-### Added
-
 ### Changed
 
+- `InputBuilder::Dsl` internal keyword arguments renamed from
+  `attr_name:`/`attr_names:` to `name:`/`names:` for consistency with
+  the other `InputBuilder` sub-modules. No public API change.
+
 ### Fixed
+
+- `required: true` inputs whose value is the Ruby literal `false` were
+  incorrectly logged as missing. The presence check now special-cases
+  `false` directly instead of routing through the `name?` predicate,
+  which returns `false` for falsey values.
+- Calling `Service#run` more than once on the same instance accumulated
+  duplicate log entries because `validate_inputs` and `validate` were
+  not guarded. `#run` now caches its payload in `@ran_payload` and
+  returns it immediately on subsequent calls.
+
+### Removed
+
+- Dead Pry scaffolding removed from `bin/console`.
 
 ## [1.0.0] - 2026-06-16
 

@@ -77,7 +77,7 @@ module Assistant
     #   - `{ errors: Array<LogItem>, result: nil, status: :with_errors }`
     #     when any error has been logged before or during validation.
     def run
-      return @ran_payload if defined?(@ran_payload)
+      return @run if defined?(@run)
 
       @run_started_at = Process.clock_gettime(Process::CLOCK_MONOTONIC)
       notify(:service_started)
@@ -86,13 +86,13 @@ module Assistant
       validate
       notify(:service_validated)
 
-      return @ran_payload = failed_payload if errors.any?
+      return @run = failed_payload if errors.any?
 
       # Trigger `#execute` (through the M-S1 hook chain) eagerly so any
       # error logged by a `before_/after_/around_execute` hook influences
       # the terminal event and the payload's `:status` field.
       result
-      @ran_payload = errors.empty? ? executed_payload : failed_payload
+      @run = errors.empty? ? executed_payload : failed_payload
     end
 
     # Memoised return value of {#execute}, threaded through the

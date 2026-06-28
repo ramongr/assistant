@@ -68,6 +68,7 @@ module Assistant::InputBuilder::RequireValidator
 
   def define_required_validator(canonical:, name:, **options)
     allow_nil = options.fetch(:allow_nil, false) == true
+    required  = options[:required] == true
 
     define_method(canonical) do |log = true|
       # M2: explicit nil counts as "supplied" when allow_nil: true is set.
@@ -77,8 +78,7 @@ module Assistant::InputBuilder::RequireValidator
       # Accessors#input_checker_meth), yet `false` is a valid supplied value
       # for Boolean inputs. Whitespace strings and empty collections are still
       # treated as missing via the predicate path.
-      return true if options[:required] == true && @inputs.key?(name) &&
-                     (@inputs[name] == false || send("#{name}?") == true)
+      return true if required && (@inputs[name] == false || send("#{name}?") == true)
 
       log && send(
         :log_item_error_initialize, attr_name: name, message: "Service is missing argument with name #{name}"

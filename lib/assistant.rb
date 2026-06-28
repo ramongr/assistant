@@ -8,8 +8,8 @@
 module Assistant
   # M-S3: frozen no-op default notifier. Identity-compared by
   # `Assistant.notifier=` so callers can detect the unconfigured state
-  # if they ever need to. See docs/v1/02-features.md (M-S3) and
-  # docs/v1/01-api-surface.md.
+  # if they ever need to. See docs/v1/index.md (M-S3) and
+  # docs/v1/index.md.
   DEFAULT_NOTIFIER = ->(_event, _payload) {}
   DEFAULT_NOTIFIER.freeze
 

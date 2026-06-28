@@ -34,17 +34,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   the actual behaviour. `inputs.md` includes the "Using
   `bin/assistant-rbs` for Steep users" subsection that closes the R1
   user-facing-note item in
-  [`docs/v1/05-quality-and-tooling.md`](docs/v1/05-quality-and-tooling.md).
-  `.yardopts` extra-files list extended to include the four new pages
-  so they ship with the rendered YARD output.
+  [`docs/v1/index.md`](docs/v1/index.md).
+   `.yardopts` extra-files list extended to include the four new pages
+   so they ship with the rendered YARD output.
 
 - **bin/ smoke**: new `bin-smoke` job in `.github/workflows/ci.yml`
-  exercises `bin/setup` against a cold bundle, syntax-checks the three
-  developer scripts (`bash -n bin/setup`, `ruby -c bin/{console,version}`),
-  runs `bin/version --help`, and pipes a short ruby snippet through
-  `bin/console` to confirm `Assistant::VERSION` resolves. Closes the
-  `bin/` smoke item in
-  [`docs/v1/05-quality-and-tooling.md`](docs/v1/05-quality-and-tooling.md).
+   exercises `bin/setup` against a cold bundle, syntax-checks the three
+   developer scripts (`bash -n bin/setup`, `ruby -c bin/{console,version}`),
+   runs `bin/version --help`, and pipes a short ruby snippet through
+   `bin/console` to confirm `Assistant::VERSION` resolves. Closes the
+   `bin/` smoke item in
+   [`docs/v1/index.md`](docs/v1/index.md).
   [`CONTRIBUTING.md`](CONTRIBUTING.md) gains a `bin/ developer scripts`
   section documenting each script's purpose and noting that none of the
   three ship in the packaged gem (only `exe/assistant-rbs` does).
@@ -61,10 +61,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   (`https://ramongr.github.io/assistant/`) and
   `spec.metadata['bug_tracker_uri']`
   (`https://github.com/ramongr/assistant/issues`). The `spec.files`
-  glob now excludes `examples/`, `docs/v1/`, and `docs/v1.x/` from the
-  packaged gem so internal planning material and runnable samples no
-  longer ship to RubyGems (Q9 decision in
-  [`docs/v1/07-risks-and-open-questions.md`](docs/v1/07-risks-and-open-questions.md)).
+   glob now excludes `examples/`, `docs/v1/`, and `docs/v1.x/` from the
+   packaged gem so internal planning material and runnable samples no
+   longer ship to RubyGems (Q9 decision in
+   [`docs/v1/index.md`](docs/v1/index.md)).
   No behaviour change.
 
 ### Changed (Breaking)
@@ -85,7 +85,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   who don't compose log lists directly (i.e. who only use
   `Service#call_service` for service composition), no source change is
   required. Migration is mechanical and `git grep`-able; see
-  [`docs/v1/06-migration-0x-to-1.md`](docs/v1/06-migration-0x-to-1.md).
+  [`docs/v1/index.md`](docs/v1/index.md).
   The full helper sweep also touches the M13-split per-concern
   modules: `process_default_option`, `validate_default!`,
   `warn_on_mutable_default`, `process_optional_option`,
@@ -110,14 +110,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   `Assistant`, `Assistant::Service`, `Assistant::LogItem`,
   `Assistant::LogList`, the execute callbacks, `#call_service`,
   the notifier, `#input_snapshot`, and the `assistant-rbs` CLI;
-  `docs/v1/01-api-surface.md` remains the source of truth for
+  `docs/v1/index.md` remains the source of truth for
   stability labels. `README.md` documentation index and the
   `.yardopts` extra-files list now include both new pages. The four
   topic guides (`inputs.md`, `validation.md`, `logging-and-results.md`,
   `composing-services.md`) ship in a follow-up D2 PR alongside
   `test/docs/` example tests.
 - **D3**: every public Frozen symbol enumerated in
-  [`docs/v1/01-api-surface.md`](docs/v1/01-api-surface.md) now carries
+  [`docs/v1/index.md`](docs/v1/index.md) now carries
   YARD documentation (`@param`, `@return`, `@raise`, `@example` where
   meaningful). Internal helpers are documented too, so
   `bundle exec yard stats --list-undoc` reports **100%** documented
@@ -129,7 +129,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   non-zero if coverage drops below 100%. `rake ci` now runs
   `test + rubocop + steep + yard`.
 - **D4**: shipped the repository-hygiene files called for in
-  [`docs/v1/03-documentation.md`](docs/v1/03-documentation.md). New
+  [`docs/v1/index.md`](docs/v1/index.md). New
   `CONTRIBUTING.md` documents the clone / `bin/setup` flow, the local
   pipeline (`rake test`, `rubocop`, `steep check`, `rake ci`), branch
   naming, commit-tag conventions, and PR template expectations. New
@@ -149,7 +149,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   `allow_nil:`, `validate`, and the `log_item_warning` /
   `log_item_error` shorthands, a "why another service-object gem?"
   comparison against Interactor and dry-transaction, a documentation
-  index pointing at `docs/v1/01-api-surface.md`, the migration guide,
+  index pointing at `docs/v1/index.md`, the migration guide,
   deprecations, examples, the changelog, and the roadmap, plus a
   refreshed Development section listing `rake test`, `rubocop`, and
   `steep check`. (D1, v1 plan)
@@ -242,7 +242,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   itself is Experimental; the generated `.rbs` content tracks the
   Frozen `Service.input` surface. (M11, v1 plan)
 - Hand-written RBS signatures for the frozen public surface defined in
-  `docs/v1/01-api-surface.md`: `Assistant::VERSION`, `Assistant::LogItem`,
+  `docs/v1/index.md`: `Assistant::VERSION`, `Assistant::LogItem`,
   `Assistant::LogList`, `Assistant::Service` (excluding the per-input
   methods generated by `Service.input`), `Assistant::InputBuilder` plus
   its `Registry`, `DefaultOption`, `OptionalOption`, `Accessors`,
@@ -349,7 +349,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 `1.0.0` is a stabilisation release. Three small breaking changes have
 to be addressed; every one is mechanical and `git grep`-able. The full
 recipe lives in
-[`docs/v1/06-migration-0x-to-1.md`](docs/v1/06-migration-0x-to-1.md).
+[`docs/v1/index.md`](docs/v1/index.md).
 
 1. **`LogList#merge_logs` is keyword-only (M12, B3)** — rewrite every
    `merge_logs(other.logs)` call site to `merge_logs(logs: other.logs)`.

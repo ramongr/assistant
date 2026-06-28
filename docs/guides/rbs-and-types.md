@@ -151,4 +151,4 @@ compare it with the committed `sig/` tree.
 - [RBS generator example](../examples/rbs-generator.md) — runnable service,
   generated signature, and Steep probe.
 - [API reference: `assistant-rbs` CLI](../api-reference.md#assistant-rbs-cli).
-- [0.x to 1.x migration recipe](https://github.com/ramongr/assistant/blob/main/docs/v1/06-migration-0x-to-1.md#recipe-binassistant-rbs-for-steep-users).
+- [0.x to 1.x migration recipe](https://github.com/ramongr/assistant/blob/main/docs/v1/index.md#migration-from-0x-to-10).

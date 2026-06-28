@@ -7,7 +7,7 @@ require 'tmpdir'
 require File.join(ExampleTestHelpers::EXAMPLES_ROOT, 'rbs_generator/create_user')
 
 # Regression test for `examples/rbs_generator/` (P12 of
-# docs/v1/08-github-pages.md). Pins both the service behavior and the
+# docs/v1/index.md). Pins both the service behavior and the
 # generated signature committed beside the example.
 class RbsGeneratorExampleTest < Minitest::Test
   SERVICE_FILE = File.join(ExampleTestHelpers::EXAMPLES_ROOT, 'rbs_generator', 'create_user.rb')

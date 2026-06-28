@@ -82,7 +82,7 @@ pattern-match the hash returned by `.run` directly.
   pattern-match a hash; they don't write `rescue` blocks for expected
   outcomes.
 - **Tiny, frozen surface.** The public API documented in
-  [`docs/v1/01-api-surface.md`](docs/v1/01-api-surface.md) is everything
+  [`docs/api-reference.md`](docs/api-reference.md) is everything
   there is. No DSL gymnastics, no plug-in registry, no opinionated
   serialization. Compose services with the plain `#call_service` primitive.
 
@@ -100,13 +100,9 @@ a per-class generator (`bin/assistant-rbs`) out of the box.
 - **Guides** — [`docs/guides/`](docs/guides/README.md) covers inputs,
   validation, logging/results, composition, and RBS/Steep usage.
 - **API reference** — [`docs/api-reference.md`](docs/api-reference.md)
-  is the hand-written, curated reference for every Frozen symbol; the
-  source of truth for stability labels stays in
-  [`docs/v1/01-api-surface.md`](docs/v1/01-api-surface.md).
-- **Feature catalogue and rationale** —
-  [`docs/v1/02-features.md`](docs/v1/02-features.md).
+  is the hand-written, curated reference for every Frozen symbol.
 - **Upgrading from 0.x** —
-  [`docs/v1/06-migration-0x-to-1.md`](docs/v1/06-migration-0x-to-1.md).
+  [`docs/v1/index.md`](docs/v1/index.md) (migration notes, API surface, release record).
 - **Deprecations** — [`docs/deprecations.md`](docs/deprecations.md).
 - **Runnable sample** — [`examples/greeter.rb`](examples/greeter.rb).
 - **Examples gallery** — [`docs/examples/README.md`](docs/examples/README.md)
@@ -117,8 +113,7 @@ a per-class generator (`bin/assistant-rbs`) out of the box.
 ## Roadmap
 
 The plan for the 1.0 release lives under
-[`docs/v1/`](docs/v1/README.md). Every "must" item is shipped; remaining
-work is documentation and release-checklist tasks.
+[`docs/v1/index.md`](docs/v1/index.md). Every milestone shipped with 1.0.0 (2026-06-26).
 
 ## Development
 

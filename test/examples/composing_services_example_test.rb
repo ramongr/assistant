@@ -5,7 +5,7 @@ require_relative 'test_helper'
 require File.join(ExampleTestHelpers::EXAMPLES_ROOT, 'composing_services/sign_up_user')
 
 # Regression test for `examples/composing_services/` (P9 of
-# docs/v1/08-github-pages.md). Pins the merged-timeline shape
+# docs/v1/index.md). Pins the merged-timeline shape
 # documented in `docs/examples/composing-services.md` lines 27-36:
 # `#call_service` merges each inner service's `#logs` into the outer
 # `@logs` in declaration order, so `CreateUser`'s `:email_normalized`

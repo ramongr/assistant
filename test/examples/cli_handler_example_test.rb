@@ -4,7 +4,7 @@ require_relative 'test_helper'
 require 'open3'
 
 # Regression test for `examples/cli_handler/` (P7 of
-# docs/v1/08-github-pages.md). Shells out to
+# docs/v1/index.md). Shells out to
 # `examples/cli_handler/create_user_cli.rb` and asserts on the exit
 # code + stderr text for each `case … in …` branch promised by
 # `docs/examples/cli-handler.md`.

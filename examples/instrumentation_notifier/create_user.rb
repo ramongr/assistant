@@ -2,7 +2,7 @@
 
 require 'assistant'
 
-# P11 of the GitHub Pages plan in docs/v1/08-github-pages.md. Companion
+# P11 of the GitHub Pages plan in docs/v1/index.md. Companion
 # to docs/examples/instrumentation-notifier.md.
 module InstrumentationNotifierExample
   # Minimal service whose runs are observed by `Assistant.notifier`.

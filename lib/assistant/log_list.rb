@@ -44,7 +44,7 @@ module Assistant::LogList
     end
 
     # Shorthand: log_item_info / log_item_warning / log_item_error.
-    # See docs/v1/02-features.md M5.
+    # See docs/v1/index.md M5.
     define_method("log_item_#{level}") do |source:, detail:, message:, trace: nil|
       add_log(level:, source:, detail:, message:, trace:)
     end

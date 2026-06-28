@@ -2,7 +2,7 @@
 
 # Shared scaffolding for the `test/examples/<slug>_example_test.rb`
 # suites that exercise the runnable scripts under `examples/<slug>/`
-# (P6-P12 of docs/v1/08-github-pages.md).
+# (P6-P12 of docs/v1/index.md).
 #
 # Conventions:
 #

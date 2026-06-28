@@ -83,7 +83,7 @@ jobs:
               f.puts "| Line   | #{line}% | >= 98% |"
               f.puts "| Branch | #{branch}% | >= 95% |"
               f.puts
-              f.puts "Reported only; not enforced in CI. See docs/v1/05-quality-and-tooling.md."
+              f.puts "Reported only; not enforced in CI. See docs/v1/index.md."
             end
           '
       - name: Upload coverage HTML artifact

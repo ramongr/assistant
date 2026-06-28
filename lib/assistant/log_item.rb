@@ -5,7 +5,7 @@ module Assistant
   # `LogList#add_log` or through one of the `log_item_*` shorthands).
   # Construction is **strict** since 1.0 (M10): invalid attributes raise
   # `ArgumentError` rather than producing an instance whose `#valid?`
-  # returns `false`. See `docs/v1/06-migration-0x-to-1.md` for the
+  # returns `false`. See `docs/v1/index.md` for the
   # rationale.
   #
   # @example Build an error log entry

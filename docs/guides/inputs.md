@@ -270,7 +270,7 @@ example that snapshots the outer service's inputs into an inner one.
 generated at class-definition time by `Service.input`, which means a
 generic `.rbs` for `Service` can't know that your `CreateUser#email`
 returns `String`. That's R1 in
-[`docs/v1/05-quality-and-tooling.md`](https://github.com/ramongr/assistant/blob/main/docs/v1/05-quality-and-tooling.md).
+[`docs/v1/index.md`](https://github.com/ramongr/assistant/blob/main/docs/v1/index.md).
 
 The bundled `assistant-rbs` CLI closes the gap by emitting
 per-class `.rbs` files. Run it once after editing your services:

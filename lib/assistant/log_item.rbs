@@ -1,5 +1,5 @@
 # Type signatures for `lib/assistant/log_item.rb`. See
-# docs/v1/01-api-surface.md for the frozen surface.
+# docs/v1/index.md for the frozen surface.
 
 class Assistant::LogItem
   VALID_LEVELS: Array[Symbol]

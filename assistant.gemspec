@@ -58,7 +58,7 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'rubocop-performance', '~> 1.26'
   spec.add_development_dependency 'rubocop-rake', '~> 0.7'
   spec.add_development_dependency 'rubocop-style-compact_nesting', '~> 0.1'
-  spec.add_development_dependency 'simplecov', '~> 0.22'
+  spec.add_development_dependency 'simplecov', '~> 1.0'
   spec.add_development_dependency 'steep', '~> 2.0'
   spec.add_development_dependency 'yard', '~> 0.9'
 end
